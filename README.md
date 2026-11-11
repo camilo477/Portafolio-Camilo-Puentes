@@ -5,26 +5,33 @@ propio, contenido Markdown y salida estática. No hay API, base de datos ni desp
 
 ## Ejecutar localmente
 
-Requiere Node **24.22.2** (fijado en `.nvmrc`) y npm. Desde la raíz:
+Requiere Node **24.22.2** (fijado en `.nvmrc`), npm y GNU Make. Desde la raíz:
 
 ```bash
 nvm install
 nvm use
-npm ci
-npm run dev
+make install
+make dev
 ```
 
 Abrir **http://127.0.0.1:4321/es/** o **http://127.0.0.1:4321/en/**.
 `nvm` es opcional si ya se dispone de la versión requerida de Node.
+`make install` se ejecuta la primera vez o cuando cambian las dependencias.
+Para las siguientes sesiones basta con `nvm use` y `make dev`.
+Detener el servidor con **Ctrl+C**. `make help` muestra todos los comandos.
+
+Si el puerto está ocupado, usar `make dev PORTFOLIO_PORT=4322` y abrir la URL
+que indique Astro. El servidor escucha solo en el equipo local.
 
 Para comprobar la salida estática:
 
 ```bash
-npm run build
-npm run preview
+make preview
 ```
 
 Astro genera `web/dist/`. El contenido no depende de JavaScript para navegar.
+`make preview` compila antes de servir; `make build` permite compilar sin arrancar
+un servidor. Los scripts `npm run …` originales siguen disponibles.
 Los efectos y la selección manual del tema requieren JavaScript; sin él, el tema
 sigue el sistema. Las fuentes se sirven localmente, con sus licencias en
 `web/public/licenses/`.
@@ -65,16 +72,15 @@ implementados. React no se añadió: la interacción actual no necesita una isla
 ## Verificar
 
 ```bash
-npm run lint
-npm run check
-npm run build
-npx playwright install chromium
-npm test
-npm run screenshots
+make browsers
+make verify
+make screenshots
 ```
 
-`lint` comprueba formato con Prettier; `check` valida Astro y TypeScript. Las pruebas
-usan la compilación estática, por lo que hay que compilar después de cada cambio.
+`make lint` comprueba formato con Prettier; `make check` valida Astro y TypeScript.
+`make verify` ejecuta formato, tipos, compilación y pruebas en orden.
+`make test` y `make screenshots` también compilan antes de ejecutar Playwright.
+`make browsers` instala el navegador una vez o al actualizar Playwright.
 Playwright inicia y cierra su servidor en el puerto 4321: dejarlo libre antes de probar.
 En Linux, si faltan dependencias del navegador, usar
 `npx playwright install --with-deps chromium`.
