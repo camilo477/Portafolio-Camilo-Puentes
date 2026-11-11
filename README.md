@@ -51,12 +51,12 @@ sigue el sistema. Las fuentes se sirven localmente, con sus licencias en
 ```text
 web/
   src/
-    components/          Marcador explícito de capturas pendientes
-    content/projects/    Dos proyectos, cada uno en español e inglés
+    components/          Proyectos desplegables y marcadores de material pendiente
+    content/projects/    Tres proyectos, cada uno en español e inglés
     layouts/             HTML, navegación y controles comunes
     lib/                 Traducciones y mapa tipado de rutas/comandos
-    pages/               Portadas y fichas mínimas bilingües
-    scripts/             Comandos, tema y movimiento
+    pages/               Portadas bilingües y redirección de URLs anteriores
+    scripts/             Proyectos, comandos, tema y movimiento
     styles/              CSS y tokens neutrales provisionales
   tests/                 Playwright, axe y generación de capturas
   public/                Favicon y licencias
@@ -68,12 +68,15 @@ docs/                    Documentación técnica y verificación de la implement
 
 ## Alcance de esta versión
 
-- Portada ES/EN y fichas mínimas de DianiMilo y Nube Camiska.
-- Navegación por enlaces, ancla Proyectos, rutas directas y Atrás/Adelante.
+- Portada ES/EN con DianiMilo, Nube Camiska y Convertix, en ese orden.
+- Proyectos que se amplían en la misma página al pulsar su fila. Otro clic los
+  cierra; al abrir uno se cierra el anterior. Funciona con teclado y sin JavaScript.
+- Enlaces directos como `/es/#convertix`, idioma y Atrás/Adelante conservan el
+  proyecto abierto con JavaScript. Las URLs de fichas anteriores redirigen a la portada.
 - Franja visual: hover/foco, tipeo de 180 ms, cancelación y restauración.
 - Temas claro/oscuro, preferencia persistente y esquema inicial del sistema.
 - Movimiento reducido y control adicional para desactivar efectos.
-- Capturas de proyectos pendientes, identificadas como tales. No se simulan demos.
+- Capturas y vídeo de Convertix pendientes, identificados como tales. No se simulan demos.
 
 La paleta **no es una identificación del tema Plasma**. Falta recibir su esquema
 real. Las demás secciones, el CV, el contacto y los casos completos no están
@@ -91,7 +94,8 @@ make screenshots
 `make verify` ejecuta formato, tipos, compilación y pruebas en orden.
 `make test` y `make screenshots` también compilan antes de ejecutar Playwright.
 `make browsers` instala el navegador una vez o al actualizar Playwright.
-Playwright inicia y cierra su servidor en el puerto 4321: dejarlo libre antes de probar.
+Playwright inicia y cierra su servidor en el puerto 4322, separado de `make` (4321).
+Se puede elegir otro con `PORTFOLIO_TEST_PORT=4323 make test`.
 En Linux, si faltan dependencias del navegador, usar
 `npx playwright install --with-deps chromium`.
 

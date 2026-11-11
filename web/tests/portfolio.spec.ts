@@ -2,16 +2,18 @@ import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 const command = (page: Page) => page.locator('[data-command]');
-const diani = (page: Page) =>
-  page.getByRole('link', { name: 'DianiMilo', exact: true });
-const nube = (page: Page) =>
-  page.getByRole('link', { name: 'Nube Camiska', exact: true });
+// summary is a native disclosure; Playwright does not give it an implicit button role.
+const diani = (page: Page) => page.locator('#dianimilo > summary');
+const nube = (page: Page) => page.locator('#nube-camiska > summary');
+const convertix = (page: Page) => page.locator('#convertix > summary');
+const panel = (page: Page, id: string) =>
+  page.locator(`details[data-project="${id}"]`);
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/es/');
 });
 
-test('static content, visible controls, and project links are available', async ({
+test('static content, visible controls, and three ordered projects are available', async ({
   page,
 }) => {
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
@@ -29,7 +31,16 @@ test('static content, visible controls, and project links are available', async 
     'aria-hidden',
     'true',
   );
-  await expect(diani(page)).toHaveAttribute('href', '/es/proyectos/dianimilo/');
+  await expect(page.locator('.identity')).not.toContainText('software');
+  await expect(page.locator('.project-title')).toHaveText([
+    'DianiMilo',
+    'Nube Camiska',
+    'Convertix',
+  ]);
+  await expect(page.locator('details[open]')).toHaveCount(0);
+  await expect(diani(page)).toHaveAccessibleName('DianiMilo');
+  await expect(nube(page)).toHaveAccessibleName('Nube Camiska');
+  await expect(convertix(page)).toHaveAccessibleName('Convertix');
 });
 
 test('hover previews, cancels rapid changes, and restores the active path', async ({
@@ -41,6 +52,8 @@ test('hover previews, cancels rapid changes, and restores the active path', asyn
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
   await expect(page).toHaveURL('/es/');
   await nube(page).hover();
+  await convertix(page).hover();
+  await nube(page).hover();
   await diani(page).hover();
   await nube(page).hover();
   await expect(command(page)).toHaveText('cd ~/proyectos/nube-camiska');
@@ -50,7 +63,7 @@ test('hover previews, cancels rapid changes, and restores the active path', asyn
   await expect(command(page)).toHaveText('cd ~');
 });
 
-test('keyboard focus previews and Enter navigates immediately', async ({
+test('keyboard focus previews and Enter or Space toggles inline details', async ({
   page,
 }) => {
   await page.keyboard.press('Tab');
@@ -75,8 +88,15 @@ test('keyboard focus previews and Enter navigates immediately', async ({
   );
   expect(outline).not.toBe('none');
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL('/es/proyectos/dianimilo/');
+  await expect(page).toHaveURL('/es/#dianimilo');
+  await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
+  await expect(diani(page)).toBeFocused();
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
+  await page.keyboard.press('Space');
+  await expect(panel(page, 'dianimilo')).not.toHaveAttribute('open');
+  await expect(page).toHaveURL('/es/#proyectos');
+  await expect(command(page)).toHaveText('ls ~/proyectos');
+  await expect(diani(page)).toBeFocused();
 });
 
 test('blur restores the path without stealing focus', async ({ page }) => {
@@ -87,25 +107,94 @@ test('blur restores the path without stealing focus', async ({ page }) => {
   await expect(page.getByRole('button', { name: /tema/ })).toBeFocused();
 });
 
-test('click or tap, browser history and translated detail routes work', async ({
+test('click or tap, browser history and language preserve the expanded project', async ({
   page,
   isMobile,
 }) => {
   if (isMobile) await diani(page).tap();
   else await diani(page).click();
-  await expect(page).toHaveURL('/es/proyectos/dianimilo/');
+  await expect(page).toHaveURL('/es/#dianimilo');
+  await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
   await page.getByRole('link', { name: 'English', exact: true }).click();
-  await expect(page).toHaveURL('/en/projects/dianimilo/');
+  await expect(page).toHaveURL('/en/#dianimilo');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('DianiMilo');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Camilo Puentes.',
+  );
+  await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
   await page.goBack();
-  await expect(page).toHaveURL('/es/proyectos/dianimilo/');
+  await expect(page).toHaveURL('/es/#dianimilo');
+  await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
   await page.goBack();
   await expect(page).toHaveURL('/es/');
+  await expect(page.locator('details[open]')).toHaveCount(0);
   await expect(command(page)).toHaveText('cd ~');
   await page.goForward();
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
+  await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
+});
+
+test('projects expand in the same document, one at a time, and can be closed', async ({
+  page,
+}) => {
+  const documentRequests: string[] = [];
+  page.on('request', (request) => {
+    if (request.isNavigationRequest() && request.frame() === page.mainFrame())
+      documentRequests.push(request.url());
+  });
+  await diani(page).click();
+  await expect(
+    panel(page, 'dianimilo').locator('.project-expanded'),
+  ).toBeVisible();
+  await nube(page).click();
+  await expect(panel(page, 'nube-camiska')).toHaveAttribute('open', '');
+  await expect(panel(page, 'dianimilo')).not.toHaveAttribute('open');
+  await convertix(page).click();
+  await expect(page).toHaveURL('/es/#convertix');
+  await expect(
+    panel(page, 'convertix').getByText('Vídeo pendiente', { exact: true }),
+  ).toBeVisible();
+  await expect(panel(page, 'convertix').getByRole('link')).toHaveAttribute(
+    'href',
+    'https://github.com/camilo477/Converter-files',
+  );
+  await expect(page.locator('details[open]')).toHaveCount(1);
+  await convertix(page).click();
+  await expect(page.locator('details[open]')).toHaveCount(0);
+  await expect(page).toHaveURL('/es/#proyectos');
+  await expect(command(page)).toHaveText('ls ~/proyectos');
+  expect(documentRequests).toEqual([]);
+});
+
+test('hovering another project restores the expanded project on leave', async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(isMobile, 'Hover is not available on touch devices.');
+  await diani(page).click();
+  await convertix(page).hover();
+  await expect(command(page)).toHaveText('cd ~/proyectos/convertix');
+  await page.mouse.move(0, 0);
+  await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
+  await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
+});
+
+test('direct anchors and old project URLs open the corresponding inline project', async ({
+  page,
+}) => {
+  for (const lang of ['es', 'en']) {
+    for (const id of ['dianimilo', 'nube-camiska', 'convertix']) {
+      await page.goto(
+        `/${lang}/${lang === 'es' ? 'proyectos' : 'projects'}/${id}/`,
+      );
+      await expect(page).toHaveURL(`/${lang}/#${id}`);
+      await expect(panel(page, id)).toHaveAttribute('open', '');
+      await expect(command(page)).toHaveText(`cd ~/proyectos/${id}`);
+    }
+  }
+  await page.reload();
+  await expect(panel(page, 'convertix')).toHaveAttribute('open', '');
 });
 
 test('project section and language switch preserve the active anchor', async ({
@@ -155,7 +244,7 @@ test('reduced motion writes only the complete command', async ({ page }) => {
       values.push(output.textContent ?? ''),
     );
     observer.observe(output, { childList: true });
-    document.querySelector<HTMLAnchorElement>('h3 a')!.focus();
+    document.querySelector<HTMLElement>('summary')!.focus();
     await new Promise((resolve) => setTimeout(resolve, 280));
     observer.disconnect();
     return values;
@@ -182,7 +271,7 @@ test('optional motion preference persists and cancels typing', async ({
   ).not.toBeChecked();
 });
 
-test('all pages remain navigable without JavaScript', async ({
+test('all three projects expand and close without JavaScript in both languages', async ({
   browser,
   isMobile,
 }) => {
@@ -195,18 +284,20 @@ test('all pages remain navigable without JavaScript', async ({
   });
   const page = await context.newPage();
   await page.goto('/es/');
-  await diani(page).click();
-  await expect(page).toHaveURL('/es/proyectos/dianimilo/');
-  await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
-  await page.getByRole('link', { name: 'English', exact: true }).click();
-  await expect(page).toHaveURL('/en/projects/dianimilo/');
-  await page.getByRole('link', { name: 'Back to projects' }).click();
-  await expect(page).toHaveURL('/en/#projects');
-  await nube(page).click();
-  await expect(page).toHaveURL('/en/projects/nube-camiska/');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Nube Camiska',
-  );
+  for (const lang of ['es', 'en']) {
+    if (lang === 'en')
+      await page.getByRole('link', { name: 'English', exact: true }).click();
+    for (const id of ['dianimilo', 'nube-camiska', 'convertix']) {
+      await panel(page, id).locator('summary').click();
+      await expect(page).toHaveURL(`/${lang}/`);
+      await expect(panel(page, id)).toHaveAttribute('open', '');
+      await expect(panel(page, id).locator('.project-expanded')).toBeVisible();
+      await expect(panel(page, id).getByRole('link')).toBeVisible();
+      await expect(page.locator('details[open]')).toHaveCount(1);
+    }
+    await convertix(page).click();
+    await expect(page.locator('details[open]')).toHaveCount(0);
+  }
   expect(
     await page
       .locator('body')
@@ -230,7 +321,7 @@ test('blocked storage does not break preferences or navigation', async ({
   await page.reload();
   await page.getByRole('button', { name: /tema/ }).click();
   await diani(page).click();
-  await expect(page).toHaveURL('/es/proyectos/dianimilo/');
+  await expect(page).toHaveURL('/es/#dianimilo');
   expect(errors).toEqual([]);
 });
 
@@ -245,6 +336,8 @@ test('narrow layouts and the bottom bar leave controls unobscured', async ({
 }) => {
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 844 });
+    await page.goto('/es/#convertix');
+    await expect(panel(page, 'convertix')).toHaveAttribute('open', '');
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
@@ -262,28 +355,26 @@ test('narrow layouts and the bottom bar leave controls unobscured', async ({
   }
 });
 
-test('all six content routes pass automated accessibility checks in both themes', async ({
+test('collapsed and expanded projects pass accessibility checks in both themes and languages', async ({
   page,
 }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   for (const lang of ['es', 'en']) {
-    const section = lang === 'es' ? 'proyectos' : 'projects';
-    for (const path of [
-      `/${lang}/`,
-      `/${lang}/${section}/dianimilo/`,
-      `/${lang}/${section}/nube-camiska/`,
-    ]) {
-      const response = await page.goto(path);
+    for (const theme of ['light', 'dark']) {
+      const response = await page.goto(`/${lang}/`);
       expect(response?.status()).toBe(200);
-      for (const theme of ['light', 'dark']) {
-        await page.evaluate((value) => {
-          document.documentElement.dataset.theme = value;
-        }, theme);
+      await page.evaluate((value) => {
+        document.documentElement.dataset.theme = value;
+      }, theme);
+      for (const id of ['', 'dianimilo', 'nube-camiska', 'convertix']) {
+        if (id) await panel(page, id).locator('summary').click();
         const result = await new AxeBuilder({ page })
           .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
           .analyze();
-        expect(result.violations, `${path} ${theme}`).toEqual([]);
+        expect(result.violations, `${lang} ${theme} ${id || 'closed'}`).toEqual(
+          [],
+        );
       }
     }
   }

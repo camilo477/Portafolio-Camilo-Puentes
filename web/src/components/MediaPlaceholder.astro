@@ -4,19 +4,19 @@ import type { Language } from '../lib/routes';
 interface Props {
   lang: Language;
   name: string;
-  compact?: boolean;
+  kind?: 'screenshot' | 'video';
 }
-const { lang, name, compact = false } = Astro.props;
+const { lang, name, kind = 'screenshot' } = Astro.props;
 const t = copy[lang];
 ---
 
-<div class:list={['media-placeholder', { compact }]}>
+<div class="media-placeholder">
   <span class="media-path" aria-hidden="true">
     {name} /
   </span>
   <div class="media-message">
     <span class="media-frame" aria-hidden="true"></span>
-    <strong>{t.screenshot}</strong>
-    {!compact && <span>{t.screenshotNote}</span>}
+    <strong>{kind === 'video' ? t.video : t.screenshot}</strong>
+    <span>{kind === 'video' ? t.videoNote : t.screenshotNote}</span>
   </div>
 </div>

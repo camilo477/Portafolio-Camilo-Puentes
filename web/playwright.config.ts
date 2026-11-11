@@ -1,5 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const testPort = Number(process.env.PORTFOLIO_TEST_PORT ?? 4322);
+if (!Number.isInteger(testPort) || testPort < 1 || testPort > 65535) {
+  throw new Error('PORTFOLIO_TEST_PORT must be a valid TCP port.');
+}
+const baseURL = `http://127.0.0.1:${testPort}`;
+
 export default defineConfig({
   testDir: './tests',
   testMatch: process.env.CAPTURE_SCREENSHOTS
@@ -11,7 +17,7 @@ export default defineConfig({
   workers: process.env.CI ? 2 : 4,
   reporter: 'list',
   use: {
-    baseURL: 'http://127.0.0.1:4321',
+    baseURL,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     launchOptions: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH
@@ -32,8 +38,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run preview -- --port 4321 --ignore-lock',
-    url: 'http://127.0.0.1:4321/es/',
+    command: `npm run preview -- --port ${testPort} --ignore-lock`,
+    url: `${baseURL}/es/`,
     reuseExistingServer: false,
     env: { ASTRO_TELEMETRY_DISABLED: '1' },
   },

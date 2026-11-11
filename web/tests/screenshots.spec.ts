@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
@@ -38,12 +38,20 @@ test('capture real desktop and mobile pages in both themes and languages', async
           fullPage: false,
         });
       }
-      await page.goto('/es/proyectos/dianimilo/');
-      await page.evaluate(() => document.fonts.ready);
-      await page.screenshot({
-        path: resolve(output, `dianimilo-${device}-${theme}.png`),
-        fullPage: false,
-      });
+      for (const project of ['dianimilo', 'nube-camiska', 'convertix']) {
+        await page.goto(`/es/#${project}`);
+        await expect(
+          page.locator(`details[data-project="${project}"]`),
+        ).toHaveAttribute('open', '');
+        await page.evaluate(() => document.fonts.ready);
+        await page
+          .locator(`details[data-project="${project}"]`)
+          .evaluate((el) => el.scrollIntoView({ block: 'start' }));
+        await page.screenshot({
+          path: resolve(output, `${project}-${device}-${theme}.png`),
+          fullPage: false,
+        });
+      }
       await context.close();
     }
   }

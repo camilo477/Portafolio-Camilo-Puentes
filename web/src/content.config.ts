@@ -11,6 +11,7 @@ const projects = defineCollection({
     title: z.string(),
     description: z.string(),
     category: z.string(),
+    media: z.enum(['screenshot', 'video']).default('screenshot'),
     repository: z.url().startsWith('https://github.com/camilo477/'),
   }),
 });

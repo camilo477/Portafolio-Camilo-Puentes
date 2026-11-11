@@ -1,13 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import MediaPlaceholder from '../../components/MediaPlaceholder.astro';
+import ProjectDisclosure from '../../components/ProjectDisclosure.astro';
 import { copy } from '../../lib/i18n';
 import {
   commands,
   languages,
   projectAnchor,
-  projectPath,
+  projectIds,
   projectsPath,
   type Language,
 } from '../../lib/routes';
@@ -20,10 +20,9 @@ const projects = await getCollection(
   'projects',
   ({ data }) => data.lang === lang,
 );
-const featured = projects.find(({ data }) => data.projectId === 'dianimilo')!;
-const secondary = projects.find(
-  ({ data }) => data.projectId === 'nube-camiska',
-)!;
+const orderedProjects = projectIds.map((id) =>
+  projects.find(({ data }) => data.projectId === id)!,
+);
 ---
 
 <BaseLayout lang={lang} title={t.role}>
@@ -70,54 +69,10 @@ const secondary = projects.find(
       </span>
     </div>
     <p class="section-intro">{t.projectIntro}</p>
-    <article class="featured-project">
-      <div class="project-copy">
-        <p class="project-category">{featured.data.category}</p>
-        <h3>
-          <a
-            href={projectPath(lang, featured.data.projectId)}
-            data-preview-command={commands.dianimilo}
-          >
-            {featured.data.title}
-          </a>
-        </h3>
-        <p class="project-description">{featured.data.description}</p>
-        <p class="project-status">{t.draft}</p>
-        <a
-          class="project-action"
-          href={projectPath(lang, featured.data.projectId)}
-          data-preview-command={commands.dianimilo}
-        >
-          {t.projectLink}
-          <span class="sr-only">: {featured.data.title}</span>
-          <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-      <MediaPlaceholder lang={lang} name="dianimilo" />
-    </article>
-    <article class="secondary-project">
-      <MediaPlaceholder lang={lang} name="nube-camiska" compact />
-      <div class="project-copy">
-        <p class="project-category">{secondary.data.category}</p>
-        <h3>
-          <a
-            href={projectPath(lang, secondary.data.projectId)}
-            data-preview-command={commands['nube-camiska']}
-          >
-            {secondary.data.title}
-          </a>
-        </h3>
-        <p class="project-description">{secondary.data.description}</p>
-      </div>
-      <a
-        class="project-action"
-        href={projectPath(lang, secondary.data.projectId)}
-        data-preview-command={commands['nube-camiska']}
-      >
-        {t.projectLink}
-        <span class="sr-only">: {secondary.data.title}</span>
-        <span aria-hidden="true">↗</span>
-      </a>
-    </article>
+    <div class="project-list">
+      {orderedProjects.map((entry) => (
+        <ProjectDisclosure entry={entry} />
+      ))}
+    </div>
   </section>
 </BaseLayout>

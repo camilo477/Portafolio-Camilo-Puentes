@@ -64,7 +64,6 @@ const t = copy[lang];
           </span>
           puentes
         </span>
-        <span class="identity-caption">software & Linux</span>
       </a>
       <nav class="main-nav" aria-label={t.navigation}>
         <a
@@ -157,7 +156,9 @@ const t = copy[lang];
     <script>
       import { initializePreferences } from '../scripts/preferences';
       import { initializeCommands } from '../scripts/commands';
+      import { initializeProjects } from '../scripts/projects';
       initializePreferences();
+      initializeProjects();
       initializeCommands();
     </script>
   </body>

@@ -1,7 +1,7 @@
 import {
   commands,
   localizedPath,
-  projectAnchor,
+  routeFromHash,
   type Language,
   type RouteId,
 } from '../lib/routes';
@@ -22,9 +22,7 @@ export function initializeCommands() {
   let updateFrame = 0;
   let targetCommand = '';
   const activeRoute = (): RouteId =>
-    route === 'home' && location.hash === `#${projectAnchor(lang)}`
-      ? 'projects'
-      : route;
+    route === 'home' ? routeFromHash(lang, location.hash) : route;
 
   function show(command: string, animate: boolean) {
     cancelAnimationFrame(typingFrame);
@@ -81,12 +79,13 @@ export function initializeCommands() {
     document
       .querySelectorAll<HTMLAnchorElement>('.main-nav a')
       .forEach((link) => {
+        const navigationRoute = activeRoute() === 'home' ? 'home' : 'projects';
         const isActive =
-          link.dataset.previewCommand === commands[activeRoute()];
+          link.dataset.previewCommand === commands[navigationRoute];
         if (isActive)
           link.setAttribute(
             'aria-current',
-            activeRoute() === 'projects' ? 'location' : 'page',
+            navigationRoute === 'projects' ? 'location' : 'page',
           );
         else link.removeAttribute('aria-current');
       });
@@ -114,13 +113,15 @@ export function initializeCommands() {
         if (focused === link) focused = null;
         scheduleUpdate();
       });
-      // Anchors handle click, Enter and touch natively, independent of this controller.
+      // Anchors and summaries handle activation natively, independent of this controller.
     });
   supportsHover.addEventListener('change', () => {
     hovered = null;
     scheduleUpdate();
   });
   window.addEventListener('hashchange', syncRoute);
+  window.addEventListener('popstate', syncRoute);
+  window.addEventListener('portfolio:locationchange', syncRoute);
   window.addEventListener('pageshow', syncRoute);
   window.addEventListener('pagehide', () => {
     cancelAnimationFrame(typingFrame);

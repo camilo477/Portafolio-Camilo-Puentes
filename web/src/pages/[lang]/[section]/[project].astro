@@ -1,9 +1,6 @@
 ---
-import { getCollection, render, type CollectionEntry } from 'astro:content';
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import MediaPlaceholder from '../../../components/MediaPlaceholder.astro';
-import { copy } from '../../../lib/i18n';
-import { commands, projectAnchor, projectsPath } from '../../../lib/routes';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { projectAnchor, projectPath } from '../../../lib/routes';
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
   return projects.map((entry) => ({
@@ -19,41 +16,6 @@ interface Props {
   entry: CollectionEntry<'projects'>;
 }
 const { entry } = Astro.props;
-const { lang, projectId, title, description, repository } = entry.data;
-const t = copy[lang];
-const { Content } = await render(entry);
+// Keep previously shared URLs working; project content now lives on the homepage.
+return Astro.redirect(projectPath(entry.data.lang, entry.data.projectId));
 ---
-
-<BaseLayout
-  lang={lang}
-  title={title}
-  description={description}
-  route={projectId}
->
-  <article class="project-detail">
-    <a
-      class="back-link"
-      href={projectsPath(lang)}
-      data-preview-command={commands.projects}
-    >
-      ← {t.back}
-    </a>
-    <p class="command-heading" aria-hidden="true">
-      $ {commands[projectId]}
-    </p>
-    <h1>{title}</h1>
-    <p class="detail-description">{description}</p>
-    <p class="project-status">{t.draft}</p>
-    <MediaPlaceholder lang={lang} name={projectId} />
-    <div class="prose">
-      <Content />
-    </div>
-    <a class="repository-link" href={repository}>
-      {t.repository}
-    </a>
-    <aside class="evidence-note">
-      <h2>{t.evidence}</h2>
-      <p>{t.evidenceNote}</p>
-    </aside>
-  </article>
-</BaseLayout>

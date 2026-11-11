@@ -1,6 +1,7 @@
 # Primera entrega — portada e interacción Linux
 
-Fecha: 11 de noviembre de 2026. Alcance: portada bilingüe y navegación visual Linux.
+Fecha: 11 de noviembre de 2026. Alcance: portada bilingüe, proyectos desplegables
+y navegación visual Linux.
 Esta entrega termina en la revisión visual; no inicia la siguiente etapa.
 
 ## Decisiones de implementación
@@ -15,8 +16,10 @@ Resoluciones de alcance:
 
 - La interacción se resuelve con un controlador TypeScript pequeño, sin React.
 - El tipeo tiene un objetivo de 180 ms dentro del intervalo previsto de 120–250 ms.
-- Proyectos es un ancla de la portada en esta entrega. Las fichas mínimas permiten
-  probar rutas reales, traducción y regreso; no son casos de estudio terminados.
+- Tras la revisión de Camilo, Proyectos presenta DianiMilo, Nube Camiska y Convertix
+  como filas que se amplían dentro de la portada. Esta petición reemplaza las
+  fichas en vistas separadas. El contenido sigue siendo preliminar.
+- Se retira «software & Linux» del encabezado, tal como se solicitó.
 - No se añaden enlaces vacíos a Experiencia, Contacto, CV o páginas futuras.
 - No se identifican los colores como Viking. La confirmación cromática sigue pendiente.
 
@@ -28,9 +31,10 @@ Ambas fuentes se alojan localmente, con licencias OFL incluidas. No se solicita 
 fuente a Google ni se usa una librería visual o de animación.
 
 La composición tiene un margen común y un ancho máximo de 1120 px. Presentación
-alineada a la izquierda, nota lateral sobre Linux, proyecto destacado con espacio
-para captura y segunda entrada horizontal más compacta. En móvil se apilan los
-bloques y la navegación ocupa una segunda fila, con ES/EN y tema siempre visibles.
+alineada a la izquierda, nota lateral sobre Linux y lista de proyectos con columnas
+alineadas para nombre, descripción y acción. Al abrir una fila aparecen sus notas,
+repositorio y espacio para captura o vídeo. En móvil se apilan los bloques y la
+navegación ocupa una segunda fila, con ES/EN y tema siempre visibles.
 Los bordes de 1 px y radios de 3–4 px remiten a controles de escritorio discretos.
 
 | Token | Claro | Oscuro |
@@ -50,28 +54,37 @@ La elección manual se aplica antes de renderizar y se conserva en almacenamient
 
 ## Comportamiento implementado
 
-El mapa tipado de rutas y comandos es único. Los enlaces llevan
+El mapa tipado de rutas y comandos es único. Los enlaces y resúmenes llevan
 `data-preview-command`; pointer/focus cambian el estado visual sin interceptar
 clics ni Enter. Un `requestAnimationFrame` cancelable escribe el comando en un
 tiempo total fijo. Las entradas y salidas próximas se agrupan para evitar un flash
 del estado activo. La preferencia del sistema y el control de efectos anulan el tipeo.
+
+Los proyectos utilizan `details/summary` nativos, agrupados para mantener uno
+abierto. Clic, tap, Enter y Espacio abren o cierran la fila sin cargar otro documento.
+JavaScript añade anclas compartibles (`/es/#convertix`, `/en/#convertix`), historial
+y conservación del proyecto al cambiar de idioma. Las URLs anteriores como
+`/es/proyectos/dianimilo/` redirigen a la portada con el proyecto seleccionado.
+La franja vuelve al proyecto abierto al terminar una previsualización y a
+`ls ~/proyectos` al cerrar la fila.
 
 La franja está oculta a lectores de pantalla y no contiene controles ni un campo
 de entrada. El contenido, títulos, enlaces, foco visible y enlace para saltar al
 contenido conservan su propia semántica. Hay espacio inferior para alcanzar todos
 los controles al desplazarse, incluido el área segura de móviles.
 
-La navegación estática funciona sin JavaScript. Sin él, la barra conserva el
-comando de la página generada; las previsualizaciones, la sincronización de anclas
-y la selección manual de tema no están activas. La traducción de cada ficha sigue
-funcionando mediante sus enlaces HTML.
+Sin JavaScript, los tres proyectos siguen abriéndose y cerrándose, los repositorios
+son enlaces normales y se puede cambiar de idioma. La conservación del proyecto
+abierto entre idiomas, las anclas, la barra reactiva y la selección manual del tema
+dependen de JavaScript. El tema del sistema se aplica mediante CSS.
 
 ## Contenido y privacidad
 
-DianiMilo y Nube Camiska se describen con el inventario proporcionado, sin afirmar
+DianiMilo, Nube Camiska y Convertix se describen con el inventario proporcionado, sin afirmar
 haber verificado una demo. Cada idioma tiene su Markdown y un esquema validado.
 Las contribuciones, tecnologías no confirmadas, resultados y pruebas de los
-proyectos permanecen pendientes. Los marcadores de capturas no imitan pantallas reales.
+proyectos permanecen pendientes. El vídeo de Convertix también está pendiente del
+material que entregará Camilo. Los marcadores no imitan pantallas reales.
 
 No hay API, solicitudes a servicios administrativos, formularios, estadísticas ni
 comandos ejecutables. `api-status/` e `infra/` contienen solo notas de alcance.
@@ -82,27 +95,29 @@ prototipo de trabajo se conservan solo localmente y están fuera del seguimiento
 
 ## Verificación ejecutada
 
-Entorno local: Node 24.22.2, Astro 7.4.11, Chromium 156.0.8078.79. Node se preparó
-temporalmente sin reemplazar la instalación global. Playwright usa el navegador
+Entorno local: Node 24.22.2, Astro 7.4.11, Chromium 156.0.8078.79. `make` selecciona
+el Node del proyecto instalado en nvm. Playwright usa el navegador
 instalado cuando se proporciona `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`.
 
 | Comprobación | Resultado |
 | --- | --- |
 | `npm run lint` | Formato Prettier correcto |
 | `npm run check` | 0 errores, 0 advertencias |
-| `npm run build` | 7 documentos estáticos: 6 páginas y entrada `/` |
-| `npm test` | 27 aprobadas, 1 omitida (hover en móvil táctil) |
-| axe, WCAG A/AA | 0 infracciones detectadas en 6 rutas × 2 temas × 2 tamaños |
-| Sin JavaScript | Navegación, cambio de idioma de ficha y tema del sistema comprobados |
+| `npm run build` | 9 documentos estáticos: 2 portadas y 7 redirecciones |
+| `npm test` | 32 aprobadas, 2 omitidas (hover en móvil táctil) |
+| axe, WCAG A/AA | 0 infracciones detectadas en 2 idiomas × 2 temas × 4 estados × 2 tamaños |
+| Sin JavaScript | Apertura y cierre de los tres proyectos, enlaces e idioma comprobados |
 | Vista estrecha | 320, 390, 768 y 1440 px sin desbordamiento horizontal |
-| Capturas | Inicio, Proyectos y ficha DianiMilo; claro/oscuro, escritorio/móvil |
+| Capturas | Inicio, lista y cada proyecto ampliado; claro/oscuro, escritorio/móvil |
 
-Se probaron teclado real con Tab/Enter, foco y blur, hover y cambios rápidos,
-tap, Atrás/Adelante, anclas traducidas, persistencia de tema y movimiento,
-movimiento reducido y bloqueo de `localStorage`. Se corrigió una carrera al
-actualizar movimiento reducido antes de repetir la suite con éxito.
+Se probaron teclado real con Tab/Enter/Espacio, foco y blur, hover y cambios rápidos,
+tap, apertura sin solicitudes de otro documento, cierre exclusivo, Atrás/Adelante,
+anclas, URLs antiguas, persistencia de tema y movimiento, movimiento reducido y
+bloqueo de `localStorage`. Las pruebas identifican `summary` como control nativo
+y verifican su nombre accesible, sin forzar un rol ARIA distinto.
 
-La configuración de pruebas usa `astro preview --ignore-lock` para mantener el
+La configuración de pruebas usa el puerto 4322, separado del desarrollo en 4321,
+y `astro preview --ignore-lock` para mantener el
 servidor en primer plano y permitir que Playwright gestione su cierre. No se
 conecta a un servidor de desarrollo ajeno. GitHub Actions contiene las mismas
 verificaciones con el Chromium de Playwright; su resultado remoto se reporta por
@@ -111,15 +126,15 @@ separado del resultado local.
 ## Revisión visual y auditoría del brief
 
 Se abrieron capturas reales de escritorio y móvil en ambos temas, incluyendo
-portadas en español e inglés y la ficha DianiMilo. Las vistas de inicio y Proyectos
+portadas en español e inglés y los tres proyectos ampliados. Las vistas de inicio y Proyectos
 se capturan por separado a 1440×1000 y 390×844; no se altera el CSS para capturarlas.
 
-- Composición: presentación lateral, jerarquía de lectura y proyectos con distinta
-  proporción. No hay cuadrícula de tarjetas idénticas ni hero centrado.
+- Composición: presentación lateral, jerarquía de lectura y proyectos ordenados
+  en una lista desplegable. No hay cuadrícula de tarjetas ni hero centrado.
 - Identidad: comandos asociados a destinos, nota sobre el entorno y barra de
   navegación. Sin escritorio falso, neón, resplandores ni símbolos animados de relleno.
 - Contenido: textos concretos, origen documentado y material faltante identificado.
-- Interacción: dos microinteracciones de enlace y tipeo breve; sin aparición por
+- Interacción: apertura nativa, indicador de despliegue y tipeo breve; sin aparición por
   scroll, parallax, sonidos, reproducción automática ni esperas artificiales.
 - Coherencia: mismos tokens y escala en ambos idiomas; contraste comprobado
   automáticamente en ambos temas. La aprobación estética corresponde a Camilo.
