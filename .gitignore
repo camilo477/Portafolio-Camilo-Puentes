@@ -1,0 +1,36 @@
+# Private data
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+.secrets/
+
+# Astro / JS
+node_modules/
+dist/
+.astro/
+coverage/
+playwright-report/
+test-results/
+
+# Java
+target/
+.gradle/
+*.class
+
+# Local / editor
+.idea/
+.vscode/
+.DS_Store
+*.log
+
+# Local evidence and caches
+.npm-cache/
+docs/capturas/
+preview/*.png
+.agents/
+.codex/
+.aws/
