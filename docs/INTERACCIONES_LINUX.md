@@ -68,3 +68,14 @@ Correcto en un proyecto:
 - Eventos declarados mediante atributos `data-preview-command` para elementos de navegación y fichas. Manejar `focusin/focusout` y `pointerenter/pointerleave` con atención a la delegación y al orden de eventos.
 - Usar `matchMedia('(prefers-reduced-motion: reduce)')`, cancelar timers/intervalos y limpiar en desmontaje.
 - Pruebas E2E con Playwright que simulen foco, hover, cambio rápido, móviles y rutas bilingües.
+
+## Rutas acotadas de la primera entrega
+
+La portada contiene la sección Proyectos en `/es/#proyectos` y `/en/#projects`.
+Las únicas fichas iniciales son `/es/proyectos/dianimilo/`,
+`/es/proyectos/nube-camiska/` y sus equivalentes `/en/projects/…/`.
+Son fichas mínimas con contenido pendiente identificado, para validar navegación;
+no sustituyen los futuros casos completos. Las demás secciones no se enlazan todavía.
+El selector de idioma conserva tanto la ficha como el ancla de Proyectos.
+Se adopta una duración de 180 ms; prevalece el contrato de 120–250 ms sobre
+la sugerencia antigua de 300 ms del plan general.
