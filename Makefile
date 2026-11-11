@@ -1,16 +1,24 @@
-.DEFAULT_GOAL := help
+.DEFAULT_GOAL := dev
 .NOTPARALLEL:
 
 PORTFOLIO_PORT ?= 4321
+PORTFOLIO_NVM_ROOT := $(if $(NVM_DIR),$(NVM_DIR),$(HOME)/.nvm)
+PORTFOLIO_NODE_BIN := $(PORTFOLIO_NVM_ROOT)/versions/node/v$(shell cat .nvmrc)/bin
+
+# Prefer the installed project version without changing the user's shell or default.
+ifneq ($(wildcard $(PORTFOLIO_NODE_BIN)/node),)
+export PATH := $(PORTFOLIO_NODE_BIN):$(PATH)
+endif
 
 .PHONY: help check-node install dev lint check build preview browsers test screenshots verify
 
 help:
 	@printf '%s\n' \
-		'Preparación: nvm install && nvm use (versión fijada en .nvmrc)' \
+		'Primera instalación: nvm install y make install' \
 		'' \
+		'make              Iniciar desarrollo y abrir el navegador' \
 		'make install      Instalar dependencias desde package-lock.json' \
-		'make dev          Iniciar desarrollo; detener con Ctrl+C' \
+		'make dev          Igual que make; detener con Ctrl+C' \
 		'make lint         Comprobar formato' \
 		'make check        Validar Astro y TypeScript' \
 		'make build        Compilar en web/dist/' \
@@ -37,7 +45,7 @@ install: check-node
 	npm ci
 
 dev: check-node
-	npm run dev -- --port "$(PORTFOLIO_PORT)" --ignore-lock
+	npm run dev -- --port "$(PORTFOLIO_PORT)" --ignore-lock --open /es/
 
 lint: check-node
 	npm run lint

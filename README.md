@@ -5,22 +5,32 @@ propio, contenido Markdown y salida estática. No hay API, base de datos ni desp
 
 ## Ejecutar localmente
 
-Requiere Node **24.22.2** (fijado en `.nvmrc`), npm y GNU Make. Desde la raíz:
+Desde la raíz, para iniciar el portafolio y abrirlo en el navegador:
+
+```bash
+make
+```
+
+Abre **http://127.0.0.1:4321/es/**. La versión en inglés está en
+**http://127.0.0.1:4321/en/**. Detener el servidor con **Ctrl+C**.
+`make dev` hace lo mismo y `make help` muestra todos los comandos.
+
+Requiere Node **24.22.2** (fijado en `.nvmrc`), npm y GNU Make.
+El Makefile utiliza automáticamente esa versión si ya está instalada en nvm
+(`NVM_DIR` o `~/.nvm`), sin cambiar la versión global ni requerir `nvm use` en
+cada terminal. Si no encuentra esa instalación, comprueba el Node del `PATH`.
+
+Solo al preparar una copia nueva o instalar las dependencias por primera vez:
 
 ```bash
 nvm install
-nvm use
 make install
-make dev
 ```
 
-Abrir **http://127.0.0.1:4321/es/** o **http://127.0.0.1:4321/en/**.
 `nvm` es opcional si ya se dispone de la versión requerida de Node.
 `make install` se ejecuta la primera vez o cuando cambian las dependencias.
-Para las siguientes sesiones basta con `nvm use` y `make dev`.
-Detener el servidor con **Ctrl+C**. `make help` muestra todos los comandos.
 
-Si el puerto está ocupado, usar `make dev PORTFOLIO_PORT=4322` y abrir la URL
+Si el puerto está ocupado, usar `make PORTFOLIO_PORT=4322` y abrir la URL
 que indique Astro. El servidor escucha solo en el equipo local.
 
 Para comprobar la salida estática:
