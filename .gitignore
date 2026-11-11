@@ -7,6 +7,43 @@
 *.p12
 *.pfx
 .secrets/
+.aws/
+.ssh/
+.kube/
+.npmrc
+.netrc
+.pypirc
+*.jks
+*.keystore
+
+# Agent instructions, prompts and local assistant configuration
+AGENTS.md
+AGENTS.override.md
+CLAUDE.md
+GEMINI.md
+SKILL.md
+PROMPT_*.md
+.agents/
+.codex/
+.claude/
+.cursor/
+.gemini/
+.continue/
+.aider*
+.cursorrules
+.windsurfrules
+.mcp.json
+/.github/copilot-instructions.md
+/.github/instructions/
+/.github/prompts/
+
+# Local design brief and original prototype (kept on disk)
+/PORTAFOLIO_PLAN_Y_DISENO.md
+/docs/DIRECCION_VISUAL.md
+/docs/EVITAR_APARIENCIA_IA.md
+/docs/INTERACCIONES_LINUX.md
+/docs/PALETA_PLASMA.md
+/preview/
 
 # Astro / JS
 node_modules/
@@ -26,11 +63,15 @@ target/
 .vscode/
 .DS_Store
 *.log
+*.bak
+*.orig
+*.swp
+*.swo
+*~
+/backups/
+/tmp/
+/temp/
 
 # Local evidence and caches
 .npm-cache/
-docs/capturas/
-preview/*.png
-.agents/
-.codex/
-.aws/
+/docs/capturas/

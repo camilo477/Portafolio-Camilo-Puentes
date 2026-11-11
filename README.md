@@ -45,7 +45,7 @@ web/
   public/                Favicon y licencias
 api-status/              Reservado; Java 21 + Spring Boot en una etapa posterior
 infra/                   Reservado; sin conexión a Raspberry
-docs/                    Brief original, decisiones y verificación de esta entrega
+docs/                    Documentación técnica y verificación de la implementación
 .github/workflows/       Verificación del frontend, sin despliegue
 ```
 
@@ -88,14 +88,18 @@ GitHub Actions ejecuta formato, tipos, build y pruebas de Chromium en escritorio
 y móvil emulado. La revisión automática no sustituye la revisión visual de Camilo
 ni una evaluación manual con lector de pantalla.
 
-## Documentación
+## Documentación y archivos versionados
 
-- [Entrega y decisiones](docs/PRIMERA_ENTREGA.md).
-- [Plan de producto](PORTAFOLIO_PLAN_Y_DISENO.md).
-- [Primer encargo](PROMPT_Codex_PRIMERA_TAREA.md).
-- [Dirección visual](docs/DIRECCION_VISUAL.md).
-- [Interacciones Linux](docs/INTERACCIONES_LINUX.md).
-- [Restricciones estéticas](docs/EVITAR_APARIENCIA_IA.md).
-- [Paleta pendiente](docs/PALETA_PLASMA.md).
+[Entrega, decisiones técnicas y verificación](docs/PRIMERA_ENTREGA.md).
+
+El repositorio contiene código, contenido del sitio, pruebas, configuración de
+compilación e integración continua y documentación técnica. Las instrucciones de
+agentes, prompts, el kit de diseño inicial y los prototipos de trabajo se conservan
+solo localmente. `.gitignore` también excluye credenciales, dependencias instaladas,
+compilaciones, cachés, registros, respaldos y capturas de revisión.
+
+Antes de cada push, revisar `git status`, el diff preparado y la lista completa de
+archivos rastreados con `git ls-files`. `git ls-files -ci --exclude-standard` debe
+estar vacío: añadir una regla a `.gitignore` no retira archivos ya versionados.
 
 La siguiente etapa queda pendiente de revisión visual y autorización de Camilo.

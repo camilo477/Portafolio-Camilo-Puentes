@@ -1,27 +1,20 @@
 # Primera entrega — portada e interacción Linux
 
-Fecha: 11 de noviembre de 2026. Alcance: `PROMPT_Codex_PRIMERA_TAREA.md`.
+Fecha: 11 de noviembre de 2026. Alcance: portada bilingüe y navegación visual Linux.
 Esta entrega termina en la revisión visual; no inicia la siguiente etapa.
 
-## Lectura y decisiones
-
-Se leyeron `AGENTS.md`, el plan general, el primer encargo, el README original y
-todos los documentos originales de `docs/`. Se revisó también el prototipo HTML
-como referencia de comportamiento. Se conservaron los documentos de dirección
-y las imágenes suministradas; el prototipo no se convirtió en la implementación.
+## Decisiones de implementación
 
 Se consultaron la [referencia de Josh W. Comeau](https://www.joshwcomeau.com/),
 la [instalación de Astro](https://docs.astro.build/en/install-and-setup/) y su
 [API de colecciones](https://docs.astro.build/en/guides/content-collections/).
-La aplicación de la referencia sigue el brief de Camilo: lectura clara, ritmo
+La aplicación de la referencia sigue la dirección de Camilo: lectura clara, ritmo
 editorial y efectos útiles. No se reutilizaron arte, código ni una plantilla ajena.
 
 Resoluciones de alcance:
 
-- El plan recomienda React para la franja, pero el encargo posterior lo limita a
-  interactividad que lo necesite. Se usa un controlador TypeScript pequeño, sin React.
-- Se adopta el contrato específico de 120–250 ms, con objetivo de 180 ms, frente a
-  la sugerencia antigua de 300 ms del plan general.
+- La interacción se resuelve con un controlador TypeScript pequeño, sin React.
+- El tipeo tiene un objetivo de 180 ms dentro del intervalo previsto de 120–250 ms.
 - Proyectos es un ancla de la portada en esta entrega. Las fichas mínimas permiten
   probar rutas reales, traducción y regreso; no son casos de estudio terminados.
 - No se añaden enlaces vacíos a Experiencia, Contacto, CV o páginas futuras.
@@ -84,7 +77,8 @@ No hay API, solicitudes a servicios administrativos, formularios, estadísticas 
 comandos ejecutables. `api-status/` e `infra/` contienen solo notas de alcance.
 Las capturas de esta web son evidencias locales ignoradas por Git; se regeneran
 con `npm run screenshots`. Los archivos de configuración privados y secretos están
-excluidos. Git usa el correo público noreply del usuario, no una dirección interna.
+excluidos. Las instrucciones de agentes, prompts, el kit de diseño original y el
+prototipo de trabajo se conservan solo localmente y están fuera del seguimiento de Git.
 
 ## Verificación ejecutada
 
