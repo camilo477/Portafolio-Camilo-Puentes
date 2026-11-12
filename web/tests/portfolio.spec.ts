@@ -395,7 +395,19 @@ test('narrow layouts and the bottom bar leave controls unobscured', async ({
     await expect(
       page.getByRole('link', { name: 'EN — English', exact: true }),
     ).toBeVisible();
-    await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+    await page.evaluate(() => document.fonts.ready);
+    // User input releases the initial hash alignment before scrolling to the footer.
+    await page.locator('#main').focus();
+    await page.keyboard.press('End');
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          Math.abs(
+            document.documentElement.scrollHeight - innerHeight - scrollY,
+          ),
+        ),
+      )
+      .toBeLessThanOrEqual(1);
     const checkbox = await page
       .getByRole('checkbox', { name: 'Animar comandos' })
       .boundingBox();
