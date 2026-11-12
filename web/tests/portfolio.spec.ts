@@ -13,7 +13,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/es/');
 });
 
-test('static content, visible controls, and three ordered projects are available', async ({
+test('static content, visible controls, and four ordered projects are available', async ({
   page,
 }) => {
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
@@ -40,12 +40,64 @@ test('static content, visible controls, and three ordered projects are available
     'DianiMilo',
     'Nube Camiska',
     'Convertix',
+    'Portafolio Camilo Puentes',
   ]);
   await expect(page.locator('details[open]')).toHaveCount(0);
   await expect(page.locator('.media-placeholder')).toHaveCount(0);
   await expect(diani(page)).toHaveAccessibleName('DianiMilo');
   await expect(nube(page)).toHaveAccessibleName('Nube Camiska');
   await expect(convertix(page)).toHaveAccessibleName('Convertix');
+  await expect(
+    panel(page, 'portafolio').locator('summary'),
+  ).toHaveAccessibleName('Portafolio Camilo Puentes');
+});
+
+test('portfolio overview preserves its translated hash and opens GitHub separately', async ({
+  page,
+  isMobile,
+}) => {
+  const summary = panel(page, 'portafolio').locator('summary');
+  if (!isMobile) {
+    await summary.hover();
+    await expect(command(page)).toHaveText('cd ~/proyectos/portafolio');
+    await page.mouse.move(0, 0);
+    await expect(command(page)).toHaveText('cd ~');
+  }
+  await summary.focus();
+  await expect(command(page)).toHaveText('cd ~/proyectos/portafolio');
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL('/es/#portafolio');
+  await expect(panel(page, 'portafolio')).toHaveAttribute('open', '');
+  await expect(panel(page, 'portafolio').locator('.prose')).toContainText(
+    'Astro',
+  );
+  await page.locator('[data-language="en"]').click();
+  await expect(page).toHaveURL('/en/#portafolio');
+  await expect(panel(page, 'portafolio')).toHaveAttribute('open', '');
+  await expect(
+    panel(page, 'portafolio').locator('summary'),
+  ).toHaveAccessibleName('Camilo Puentes Portfolio');
+  await page.goBack();
+  await expect(page).toHaveURL('/es/#portafolio');
+  await expect(panel(page, 'portafolio')).toHaveAttribute('open', '');
+  const repository = page.locator('.story-portafolio .repository-link');
+  const repoUrl = 'https://github.com/camilo477/Portafolio-Camilo-Puentes';
+  await expect(repository).toHaveAttribute('href', repoUrl);
+  await expect(repository).toHaveAttribute('target', '_blank');
+  await expect(repository).toHaveAttribute('rel', 'noopener noreferrer');
+  await page.context().route(repoUrl, (route) =>
+    route.fulfill({
+      contentType: 'text/html',
+      body: '<title>Repository navigation test</title>',
+    }),
+  );
+  const popupPromise = page.waitForEvent('popup');
+  await repository.click();
+  const popup = await popupPromise;
+  await expect(popup).toHaveURL(repoUrl);
+  expect(await popup.evaluate(() => window.opener === null)).toBe(true);
+  await expect(page).toHaveURL('/es/#portafolio');
+  await popup.close();
 });
 
 test('hover previews, cancels rapid changes, and restores the active path', async ({
@@ -187,7 +239,7 @@ test('old hash links still open the corresponding inline project', async ({
   page,
 }) => {
   for (const lang of ['es', 'en']) {
-    for (const id of ['dianimilo', 'nube-camiska', 'convertix']) {
+    for (const id of ['dianimilo', 'nube-camiska', 'convertix', 'portafolio']) {
       await page.goto(`/${lang}/#${id}`);
       await expect(page).toHaveURL(`/${lang}/#${id}`);
       await expect(panel(page, id)).toHaveAttribute('open', '');
@@ -195,7 +247,7 @@ test('old hash links still open the corresponding inline project', async ({
     }
   }
   await page.reload();
-  await expect(panel(page, 'convertix')).toHaveAttribute('open', '');
+  await expect(panel(page, 'portafolio')).toHaveAttribute('open', '');
 });
 
 test('project section and language switch preserve the active anchor', async ({
@@ -272,7 +324,7 @@ test('optional motion preference persists and cancels typing', async ({
   ).not.toBeChecked();
 });
 
-test('all three projects expand and close without JavaScript in both languages', async ({
+test('all four projects expand and close without JavaScript in both languages', async ({
   browser,
   isMobile,
 }) => {
@@ -288,7 +340,7 @@ test('all three projects expand and close without JavaScript in both languages',
   for (const lang of ['es', 'en']) {
     if (lang === 'en')
       await page.getByRole('link', { name: 'English', exact: true }).click();
-    for (const id of ['dianimilo', 'nube-camiska', 'convertix']) {
+    for (const id of ['dianimilo', 'nube-camiska', 'convertix', 'portafolio']) {
       await panel(page, id).locator('summary').click();
       await expect(page).toHaveURL(`/${lang}/`);
       await expect(panel(page, id)).toHaveAttribute('open', '');
@@ -298,7 +350,7 @@ test('all three projects expand and close without JavaScript in both languages',
       ).toBeVisible();
       await expect(page.locator('details[open]')).toHaveCount(1);
     }
-    await convertix(page).click();
+    await panel(page, 'portafolio').locator('summary').click();
     await expect(page.locator('details[open]')).toHaveCount(0);
   }
   expect(
@@ -361,7 +413,7 @@ test('narrow layouts and the bottom bar leave controls unobscured', async ({
 test('collapsed and expanded projects pass accessibility checks in both themes and languages', async ({
   page,
 }) => {
-  // This case scans sixteen full-page states, including the inline Homelab DOM.
+  // This case scans twenty full-page states, including the inline Homelab DOM.
   test.setTimeout(60_000);
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
@@ -372,7 +424,13 @@ test('collapsed and expanded projects pass accessibility checks in both themes a
       await page.evaluate((value) => {
         document.documentElement.dataset.theme = value;
       }, theme);
-      for (const id of ['', 'dianimilo', 'nube-camiska', 'convertix']) {
+      for (const id of [
+        '',
+        'dianimilo',
+        'nube-camiska',
+        'convertix',
+        'portafolio',
+      ]) {
         if (id) await panel(page, id).locator('summary').click();
         const result = await new AxeBuilder({ page })
           .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])

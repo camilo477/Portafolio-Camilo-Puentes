@@ -193,6 +193,14 @@ html[data-motion='off'] .project-row::details-content {
 .story-convertix .project-file {
   color: var(--amber);
 }
+.story-portafolio {
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+.story-portafolio .project-description {
+  max-width: 36rem;
+}
 @media (max-width: 960px) {
   .project-story {
     gap: 2rem;

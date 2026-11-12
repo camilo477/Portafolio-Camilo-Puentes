@@ -6,7 +6,7 @@ const mediaPath = (extension: string) =>
     .string()
     .regex(
       new RegExp(
-        `^/media/projects/(dianimilo|nube-camiska|convertix)/[a-zA-Z0-9_/-]+\\.(${extension})$`,
+        `^/media/projects/(dianimilo|nube-camiska|convertix|portafolio)/[a-zA-Z0-9_/-]+\\.(${extension})$`,
       ),
     );
 export const imageSchema = z.object({

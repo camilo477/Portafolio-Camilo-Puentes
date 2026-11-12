@@ -79,7 +79,12 @@ test('capture real desktop and mobile pages in both themes and languages', async
           fullPage: false,
         });
       }
-      for (const project of ['dianimilo', 'nube-camiska', 'convertix']) {
+      for (const project of [
+        'dianimilo',
+        'nube-camiska',
+        'convertix',
+        'portafolio',
+      ]) {
         await page.goto(`/es/#${project}`);
         await expect(
           page.locator(`details[data-project="${project}"]`),
@@ -111,7 +116,12 @@ test('capture real desktop and mobile pages in both themes and languages', async
         });
       }
       for (const lang of ['es', 'en']) {
-        for (const project of ['dianimilo', 'nube-camiska', 'convertix']) {
+        for (const project of [
+          'dianimilo',
+          'nube-camiska',
+          'convertix',
+          'portafolio',
+        ]) {
           await page.goto(
             `/${lang}/${lang === 'es' ? 'proyectos' : 'projects'}/${project}/`,
           );

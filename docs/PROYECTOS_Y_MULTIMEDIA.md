@@ -17,6 +17,19 @@ hacia hashes. No se implementó el backend ni se desplegó el sitio.
 | DianiMilo | `/es/proyectos/dianimilo/` | `/en/projects/dianimilo/` |
 | Nube Camiska | `/es/proyectos/nube-camiska/` | `/en/projects/nube-camiska/` |
 | Convertix | `/es/proyectos/convertix/` | `/en/projects/convertix/` |
+| Portafolio Camilo Puentes | `/es/proyectos/portafolio/` | `/en/projects/portafolio/` |
+
+La incorporación posterior del portafolio conserva el orden de los tres proyectos
+anteriores y añade un cuarto resumen desplegable (`#portafolio`). Sus entradas
+Markdown ES/EN documentan el frontend estático, las interacciones, los temas, la
+arquitectura del contenido y las comprobaciones existentes. Los enlaces de evidencia
+apuntan a una revisión publicada del repositorio; GitHub se abre en otra pestaña.
+La ficha no atribuye un backend, despliegue público ni métricas al sitio.
+
+Esta incorporación se validó con formato y tipos sin incidencias, 13 páginas
+compiladas y 131 pruebas de navegador aprobadas (67 en escritorio y 64 en móvil
+emulado; tres casos de hover omitidos en móvil). Se revisaron capturas reales del
+resumen y la ficha en ambos temas, guardadas localmente en `docs/capturas/`.
 
 También se prepararon `/es/homelab/` y `/en/homelab/`. Experiencia está en
 `/es/#experiencia` y `/en/#experience`.

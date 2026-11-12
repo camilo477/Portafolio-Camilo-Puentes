@@ -3,7 +3,12 @@ export const homeAnchor = (lang: Language) =>
   lang === 'es' ? 'inicio' : 'home';
 export const languages = ['es', 'en'] as const;
 export type Language = (typeof languages)[number];
-export const projectIds = ['dianimilo', 'nube-camiska', 'convertix'] as const;
+export const projectIds = [
+  'dianimilo',
+  'nube-camiska',
+  'convertix',
+  'portafolio',
+] as const;
 export type ProjectId = (typeof projectIds)[number];
 export type RouteId =
   'home' | 'projects' | 'technologies' | 'experience' | 'homelab' | ProjectId;
@@ -17,6 +22,7 @@ export const commands: Record<RouteId, string> = {
   dianimilo: 'cd ~/proyectos/dianimilo',
   'nube-camiska': 'cd ~/proyectos/nube-camiska',
   convertix: 'cd ~/proyectos/convertix',
+  portafolio: 'cd ~/proyectos/portafolio',
 };
 
 export const projectAnchor = (lang: Language) =>

@@ -75,6 +75,7 @@ const projects = defineCollection({
         dianimilo: 'https://diamilo.camiska.lat/?demo=1#/',
         'nube-camiska': 'https://nube.camiska.lat/',
         convertix: null,
+        portafolio: null,
       };
       if (project.demoUrl !== demos[project.projectId])
         ctx.addIssue({

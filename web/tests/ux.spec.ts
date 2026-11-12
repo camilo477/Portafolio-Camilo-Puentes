@@ -144,7 +144,7 @@ test('public content contains no development notices, empty experience or intern
     for (const suffix of [
       '',
       'homelab/',
-      ...['dianimilo', 'nube-camiska', 'convertix'].map(
+      ...['dianimilo', 'nube-camiska', 'convertix', 'portafolio'].map(
         (id) => `${lang === 'es' ? 'proyectos' : 'projects'}/${id}/`,
       ),
     ]) {

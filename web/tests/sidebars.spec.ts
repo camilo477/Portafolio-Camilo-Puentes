@@ -324,7 +324,7 @@ test('index activation respects motion preferences, history, Homelab expansion a
 test('case indices contain only rendered headings and preserve translated section anchors', async ({
   page,
 }) => {
-  for (const id of ['dianimilo', 'nube-camiska', 'convertix']) {
+  for (const id of ['dianimilo', 'nube-camiska', 'convertix', 'portafolio']) {
     await wide(page, `/en/projects/${id}/`);
     const targets = await index(page)
       .locator('a')

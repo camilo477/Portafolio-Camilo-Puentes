@@ -15,6 +15,13 @@ const projects = [
     demo: 'https://nube.camiska.lat/',
   },
   { id: 'convertix', title: 'Convertix', repo: 'Converter-files', demo: null },
+  {
+    id: 'portafolio',
+    title: 'Portafolio Camilo Puentes',
+    titleEn: 'Camilo Puentes Portfolio',
+    repo: 'Portafolio-Camilo-Puentes',
+    demo: null,
+  },
 ];
 const path = (lang: string, id: string) =>
   `/${lang}/${lang === 'es' ? 'proyectos' : 'projects'}/${id}/`;
@@ -31,7 +38,7 @@ for (const project of projects) {
       expect((await page.goto(url))?.status()).toBe(200);
       await expect(page).toHaveURL(url);
       await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-        project.title,
+        lang === 'en' ? (project.titleEn ?? project.title) : project.title,
       );
       await expect(command(page)).toHaveText(`cd ~/proyectos/${project.id}`);
       await expect(page.locator('.main-nav [aria-current]')).toContainText(
@@ -134,7 +141,7 @@ test('project navigation and equivalent language work without JavaScript', async
     await page.locator('[data-language="en"]').click();
     await expect(page).toHaveURL(path('en', project.id));
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-      project.title,
+      project.titleEn ?? project.title,
     );
     await page.locator('.back-link').first().click();
     await expect(page).toHaveURL('/en/#projects');

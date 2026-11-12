@@ -70,7 +70,9 @@ docs/                    Documentación técnica y verificación de la implement
 
 ## Alcance de esta versión
 
-- Portada ES/EN con DianiMilo, Nube Camiska y Convertix, en ese orden.
+- Portada ES/EN con DianiMilo, Nube Camiska, Convertix y el propio portafolio, en ese orden.
+  La ficha del portafolio explica su construcción con Astro, TypeScript y CSS propio,
+  su arquitectura estática y sus comprobaciones, con enlaces al código en GitHub.
 - Título «Portafolio Camilo Puentes» y nombre completo Camilo Alberto Puentes Valencia.
 - Tecnologías y lenguajes en ocho categorías: lenguajes, frameworks, bases de datos,
   Linux/infraestructura, datos/BI, IA local, videojuegos/embebidos e ingeniería.
@@ -85,7 +87,7 @@ docs/                    Documentación técnica y verificación de la implement
 - Enlaces directos como `/es/#convertix`, idioma y Atrás/Adelante conservan el
   proyecto abierto con JavaScript. «Ver proyecto» abre su ficha individual estática.
 - Fichas en `/es/proyectos/{id}/` y `/en/projects/{id}/`, con `id` igual a
-  `dianimilo`, `nube-camiska` o `convertix`, e idiomas equivalentes.
+  `dianimilo`, `nube-camiska`, `convertix` o `portafolio`, e idiomas equivalentes.
 - «Abrir demo» lleva a las URLs reales aprobadas de DianiMilo y Nube Camiska en
   otra pestaña. Convertix es una aplicación de escritorio y enlaza su repositorio.
 - Franja visual: hover/foco, tipeo de 180 ms, cancelación y restauración.
