@@ -38,7 +38,7 @@ export const copy = {
     skip: 'Saltar al contenido',
     role: 'Desarrollador backend y full stack',
     intro:
-      'Desarrollo aplicaciones web y APIs con Python, Django, React y PostgreSQL. Soy una persona curiosa: me gusta aprender cosas nuevas, disfruto los retos y siempre busco mejorar.',
+      'Desarrollo aplicaciones empresariales, APIs e integraciones con Python, Django, Java y Spring Boot. Trabajo con bases de datos, automatización y validación de información. También construyo proyectos personales y administro servicios Linux para alojar mis propias aplicaciones.',
     explore: 'Ver proyectos',
     github: 'Mi GitHub',
     homelab: 'Homelab',
@@ -129,7 +129,7 @@ export const copy = {
     skip: 'Skip to content',
     role: 'Backend and full stack developer',
     intro:
-      'I develop web applications and APIs with Python, Django, React and PostgreSQL. I’m curious and enjoy learning new things. I like taking on challenges and am always looking for ways to improve.',
+      'I develop business applications, APIs and system integrations with Python, Django, Java and Spring Boot. My work involves databases, automation and data validation. I also build personal projects and manage Linux services to host my own applications.',
     explore: 'View projects',
     github: 'My GitHub',
     homelab: 'Homelab',

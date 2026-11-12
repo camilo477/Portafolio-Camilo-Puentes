@@ -106,7 +106,17 @@ test('every canonical page has static, specific SEO and reciprocal translations 
       expect(JSON.stringify(json)).not.toMatch(
         /alumniOf|award|aggregateRating|ratingValue|birthDate|telephone|192\.168\./,
       );
-      await expect(page.locator('#contribution-heading')).toHaveCount(0);
+      await expect(page.locator('#contribution-heading')).toHaveCount(
+        id ? 1 : 0,
+      );
+      if (id) {
+        await expect(page.locator('#contribution-heading')).toHaveText(
+          lang === 'es' ? 'Mi contribución' : 'My contribution',
+        );
+        await expect(
+          page.locator('[aria-labelledby="contribution-heading"] p'),
+        ).not.toBeEmpty();
+      }
     }
   }
   expect(titles.size).toBe(10);

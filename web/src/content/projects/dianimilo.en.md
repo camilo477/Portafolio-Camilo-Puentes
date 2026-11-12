@@ -26,7 +26,13 @@ technologies:
   - Vite
   - Firebase
   - Node.js
-contribution: null
+contribution: >-
+  I worked on the React and TypeScript interface, connecting the watchlist, plans and goals
+  views through a shared data access layer. The main challenge was making the app available to
+  visitors without using its private Firebase and Node.js access flow. I adapted the same data
+  operations to a per-tab example store with reset support and an in-memory fallback. I added
+  tests for persistence, isolation and state updates, so visitors can edit fictional data even
+  when the browser blocks storage.
 architecture:
   summary:
     A React and TypeScript interface built with Vite. The demo uses a local store; the private

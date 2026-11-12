@@ -26,7 +26,14 @@ technologies:
   - Pillow
   - LibreOffice
   - Tesseract
-contribution: null
+contribution: >-
+  I built the Python, PySide6 and QML interface and its Dolphin entry point to work with
+  selected files. I moved file analysis and conversion into cancellable tasks with progress
+  and error reporting, keeping the interface responsive while local engines run. I made
+  available options depend on file content and installed tools, and added output validation
+  before saving results beside the original without overwriting it. This connects document and
+  image conversion to a desktop workflow: choose files, run an operation and open the result
+  from the file manager.
 architecture:
   summary:
     A desktop application using Python and PySide6, a QML/Qt Quick interface and adapters for local

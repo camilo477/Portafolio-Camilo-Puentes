@@ -157,10 +157,11 @@ test('public content contains approved experience without development notices or
       await page.goto(`/${lang}/${suffix}`);
       await expect(page.locator('body')).not.toContainText(banned);
       await expect(
-        page.locator(
-          '.media-placeholder, .palette-note, #contribution-heading',
-        ),
+        page.locator('.media-placeholder, .palette-note'),
       ).toHaveCount(0);
+      await expect(page.locator('#contribution-heading')).toHaveCount(
+        suffix === '' || suffix === 'homelab/' ? 0 : 1,
+      );
       await expect(page.locator('.experience-entry')).toHaveCount(
         suffix === '' || suffix === 'homelab/' ? 1 : 0,
       );

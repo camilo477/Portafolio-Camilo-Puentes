@@ -26,7 +26,14 @@ technologies:
   - Pillow
   - LibreOffice
   - Tesseract
-contribution: null
+contribution: >-
+  Desarrollé la interfaz en Python, PySide6 y QML y su entrada desde Dolphin para trabajar con
+  los archivos seleccionados. Separé el análisis y la conversión en tareas cancelables, con
+  avisos de progreso y errores, para mantener la interfaz disponible mientras trabajan los
+  motores locales. Hice que las opciones dependieran del contenido y de las herramientas
+  instaladas, y que los resultados se validaran antes de guardarlos junto al original, sin
+  sobrescribirlo. El flujo permite convertir documentos e imágenes, abrir el resultado y
+  continuar desde el explorador.
 architecture:
   summary:
     Aplicación de escritorio en Python y PySide6, con interfaz QML/Qt Quick y adaptadores para
