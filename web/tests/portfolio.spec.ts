@@ -245,7 +245,7 @@ test('reduced motion writes only the complete command', async ({ page }) => {
       values.push(output.textContent ?? ''),
     );
     observer.observe(output, { childList: true });
-    document.querySelector<HTMLElement>('summary')!.focus();
+    document.querySelector<HTMLElement>('#dianimilo > summary')!.focus();
     await new Promise((resolve) => setTimeout(resolve, 280));
     observer.disconnect();
     return values;
@@ -361,6 +361,8 @@ test('narrow layouts and the bottom bar leave controls unobscured', async ({
 test('collapsed and expanded projects pass accessibility checks in both themes and languages', async ({
   page,
 }) => {
+  // This case scans sixteen full-page states, including the inline Homelab DOM.
+  test.setTimeout(60_000);
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   for (const lang of ['es', 'en']) {

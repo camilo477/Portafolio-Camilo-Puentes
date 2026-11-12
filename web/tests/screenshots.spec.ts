@@ -109,18 +109,31 @@ test('capture real desktop and mobile pages in both themes and languages', async
             fullPage: false,
           });
         }
-        await page.goto(`/${lang}/homelab/`);
+        await page.goto(`/${lang}/#homelab`);
+        await expect(page.locator('#homelab')).toHaveAttribute('open', '');
         await page.evaluate(() => document.fonts.ready);
-        await page.screenshot({
-          path: resolve(output, `homelab-${device}-${theme}-${lang}.png`),
-          fullPage: true,
-        });
+        // Record the real navigation viewport before full-page capture can resize
+        // Chromium's mobile viewport and affect its scroll anchoring.
+        await expect
+          .poll(async () => {
+            const summary = (await page
+              .locator('#homelab > summary')
+              .boundingBox())!;
+            const header = (await page.locator('.site-header').boundingBox())!;
+            return summary.y - header.height;
+          })
+          .toBeGreaterThanOrEqual(8);
+        await expect(page.locator('#homelab-heading')).toBeInViewport();
         await page.screenshot({
           path: resolve(
             output,
             `homelab-${device}-${theme}-${lang}-viewport.png`,
           ),
           fullPage: false,
+        });
+        await page.screenshot({
+          path: resolve(output, `homelab-${device}-${theme}-${lang}.png`),
+          fullPage: true,
         });
         await page
           .locator('.homelab-architecture')

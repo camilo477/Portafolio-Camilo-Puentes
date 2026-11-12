@@ -49,7 +49,8 @@ export const copy = {
     experienceShort: 'Experiencia',
     responsibilities: 'Responsabilidades',
     contributions: 'Contribuciones',
-    readHomelab: 'Ver Homelab',
+    readHomelab: 'Explorar Homelab',
+    closeHomelab: 'Cerrar Homelab',
     mainStack: 'Mi stack principal',
     stackAreas: {
       python: 'Backend con Python',
@@ -126,7 +127,8 @@ export const copy = {
     experienceShort: 'Experience',
     responsibilities: 'Responsibilities',
     contributions: 'Contributions',
-    readHomelab: 'View Homelab',
+    readHomelab: 'Explore Homelab',
+    closeHomelab: 'Close Homelab',
     mainStack: 'My main stack',
     stackAreas: {
       python: 'Python backend',

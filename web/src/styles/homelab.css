@@ -12,9 +12,9 @@
   gap: 4rem;
   padding-block: 1rem 3rem;
 }
-.homelab-purpose h2,
-.homelab-services > h2,
-.homelab-operation > h2 {
+.homelab-purpose h3,
+.homelab-services > h3,
+.homelab-operation > h3 {
   font-size: 1.6rem;
   line-height: 1.4;
   letter-spacing: -0.03em;
@@ -23,7 +23,7 @@
   padding-block: 2.5rem;
   border-block: 1px solid var(--border);
 }
-.homelab-architecture h2 {
+.homelab-architecture h3 {
   font-size: 1.6rem;
 }
 .homelab-diagram {
@@ -110,7 +110,8 @@
   gap: 4rem;
   padding-top: 2rem;
 }
-.homelab-service h3 {
+.homelab-service h4 {
+  margin: 0;
   font-size: 1.1rem;
   color: var(--accent);
   line-height: 1.6;
@@ -152,7 +153,8 @@
   font: 0.85rem var(--mono);
   color: var(--amber);
 }
-.homelab-operation h3 {
+.homelab-operation h4 {
+  margin: 0;
   font-size: 1rem;
   line-height: 1.6;
   letter-spacing: -0.01em;
@@ -190,4 +192,99 @@
   .homelab-operation li {
     padding-left: 2.2rem;
   }
+}
+
+/* The native disclosure stays in the introduction and gains reading width when open. */
+.homelab-note {
+  min-width: 0;
+}
+.homelab-note > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.homelab-note > summary::-webkit-details-marker {
+  display: none;
+}
+.homelab-note > summary:hover .homelab-toggle {
+  color: var(--text);
+}
+.homelab-note[open] {
+  grid-column: 1 / -1;
+  max-width: none;
+}
+.homelab-note[open] > summary {
+  max-width: 42rem;
+}
+.homelab-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding-block: 0.6rem;
+  margin-top: 0.65rem;
+  color: var(--accent);
+  font-size: 0.85rem;
+  border-bottom: 1px solid var(--accent);
+}
+.homelab-mark {
+  font: 1.2rem var(--mono);
+}
+.homelab-note[open] .homelab-mark {
+  transform: rotate(45deg);
+}
+.homelab-note:not([open]) .when-open,
+.homelab-note[open] .when-closed {
+  display: none;
+}
+.homelab-content {
+  margin-top: 2rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+.homelab-verification {
+  max-width: 52rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-block: 0.75rem 2.5rem;
+}
+.homelab-content .case-section h3 {
+  font-size: 1.3rem;
+  line-height: 1.4;
+}
+.homelab-content .case-sources h3 {
+  font-size: 1rem;
+}
+.homelab-close {
+  background: transparent;
+  color: var(--accent);
+  padding: 0.65rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--accent);
+  margin-top: 1.5rem;
+}
+.diagram-access {
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  border-left: 2px solid var(--accent);
+  font-weight: 550;
+}
+.diagram-connector {
+  margin-top: 1.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--green);
+}
+.diagram-connector strong,
+.diagram-nginx strong {
+  font-size: 0.9rem;
+  font-weight: 550;
+}
+.diagram-connector p,
+.diagram-nginx p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+}
+.diagram-nginx {
+  margin-top: 1.5rem;
+  padding-block: 1rem;
+  border-block: 1px solid var(--border);
 }

@@ -1,0 +1,119 @@
+---
+import CommandLabel from './CommandLabel.astro';
+import HomelabDiagram from './HomelabDiagram.astro';
+import { copy } from '../lib/i18n';
+import { homelabContent, homelabSources } from '../data/homelab';
+import {
+  commands,
+  projectPath,
+  type ProjectId,
+  type Language,
+} from '../lib/routes';
+import '../styles/case-study.css';
+import '../styles/homelab.css';
+interface Props {
+  lang: Language;
+}
+const { lang } = Astro.props;
+const t = copy[lang];
+const h = homelabContent[lang];
+---
+
+<details class="homelab-note" id="homelab" data-homelab>
+  <summary
+    aria-labelledby="homelab-heading"
+    aria-describedby="homelab-summary"
+    aria-controls="homelab-content"
+    data-preview-command={commands.homelab}
+  >
+    <CommandLabel command={commands.homelab} />
+    <h2 id="homelab-heading">{t.homelab}</h2>
+    <p id="homelab-summary">{t.homelabText}</p>
+    <span class="homelab-toggle" aria-hidden="true">
+      <span class="when-closed">{t.readHomelab}</span>
+      <span class="when-open">{t.closeHomelab}</span>
+      <span class="homelab-mark">+</span>
+    </span>
+  </summary>
+  <div class="homelab-content" id="homelab-content">
+    <p class="homelab-eyebrow">{h.eyebrow}</p>
+    <p class="homelab-verification">{h.verification}</p>
+    <section class="homelab-purpose" aria-labelledby="purpose-heading">
+      <h3 id="purpose-heading">{h.purposeTitle}</h3>
+      <p>{h.purpose}</p>
+    </section>
+    <section
+      class="homelab-architecture"
+      aria-labelledby="architecture-heading"
+    >
+      <div class="section-heading">
+        <div>
+          <h3 id="architecture-heading">{h.diagramTitle}</h3>
+        </div>
+      </div>
+      <HomelabDiagram lang={lang} />
+    </section>
+    <section class="homelab-services" aria-labelledby="services-heading">
+      <h3 id="services-heading">{h.servicesTitle}</h3>
+      {h.services.map((service) => (
+        <article class="homelab-service">
+          <h4>{service.title}</h4>
+          <div>
+            <p>{service.text}</p>
+            {service.id && (
+              <a
+                href={projectPath(lang, service.id as ProjectId)}
+                data-preview-command={commands[service.id as ProjectId]}
+              >
+                {t.viewProject}
+                <span class="sr-only">: {service.title}</span>
+              </a>
+            )}
+          </div>
+        </article>
+      ))}
+    </section>
+    <section class="homelab-operation" aria-labelledby="operation-heading">
+      <h3 id="operation-heading">{h.operationTitle}</h3>
+      <p>{h.operationIntro}</p>
+      <ol>
+        {h.operation.map((step) => (
+          <li>
+            <h4>{step.title}</h4>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="operation-scope">{h.recovery}</p>
+    </section>
+    <section class="case-section" aria-labelledby="publishing-heading">
+      <h3 id="publishing-heading">{h.publishingTitle}</h3>
+      <div class="prose">
+        <p>{h.publishing}</p>
+        <p>{h.scope}</p>
+      </div>
+    </section>
+    <section
+      class="case-section case-sources"
+      aria-labelledby="sources-heading"
+    >
+      <h3 id="sources-heading">{h.sourceTitle}</h3>
+      <div>
+        <p>{h.sourceNote}</p>
+        <ul>
+          {homelabSources.map((source) => (
+            <li>
+              <a href={source.url} target="_blank" rel="noopener noreferrer">
+                {source.label}
+                <span class="sr-only">, {t.newTab}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+    <button class="homelab-close" type="button" data-homelab-close hidden>
+      {t.closeHomelab}
+    </button>
+  </div>
+</details>

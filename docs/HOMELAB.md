@@ -1,36 +1,56 @@
-# Homelab: evidencia pública y límites del caso
+# Homelab: Raspberry verificada y caso desplegable
 
-La página `/es/homelab/` (y `/en/homelab/`) documenta el servidor personal de
-Camilo sin representar una inspección de producción. Camilo confirmó el alojamiento
-de sus aplicaciones web en Raspberry Pi, la administración de Linux, Docker y los
-despliegues. El resto del caso se limita a componentes y comportamientos descritos
-en los repositorios públicos examinados el 11 de noviembre de 2026.
+La revisión posterior a Tarea 05 incorpora la petición explícita de Camilo de
+inspeccionar su Raspberry mediante SSH y ampliar Homelab dentro de la portada.
+Reemplaza la limitación anterior a fuentes públicas y la navegación a una ficha
+separada. No modifica servicios, despliegues ni configuración del servidor.
 
-## Componentes confirmados
+## Evidencia directa: 11 de noviembre de 2026
+
+Se utilizó el mismo destino SSH que la función local `rasp`. Esa función abre una
+terminal gráfica; la inspección ejecutó su conexión SSH directamente, de forma no
+interactiva y con la identidad del host ya conocida. Solo se realizaron lecturas.
+
+Datos observados:
+
+- Raspberry Pi 4 Model B, arquitectura ARM64, Debian GNU/Linux 13 (trixie).
+- Docker, Nginx y cloudflared activos y habilitados para iniciar con systemd.
+- Contenedores activos de Nube Camiska, DianiMilo y Camiska Hub.
+- Tres rutas de Cloudflare Tunnel hacia los servicios locales de esos contenedores.
+- Nginx con un sitio estático predeterminado y sin directivas activas `proxy_pass`.
+  No participa en las tres rutas del túnel inspeccionadas.
+- Nube utiliza montajes de directorios; DianiMilo combina montajes y volúmenes;
+  Hub utiliza un volumen. Los datos están separados de las imágenes.
+
+La configuración se procesó en memoria en el servidor y solo se devolvieron
+campos permitidos: identidades de las aplicaciones públicas, tipos de montajes,
+estados de servicios y relaciones entre componentes. No se copiaron archivos de
+configuración, variables de entorno, credenciales, certificados, direcciones,
+puertos, rutas de almacenamiento ni registros. No se navegaron archivos personales.
+
+## Arquitectura publicada
 
 ```text
-Raspberry Pi / Linux — alojamiento declarado por Camilo
-└─ Contenedores Docker — configuración publicada
-   ├─ Nube Camiska: Node.js, archivos y demo de solo lectura
-   ├─ DianiMilo: Node.js + React; acceso privado integrado con Firebase
-   └─ Camiska Hub: Node.js, entrada privada a las aplicaciones
-
-Persistencia fuera de las imágenes:
-- Nube: archivos personales, estado y demo separados.
-- DianiMilo y Hub: datos de aplicación en volúmenes persistentes.
+Navegador → Cloudflare Tunnel
+                  ↓
+Raspberry Pi 4 / Debian 13
+├─ cloudflared (systemd)
+│  └─ rutas hacia Docker
+│     ├─ Nube Camiska (Node.js)
+│     ├─ DianiMilo (Node.js + React)
+│     └─ Camiska Hub (Node.js)
+├─ Nginx: sitio estático independiente
+└─ Persistencia: directorios montados y volúmenes
 ```
 
-El diagrama de la página es HTML/CSS semántico, con título, leyenda y texto real.
-En móvil apila los nodos manteniendo la relación servidor → Docker → aplicaciones.
-No depende de JavaScript, imágenes ficticias ni una biblioteca de diagramas. No
-incluye puertos, nombres de contenedores operativos, direcciones, rutas del host,
-credenciales o endpoints administrativos.
+El diagrama HTML/CSS conserva texto accesible y apila los componentes en móvil.
+Distingue la ruta de acceso de Nginx, en lugar de presentar todos los servicios
+como una única cadena. Los tres contenedores se observaron activos durante la
+inspección; el portafolio no monitoriza disponibilidad ni expone un indicador en vivo.
 
-El esquema describe una organización de componentes. No afirma que todos los
-servicios estén activos, que exista un único proxy, ni qué ruta sigue actualmente
-el tráfico externo. La demo de DianiMilo tiene además una compilación estática que
-puede funcionar independientemente del backend; no se dibuja Firebase como una
-dependencia de esa demo.
+DianiMilo conserva la integración Firebase de su aplicación privada. Su demo
+con datos ficticios puede compilarse de forma independiente; el diagrama describe
+el alojamiento de las aplicaciones, no todas sus dependencias externas.
 
 ## Fuentes verificadas
 
@@ -42,51 +62,80 @@ Los enlaces de la página están fijados a los commits examinados:
 | [DianiMilo](https://github.com/camilo477/watchlist-plans-goals-pwa/tree/76470e40c830f4039b074ebc1f88866aed3db8ac) | `76470e40` | Dockerfile con runtime Node, README con persistencia e independencia de la demo; archivo Nginx para frontend estático |
 | [Camiska Hub](https://github.com/camilo477/camiska-hub/tree/53d20f55b5445fc44af41451908268c8ad12e26b) | `53d20f55` | Dockerfile con runtime Node; README con su papel como entrada privada y volumen de datos |
 
-No se ejecutaron scripts de esos repositorios, no se usaron credenciales y no se
-conectó a la Raspberry. Los archivos de configuración originales no se copiaron
-al portafolio.
+Los enlaces públicos explican el código y los procedimientos de despliegue.
+La configuración operativa privada no se convierte en un enlace público: se
+publican únicamente los hechos sanitizados de la revisión autorizada.
 
-## Despliegue y recuperación de Nube
+## Mantenimiento, actualizaciones y recuperación
 
-El script público comprueba el almacenamiento personal antes de reemplazar el
-servicio. Mantiene separados los archivos del estado y los datos de demostración;
-la ausencia de un disco no se interpreta como una nueva nube personal vacía.
-Después construye una imagen, conserva el contenedor anterior e inicia el nuevo.
-Solo completa el cambio cuando la aplicación responde; en caso contrario, su
-manejador de salida intenta recuperar el contenedor anterior.
+El script público de Nube comprueba el almacenamiento personal antes de reemplazar
+el servicio, separa archivos, estado y demo, construye una imagen y conserva el
+contenedor anterior. Comprueba la respuesta del reemplazo; si falla, intenta
+recuperar la versión anterior. No se ejecutó el script durante esta inspección.
 
-Es una lectura del código. No prueba que el rollback siempre tenga éxito ni
-constituye un ensayo de recuperación sobre el servidor real. Tampoco equivale a
-restaurar datos desde una copia de seguridad. La página mantiene esta distinción.
+Las políticas de reinicio observadas no son uniformes: Nube y DianiMilo utilizan
+`unless-stopped`; Hub no tiene reinicio automático configurado. La página no
+promete que todos los contenedores vuelvan solos después de reiniciar el host.
+No se cambiaron políticas ni se reinició el servidor para probarlas.
 
-## Publicación web: qué no se puede afirmar todavía
+Los temporizadores revisados incluyen mantenimiento del sistema. La referencia a
+backup correspondía a la base de datos de paquetes del sistema, no a una copia de
+los datos de las aplicaciones. No se detectó una tarea de copia de aplicaciones
+en los temporizadores y el crontab del usuario consultados; esa observación no
+demuestra que no existan copias por otros medios. No se verificó retención ni se
+hizo una restauración. Persistencia, retorno a una versión y backup se describen
+como mecanismos distintos.
 
-- **Nginx:** existe `docker/nginx.conf` en DianiMilo con reglas para archivos
-  estáticos, caché y rutas. El Dockerfile actual no utiliza ese archivo y ejecuta
-  Node.js. No se identificó una configuración pública que confirme Nginx como
-  proxy actual del homelab. Se explica el archivo sin añadir un nodo ficticio.
-- **Cloudflare Tunnel:** el README de Nube lo recomienda como opción de acceso
-  externo; no se encontró una configuración `cloudflared`/ingress que demuestre
-  su uso actual en los árboles públicos revisados. No aparece como componente
-  confirmado en el diagrama. Conocer la tecnología no demuestra que un servicio
-  concreto la use.
-- **Copias y recuperación:** el README de Nube deja las copias automáticas como
-  trabajo posterior. No hay evidencia de periodicidad, retención, destino de
-  copias ni un ensayo de restauración completo aprobado para describir aquí.
-- **Sistema y hardware:** no se documentan modelo, memoria, distribución concreta,
-  topología, consumo, capacidad o disponibilidad porque no se verificaron.
+La revisión no mide consumo, rendimiento ni disponibilidad y no certifica el
+funcionamiento completo de las aplicaciones o la seguridad del servidor.
 
-Para ampliar el caso bastaría una descripción sanitizada y aprobada del papel de
-cada componente, o una configuración pública ya revisada. No hacen falta secretos
-ni un volcado de la configuración del servidor.
+## Homelab dentro de la portada
 
-## Mantenimiento del contenido
+`HomelabDisclosure.astro` reemplaza el enlace del resumen por `details/summary`.
+El resumen mantiene su posición junto a la presentación cuando está cerrado. Al
+abrirse ocupa el ancho de lectura de la portada, con el caso, el diagrama y sus
+fuentes. No hay modal, petición a una API ni nueva vista.
 
-`web/src/data/homelab.ts` contiene el texto ES/EN y las referencias.
-`HomelabDiagram.astro` representa los componentes; `homelab.css` conserva los tokens
-actuales y los adapta a la composición del caso. La página enlaza las fichas de Nube
-y DianiMilo. Hub se describe como acceso privado y no presenta un botón de demo.
+- Menú principal, footer y enlaces compartidos usan `/es/#homelab` o `/en/#homelab`.
+- Clic, toque, Enter y Espacio funcionan con el desplegable nativo.
+- El controlador sincroniza apertura/cierre, historial, idiomas y la franja Linux.
+- El botón final de cierre devuelve el foco al resumen; sin JavaScript se oculta
+  y permanece disponible el control nativo del encabezado.
+- Sin JavaScript, el enlace de navegación llega al resumen y el usuario lo abre
+  de manera nativa. La apertura automática por hash requiere JavaScript.
+- Las antiguas rutas `/es/homelab/` y `/en/homelab/` redirigen al ancla equivalente,
+  también mediante la redirección HTML estática cuando no hay JavaScript.
 
-Al actualizar evidencia, revisar el texto, el diagrama y sus límites en ambos
-idiomas. Añadir una herramienta al inventario de tecnologías no la añade
-implícitamente a la arquitectura del homelab.
+El contenido bilingüe sigue en `web/src/data/homelab.ts`; `HomelabDiagram.astro`
+representa las relaciones y `homelab.css` adapta el caso al desplegable.
+Las fichas independientes de proyectos conservan su funcionamiento.
+
+## Verificación local
+
+Las pruebas específicas cubren apertura en el mismo documento, teclado, toque,
+cierre con foco, historial, idioma, tema, recarga, hashes, rutas antiguas,
+funcionamiento sin JS, movimiento reducido y anchos de 320 a 1440 px.
+La suite general vuelve a comprobar proyectos, inventario y accesibilidad.
+Las capturas quedan en `docs/capturas/`, fuera de Git.
+
+Resultado final de `make verify`: formato aprobado; Astro/TypeScript con 0 errores,
+advertencias y sugerencias; 11 salidas estáticas (incluidas las dos redirecciones);
+4 pruebas de contenido y 107 pruebas de navegador aprobadas. Se omiten 3 casos de
+hover en móvil. Las verificaciones axe no encontraron infracciones en los estados
+analizados, incluyendo Homelab abierto en ambos temas e idiomas.
+
+La prueba de movimiento reducido ahora selecciona DianiMilo de forma explícita:
+Homelab pasó a ser el primer desplegable del documento. La prueba de accesibilidad
+de dieciséis estados conserva todas las comprobaciones y dispone de 60 segundos
+para analizar el documento ampliado.
+
+El capturador registra el viewport de Homelab antes de la imagen de página completa:
+esta última puede alterar el anclaje del scroll en Chromium móvil. Comprueba que
+el título esté visible y bajo la cabecera; no reposiciona el scroll para esa foto.
+La navegación normal se contrastó por separado en ambos idiomas y tamaños.
+
+Generación de capturas aprobada: 174 imágenes locales. Se revisaron visualmente
+la portada con Homelab cerrado, el bloque abierto y el diagrama en escritorio,
+y la apertura en móvil claro/español y oscuro/inglés. Se conserva la composición
+editorial y la paleta existente; el diagrama comunica relaciones verificadas y no
+añade ilustraciones ni métricas ficticias.

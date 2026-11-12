@@ -215,9 +215,11 @@ const hasExperience = (await publishedExperience(lang)).length > 0;
       import { initializeCommands } from '../scripts/commands';
       import { initializeProjects } from '../scripts/projects';
       import { initializeHeader } from '../scripts/header';
+      import { initializeHomelab } from '../scripts/homelab';
       initializeHeader();
       initializePreferences();
       initializeProjects();
+      initializeHomelab();
       initializeCommands();
     </script>
   </body>

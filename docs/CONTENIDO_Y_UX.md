@@ -1,5 +1,9 @@
 # Tarea 05: contenido profesional, Homelab y navegación
 
+> Actualización posterior: Camilo autorizó la inspección SSH y pidió Homelab
+> desplegable en portada. [Estado actual y evidencia](HOMELAB.md). El texto siguiente
+> documenta la entrega original, previa a esa inspección.
+
 Se conservan Astro, los tokens cromáticos, las fuentes, el stack principal,
 las tres fichas, las demos y las microinteracciones. No se añaden dependencias,
 backend ni despliegue. La petición posterior de Camilo reemplaza los avisos públicos

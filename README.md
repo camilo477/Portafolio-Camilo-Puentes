@@ -57,7 +57,7 @@ web/
     data/                Inventario de tecnologías y contenido verificado de Homelab
     layouts/             HTML, navegación y controles comunes
     lib/                 Traducciones y mapa tipado de rutas/comandos
-    pages/               Portadas, seis fichas y Homelab bilingüe
+    pages/               Portadas, seis fichas y redirecciones de Homelab
     scripts/             Proyectos, comandos, tema y movimiento
     styles/              CSS y tokens de color provisionales
   tests/                 Playwright, axe y generación de capturas
@@ -95,8 +95,10 @@ docs/                    Documentación técnica y verificación de la implement
   Las capturas reales, diagramas y el detalle de las contribuciones quedan pendientes.
 - Experiencia profesional preparada con borrador local excluido de Git. La sección
   y el acceso principal aparecen solo cuando exista contenido aprobado.
-- `/es/homelab/` y `/en/homelab/` documentan los componentes verificados y el proceso
-  de actualización de Nube, con diagrama adaptable y fuentes públicas.
+- Homelab se amplía en la portada (`/es/#homelab` y `/en/#homelab`), con diagrama
+  de la Raspberry, Docker y Cloudflare Tunnel contrastado por SSH de solo lectura.
+  Nginx se distingue como servicio estático independiente. Las rutas antiguas
+  redirigen al bloque; se conserva apertura nativa sin JavaScript.
 - Homelab accesible desde la navegación principal; encabezados protegidos bajo
   la barra sticky al navegar con hashes, y barra compacta en móvil.
 - Se conserva el diseño de Tarea 02: proyectos con distintas proporciones,

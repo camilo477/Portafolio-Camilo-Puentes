@@ -9,8 +9,13 @@ const h = homelabContent[lang];
 ---
 
 <figure class="homelab-diagram" aria-label={h.diagramLabel}>
+  <p class="diagram-access">{h.access}</p>
   <div class="diagram-host">
     <span class="diagram-host-label">{h.host}</span>
+    <div class="diagram-connector">
+      <strong>{h.connector}</strong>
+      <p>{h.connectorText}</p>
+    </div>
     <div class="diagram-docker">
       <p class="diagram-layer">{h.containers}</p>
       <ul class="diagram-services" role="list">
@@ -27,6 +32,10 @@ const h = homelabContent[lang];
           <span>{h.diagramHub}</span>
         </li>
       </ul>
+    </div>
+    <div class="diagram-nginx">
+      <strong>{h.nginx}</strong>
+      <p>{h.nginxText}</p>
     </div>
     <div class="diagram-storage">
       <strong>{h.persistence}</strong>

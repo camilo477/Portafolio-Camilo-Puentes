@@ -93,12 +93,13 @@ test('native hashes and Homelab navigation also work without JavaScript', async 
       .locator('.main-nav')
       .getByRole('link', { name: 'Homelab', exact: true })
       .click();
-    await expect(page).toHaveURL(`/${lang}/homelab/`);
+    await expect(page).toHaveURL(`/${lang}/#homelab`);
+    await page.locator('#homelab > summary').click();
     await expect(page.locator('.homelab-diagram')).toBeVisible();
     await page
       .locator(`[data-language="${lang === 'es' ? 'en' : 'es'}"]`)
       .click();
-    await expect(page.locator('h1')).toHaveText('Homelab');
+    await expect(page.locator('#homelab-heading')).toHaveText('Homelab');
   }
   await context.close();
 });
@@ -127,7 +128,7 @@ test('primary navigation is compact and keyboard accessible on narrow screens', 
         await links.nth(3).evaluate((el) => getComputedStyle(el).outlineStyle),
       ).not.toBe('none');
       await page.keyboard.press('Enter');
-      await expect(page).toHaveURL(`/${lang}/homelab/`);
+      await expect(page).toHaveURL(`/${lang}/#homelab`);
     }
   }
 });
@@ -174,16 +175,20 @@ test('Homelab documents components and recovery limits with revision-pinned sour
   page,
 }) => {
   for (const lang of ['es', 'en']) {
-    await page.goto(`/${lang}/homelab/`);
+    await page.goto(`/${lang}/#homelab`);
     await expect(page.locator('.diagram-services strong')).toHaveText([
       'Nube Camiska',
       'DianiMilo',
       'Camiska Hub',
     ]);
     await expect(page.locator('.diagram-host')).toContainText('Docker');
-    await expect(page.locator('.homelab-diagram')).not.toContainText(
-      /Cloudflare|Nginx/,
+    await expect(page.locator('.diagram-access')).toContainText(
+      'Cloudflare Tunnel',
     );
+    await expect(page.locator('.diagram-connector')).toContainText(
+      'cloudflared',
+    );
+    await expect(page.locator('.diagram-nginx')).toContainText('Nginx');
     await expect(page.locator('.homelab-operation li')).toHaveCount(3);
     await expect(page.locator('.operation-scope')).toContainText(
       lang === 'es'

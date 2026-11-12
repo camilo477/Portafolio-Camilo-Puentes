@@ -201,17 +201,20 @@ test('unapproved experience stays hidden and Homelab has primary navigation in b
       .locator('.main-nav')
       .getByRole('link', { name: 'Homelab', exact: true })
       .click();
-    await expect(page).toHaveURL(`/${lang}/homelab/`);
-    await expect(page.locator('h1')).toHaveText('Homelab');
-    await expect(page.locator('.homelab-intro')).toContainText('Raspberry Pi');
-    await expect(page.locator('.homelab-intro')).toContainText('Docker');
+    await expect(page).toHaveURL(`/${lang}/#homelab`);
+    await expect(page.locator('#homelab')).toHaveAttribute('open', '');
+    await expect(page.locator('h1')).toContainText('Camilo Alberto');
+    await expect(page.locator('#homelab-summary')).toContainText(
+      'Raspberry Pi',
+    );
+    await expect(page.locator('#homelab-summary')).toContainText('Docker');
     await expect(command(page)).toHaveText('cd ~/homelab');
     await expect(page.locator('.main-nav [aria-current]')).toHaveAccessibleName(
       'Homelab',
     );
     const other = lang === 'es' ? 'en' : 'es';
     await page.locator(`[data-language="${other}"]`).click();
-    await expect(page).toHaveURL(`/${other}/homelab/`);
+    await expect(page).toHaveURL(`/${other}/#homelab`);
   }
 });
 
@@ -222,8 +225,8 @@ test('all internal links and anchors resolve, absent media stays compact, narrow
   const urls = [
     '/es/',
     '/en/',
-    '/es/homelab/',
-    '/en/homelab/',
+    '/es/#homelab',
+    '/en/#homelab',
     ...projects.flatMap((project) =>
       ['es', 'en'].map((lang) => path(lang, project.id)),
     ),
@@ -274,7 +277,7 @@ test('case pages and Homelab pass accessibility checks in both themes and langua
       for (const theme of ['light', 'dark'] as const) {
         await page.emulateMedia({ colorScheme: theme });
         await page.goto(
-          id === 'homelab' ? `/${lang}/homelab/` : path(lang, id),
+          id === 'homelab' ? `/${lang}/#homelab` : path(lang, id),
         );
         const result = await new AxeBuilder({ page })
           .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])

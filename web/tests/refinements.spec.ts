@@ -22,7 +22,7 @@ test('professional introduction and homelab replace desktop decoration in ES/EN'
     await page.goto(`/${lang}/`);
     await expect(page.locator('.role')).toHaveText(role);
     await expect(page.locator('.intro-text')).toHaveText(intro);
-    await expect(page.locator('.homelab-note p')).toHaveText(homelab);
+    await expect(page.locator('#homelab-summary')).toHaveText(homelab);
     await expect(page.locator('meta[name="description"]')).toHaveAttribute(
       'content',
       intro,

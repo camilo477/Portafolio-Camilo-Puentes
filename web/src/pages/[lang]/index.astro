@@ -4,12 +4,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectDisclosure from '../../components/ProjectDisclosure.astro';
 import TechnologySection from '../../components/TechnologySection.astro';
 import ExperienceSection from '../../components/ExperienceSection.astro';
+import HomelabDisclosure from '../../components/HomelabDisclosure.astro';
 import CommandLabel from '../../components/CommandLabel.astro';
 import '../../styles/home.css';
 import { copy } from '../../lib/i18n';
 import {
   commands,
-  homelabPath,
   languages,
   projectAnchor,
   projectIds,
@@ -54,23 +54,7 @@ const orderedProjects = projectIds.map((id) =>
         <a href="https://github.com/camilo477">{t.github}</a>
       </div>
     </div>
-    <aside
-      class="homelab-note"
-      aria-labelledby="homelab-heading"
-      data-preview-command="cd ~/homelab"
-    >
-      <CommandLabel command="cd ~/homelab" />
-      <h2 id="homelab-heading">{t.homelab}</h2>
-      <p>{t.homelabText}</p>
-      <a
-        class="homelab-link"
-        href={homelabPath(lang)}
-        data-preview-command={commands.homelab}
-      >
-        {t.readHomelab}
-        <span aria-hidden="true"> →</span>
-      </a>
-    </aside>
+    <HomelabDisclosure lang={lang} />
   </section>
   <section
     class="projects"

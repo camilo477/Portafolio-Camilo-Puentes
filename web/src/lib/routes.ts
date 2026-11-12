@@ -33,10 +33,11 @@ export const experienceAnchor = (lang: Language) =>
   lang === 'es' ? 'experiencia' : 'experience';
 export const experiencePath = (lang: Language) =>
   `${homePath(lang)}#${experienceAnchor(lang)}`;
-export const homelabPath = (lang: Language) => `${homePath(lang)}homelab/`;
+export const homelabPath = (lang: Language) => `${homePath(lang)}#homelab`;
 export const routeFromHash = (lang: Language, hash: string): RouteId => {
   const id = hash.slice(1);
   if (projectIds.includes(id as ProjectId)) return id as ProjectId;
+  if (id === 'homelab') return 'homelab';
   if (id === technologiesAnchor(lang)) return 'technologies';
   if (id === experienceAnchor(lang)) return 'experience';
   return id === projectAnchor(lang) ? 'projects' : 'home';

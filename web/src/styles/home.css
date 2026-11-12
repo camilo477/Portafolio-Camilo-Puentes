@@ -48,12 +48,12 @@
   max-width: 23rem;
   padding-bottom: 0.25rem;
 }
-.homelab-note h2 {
+.homelab-note > summary h2 {
   font-size: 1rem;
   letter-spacing: -0.02em;
   margin-block: 0.65rem;
 }
-.homelab-note p {
+.homelab-note > summary p {
   font-size: 0.9rem;
   color: var(--text-muted);
   line-height: 1.8;
