@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ProjectDisclosure from '../../components/ProjectDisclosure.astro';
+import ProjectStory from '../../components/ProjectStory.astro';
 import TechnologySection from '../../components/TechnologySection.astro';
 import ExperienceSection from '../../components/ExperienceSection.astro';
 import HomelabDisclosure from '../../components/HomelabDisclosure.astro';
@@ -73,7 +73,7 @@ const orderedProjects = projectIds.map((id) =>
     </div>
     <div class="project-list">
       {orderedProjects.map((entry) => (
-        <ProjectDisclosure entry={entry} />
+        <ProjectStory entry={entry} />
       ))}
     </div>
   </section>

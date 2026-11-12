@@ -13,17 +13,6 @@
 }
 .project-row {
   min-width: 0;
-  scroll-margin-block: 2rem;
-}
-.project-row > summary {
-  display: block;
-  list-style: none;
-  cursor: pointer;
-  border-radius: 3px;
-  scroll-margin-block: 1.5rem calc(var(--bar-height) + 1rem);
-}
-.project-row > summary::-webkit-details-marker {
-  display: none;
 }
 .project-summary {
   display: flex;
@@ -52,76 +41,23 @@
   margin-top: 0.85rem;
   max-width: 28rem;
 }
-.project-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-  font-size: 0.9rem;
-  font-weight: 550;
-  color: var(--accent);
-  margin-top: 1.5rem;
-  padding-block: 0.4rem;
-  border-bottom: 1px solid var(--accent);
+.project-title a {
+  color: inherit;
+  text-decoration: none;
 }
-.project-arrow {
-  display: inline-block;
-  font-size: 1.3rem;
-  transition: transform 160ms ease;
+.project-title a:hover {
+  text-decoration: underline;
 }
-.project-row > summary:hover .project-arrow {
-  transform: translate(3px, -3px);
-}
-.project-row[open] .project-arrow {
-  transform: rotate(90deg);
-}
-.project-row:not([open]) .when-open,
-.project-row[open] .when-closed {
-  display: none;
-}
-.project-expanded {
+.project-content {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--border);
 }
-/* Animate the native disclosure without measuring or limiting its content height.
-   Older browsers retain the fully usable native open/close behavior. */
-@supports selector(details::details-content) and
-  (transition-behavior: allow-discrete) {
-  .project-row::details-content {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition:
-      grid-template-rows 240ms ease,
-      content-visibility 240ms allow-discrete;
-  }
-  .project-row[open]::details-content {
-    grid-template-rows: 1fr;
-  }
-  .project-reveal {
-    min-height: 0;
-    overflow: hidden;
-  }
-  .project-row[data-instant]::details-content {
-    transition: none;
-  }
-}
-.project-row[data-instant] .project-arrow {
-  transition: none;
-}
-/* Generic * rules do not select this pseudo-element. */
-@media (prefers-reduced-motion: reduce) {
-  .project-row::details-content {
-    transition: none;
-  }
-}
-html[data-motion='off'] .project-row::details-content {
-  transition: none;
-}
-.project-expanded .command-heading {
+.project-content .command-heading {
   font-size: 0.75rem;
   overflow-wrap: anywhere;
 }
-.project-expanded .prose {
+.project-content .prose {
   margin-top: 1rem;
   font-size: 0.9rem;
   line-height: 1.8;
@@ -244,20 +180,17 @@ html[data-motion='off'] .project-row::details-content {
   .project-title {
     font-size: 2rem;
   }
-  .project-toggle {
-    margin-top: 1rem;
-  }
 }
 
 .project-story {
   scroll-margin-block-start: 0.75rem;
 }
 /* Native hash fallback without JavaScript includes the section heading above the first project. */
-.project-story:first-child .project-row {
+.project-story:first-child {
   scroll-margin-block-start: 10rem;
 }
 @media (max-width: 700px) {
-  .project-story:first-child .project-row {
+  .project-story:first-child {
     scroll-margin-block-start: 8.5rem;
   }
 }

@@ -43,7 +43,7 @@ test('Homelab expands in the same document and closes with focus restored', asyn
   }
 });
 
-test('hash, language, theme, reload and project navigation preserve the correct expanded content', async ({
+test('hash, language, theme and history preserve Homelab while project text stays visible', async ({
   page,
 }) => {
   for (const lang of ['es', 'en']) {
@@ -75,17 +75,16 @@ test('hash, language, theme, reload and project navigation preserve the correct 
           (await page.locator('.site-header').boundingBox())!.height,
       )
       .toBeGreaterThanOrEqual(8);
-    await page.locator('#dianimilo > summary').click();
-    await expect(page).toHaveURL(`/${other}/#dianimilo`);
+    await expect(page.locator('#dianimilo .project-content')).toBeVisible();
     await page
       .locator('.main-nav')
       .getByRole('link', { name: 'Homelab', exact: true })
       .click();
     await expect(page.locator('#homelab')).toHaveAttribute('open', '');
-    await expect(page.locator('#dianimilo')).not.toHaveAttribute('open');
+    await expect(page.locator('#dianimilo .project-content')).toBeVisible();
     await page.goBack();
     await expect(page.locator('#homelab')).not.toHaveAttribute('open');
-    await expect(page.locator('#dianimilo')).toHaveAttribute('open', '');
+    await expect(page.locator('#dianimilo .project-content')).toBeVisible();
   }
 });
 

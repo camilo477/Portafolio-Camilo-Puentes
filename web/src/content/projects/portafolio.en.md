@@ -8,7 +8,7 @@ problem:
   Bring projects, technical decisions and source code together in a site that works on mobile and with
   a keyboard, with its own visual identity and equivalent content in English and Spanish.
 features:
-  - Project overviews that expand on the home page and technical case studies with their own URLs.
+  - Project descriptions always visible on the home page and technical case studies with their own URLs.
   - English and Spanish navigation that preserves the project or section when switching languages.
   - Light and dark themes with a saved preference and an initial choice based on the system setting.
   - A bottom bar that previews commands on hover or focus and restores the current route when leaving a link.
@@ -16,7 +16,7 @@ features:
   - A contextual reading index on desktop and links to repositories, demos and professional profiles.
 decisions:
   - Astro generates static HTML from components and Markdown content. Reading and following links require no API or database.
-  - TypeScript adds route, history, preference and command synchronization to native HTML elements. Project overviews use details/summary and still open without JavaScript.
+  - TypeScript adds route, history, preference and command synchronization to native HTML elements. Project descriptions are fully visible and their links work without JavaScript.
   - Custom CSS defines typography, responsive layouts and separate tokens for both themes. Commands provide navigation context and never execute a shell.
   - Microinteractions respect reduced motion and can be disabled. Visible focus and conventional links preserve keyboard navigation.
   - Playwright checks navigation, languages, themes, mobile layouts and use without JavaScript; axe checks the tested states. GitHub Actions is configured to run formatting, type checks, builds and tests.
@@ -56,6 +56,6 @@ sources:
 
 This is the site you are browsing. Astro generates its pages from components and Markdown project entries. TypeScript coordinates interactions, while custom CSS defines the layout, themes and mobile presentation.
 
-The Linux identity appears in the headings and bottom bar: commands accompany navigation without running a terminal. Projects use native disclosures; history, direct links and the ES/EN switch preserve the reading context.
+The Linux identity appears in the headings and bottom bar: commands accompany navigation without running a terminal. Project descriptions are always visible; history, direct links and the ES/EN switch preserve the reading context.
 
 Development is organized into reviewable increments. Playwright checks desktop and mobile navigation, including keyboard use, themes and browsing without JavaScript. The repository contains the source code, tests and implementation decisions.

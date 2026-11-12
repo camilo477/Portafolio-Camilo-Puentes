@@ -82,10 +82,10 @@ docs/                    Documentación técnica y verificación de la implement
   Sin porcentajes ni niveles de dominio inventados.
 - Navegación a `/es/#tecnologias` y `/en/#technologies`; tecnologías como texto,
   sin enlaces externos ni paradas de teclado, con comandos decorativos en hover.
-- Proyectos que se amplían en la misma página al pulsar su título o «Ampliar resumen». Otro clic los
-  cierra; al abrir uno se cierra el anterior. Funciona con teclado y sin JavaScript.
+- Descripciones de los cuatro proyectos siempre visibles en la portada, también sin JavaScript.
+  Los títulos y «Ver proyecto» enlazan a las fichas individuales; no hay controles de abrir o cerrar.
 - Enlaces directos como `/es/#convertix`, idioma y Atrás/Adelante conservan el
-  proyecto abierto con JavaScript. «Ver proyecto» abre su ficha individual estática.
+  contexto de lectura. Los hashes de proyecto siguen funcionando como anclas.
 - Fichas en `/es/proyectos/{id}/` y `/en/projects/{id}/`, con `id` igual a
   `dianimilo`, `nube-camiska`, `convertix` o `portafolio`, e idiomas equivalentes.
 - «Abrir demo» lleva a las URLs reales aprobadas de DianiMilo y Nube Camiska en

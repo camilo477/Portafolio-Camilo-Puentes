@@ -100,16 +100,14 @@ for (const project of projects) {
   });
 }
 
-test('home previews and visible page/demo links perform separate actions with keyboard and touch', async ({
+test('visible project content and page/demo links work with keyboard and touch', async ({
   page,
   isMobile,
 }) => {
   for (const project of projects) {
-    await page.goto('/es/');
-    const summary = page.locator(`#${project.id} > summary`);
-    if (isMobile) await summary.tap();
-    else await summary.click();
-    await expect(page).toHaveURL(`/es/#${project.id}`);
+    await page.goto(`/es/#${project.id}`);
+    await expect(page.locator(`#${project.id} .project-content`)).toBeVisible();
+    await page.locator(`#${project.id} .project-title a`).focus();
     const link = page.locator(`.story-${project.id} .project-page-link`);
     await page.keyboard.press('Tab');
     await expect(link).toBeFocused();
@@ -120,7 +118,7 @@ test('home previews and visible page/demo links perform separate actions with ke
     await page.keyboard.press('Enter');
     await expect(page).toHaveURL(path('es', project.id));
     await page.goBack();
-    await expect(page.locator(`#${project.id}`)).toHaveAttribute('open', '');
+    await expect(page.locator(`#${project.id} .project-content`)).toBeVisible();
     if (project.demo) {
       const demo = page.locator(`.story-${project.id} .demo-link`);
       await expect(demo).toHaveAttribute('href', project.demo);
@@ -136,7 +134,8 @@ test('home previews and visible page/demo links perform separate actions with ke
           }),
         );
       const popupPromise = page.waitForEvent('popup');
-      await demo.click();
+      if (isMobile) await demo.tap();
+      else await demo.click();
       const popup = await popupPromise;
       await expect(popup).toHaveURL(project.demo);
       expect(await popup.evaluate(() => window.opener === null)).toBe(true);

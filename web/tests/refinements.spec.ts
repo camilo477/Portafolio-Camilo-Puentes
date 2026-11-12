@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 
-const details = (page: Page) => page.locator('#dianimilo');
+const story = (page: Page) => page.locator('#dianimilo');
 
 test('professional introduction and homelab replace desktop decoration in ES/EN', async ({
   page,
@@ -123,10 +123,10 @@ test('direct project anchors and narrow or enlarged navigation remain unobscured
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 844 });
     await page.goto('/es/#dianimilo');
-    await expect(details(page)).toHaveAttribute('open', '');
+    await expect(story(page).locator('.project-content')).toBeVisible();
     const header = await page.locator('.site-header').boundingBox();
     expect(
-      (await details(page).locator('summary').boundingBox())!.y,
+      (await story(page).locator('.project-title a').boundingBox())!.y,
     ).toBeGreaterThanOrEqual(header!.height);
     expect(
       await page.evaluate(
@@ -144,181 +144,4 @@ test('direct project anchors and narrow or enlarged navigation remain unobscured
   expect(
     (await page.locator('#technologies-heading').boundingBox())!.y,
   ).toBeGreaterThan((await page.locator('.site-header').boundingBox())!.height);
-});
-
-test('opening and closing use intermediate heights without scrolling or clipping dynamic content', async ({
-  page,
-}) => {
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await page.goto('/es/#proyectos');
-  await details(page)
-    .locator('summary')
-    .evaluate((el) => el.scrollIntoView({ block: 'start' }));
-  // Preserve the production duration, but slow Chromium's animation clock while
-  // measuring intermediate geometry so busy CI workers cannot skip the transition.
-  expect(
-    await details(page).evaluate(
-      (el) => getComputedStyle(el, '::details-content').transitionDuration,
-    ),
-  ).toContain('0.24s');
-  const animationClock = await page.context().newCDPSession(page);
-  await animationClock.send('Animation.enable');
-  await animationClock.send('Animation.setPlaybackRate', { playbackRate: 0.2 });
-  const samples = await details(page).evaluate(async (panel) => {
-    const summary = panel.querySelector('summary')!;
-    const reveal = panel.querySelector('.project-reveal')!;
-    const capture = async () => {
-      const frames: { height: number; scroll: number }[] = [];
-      const start = performance.now();
-      do {
-        frames.push({
-          height: reveal.getBoundingClientRect().height,
-          scroll: scrollY,
-        });
-        await new Promise(requestAnimationFrame);
-      } while (performance.now() - start < 1500);
-      return frames;
-    };
-    const before = scrollY;
-    summary.click();
-    const opening = await capture();
-    summary.click();
-    const closing = await capture();
-    return { before, opening, closing };
-  });
-  await animationClock.send('Animation.setPlaybackRate', { playbackRate: 1 });
-  await animationClock.detach();
-  const fullHeight = samples.opening.at(-1)!.height;
-  expect(fullHeight).toBeGreaterThan(100);
-  for (const frames of [samples.opening, samples.closing]) {
-    expect(
-      frames.filter((f) => f.height > 2 && f.height < fullHeight - 2).length,
-    ).toBeGreaterThan(1);
-    expect(
-      Math.max(...frames.map((f) => Math.abs(f.scroll - samples.before))),
-    ).toBeLessThan(2);
-  }
-  expect(samples.closing.at(-1)!.height).toBeLessThan(1);
-  await expect(page).toHaveURL('/es/#proyectos');
-  await details(page)
-    .locator('.prose')
-    .evaluate((el) => {
-      const paragraph = document.createElement('p');
-      paragraph.textContent =
-        'Contenido dinámico para verificar la altura natural. '.repeat(40);
-      el.append(paragraph);
-    });
-  await details(page).locator('summary').click();
-  await expect
-    .poll(() =>
-      details(page).evaluate((panel) => {
-        const reveal = panel.querySelector('.project-reveal')!;
-        return Math.abs(
-          reveal.getBoundingClientRect().height - reveal.scrollHeight,
-        );
-      }),
-    )
-    .toBeLessThan(1);
-  expect(
-    (await details(page).locator('.project-reveal').boundingBox())!.height,
-  ).toBeGreaterThan(fullHeight);
-});
-
-test('rapid toggles, switching projects and history do not leave stale animation state', async ({
-  page,
-}) => {
-  await page.goto('/es/#proyectos');
-  await details(page)
-    .locator('summary')
-    .evaluate(async (el) => {
-      for (let i = 0; i < 5; i++) {
-        (el as HTMLElement).click();
-        await new Promise((resolve) => setTimeout(resolve, 35));
-      }
-    });
-  await expect(page).toHaveURL('/es/#dianimilo');
-  await expect(details(page)).toHaveAttribute('open', '');
-  await page.locator('#nube-camiska > summary').click();
-  await expect(page).toHaveURL('/es/#nube-camiska');
-  await expect(details(page)).not.toHaveAttribute('open');
-  await expect(page.locator('[data-project][open]')).toHaveCount(1);
-  await page.goBack();
-  await expect(details(page)).toHaveAttribute('open', '');
-  await expect(page.locator('[data-command]')).toHaveText(
-    'cd ~/proyectos/dianimilo',
-  );
-  expect(
-    await details(page).evaluate(
-      (el) =>
-        el
-          .getAnimations({ subtree: true })
-          .filter(
-            (animation) =>
-              (animation.effect as KeyframeEffect).pseudoElement ===
-              '::details-content',
-          ).length,
-    ),
-  ).toBe(0);
-  // The decorative arrow may react to the pointer restored by browser history;
-  // it must settle, but it must not be mistaken for a height transition.
-  await expect
-    .poll(() =>
-      details(page).evaluate(
-        (el) => el.getAnimations({ subtree: true }).length,
-      ),
-    )
-    .toBe(0);
-});
-
-test('reduced motion and the manual setting disable project transitions', async ({
-  page,
-}) => {
-  for (const mode of ['system', 'manual']) {
-    await page.emulateMedia({
-      reducedMotion: mode === 'system' ? 'reduce' : 'no-preference',
-    });
-    await page.goto('/es/');
-    if (mode === 'manual') await page.locator('[data-motion-toggle]').uncheck();
-    const state = await details(page).evaluate((el) => {
-      el.querySelector('summary')!.click();
-      return {
-        open: (el as HTMLDetailsElement).open,
-        height: el.querySelector('.project-reveal')!.getBoundingClientRect()
-          .height,
-        animations: el.getAnimations({ subtree: true }).length,
-      };
-    });
-    expect(state.open).toBe(true);
-    expect(state.height).toBeGreaterThan(100);
-    expect(state.animations).toBe(0);
-  }
-});
-
-test('closing an earlier project keeps the next activated summary below the sticky header', async ({
-  page,
-}) => {
-  await page.goto('/es/#dianimilo');
-  const next = page.locator('#nube-camiska > summary');
-  await next.evaluate((el) => el.scrollIntoView({ block: 'start' }));
-  const positions = await next.evaluate(async (el) => {
-    const positions: number[] = [];
-    const header = document
-      .querySelector('.site-header')!
-      .getBoundingClientRect().bottom;
-    const before = el.getBoundingClientRect().top;
-    (el as HTMLElement).click();
-    const start = performance.now();
-    do {
-      positions.push(el.getBoundingClientRect().top);
-      await new Promise(requestAnimationFrame);
-    } while (performance.now() - start < 330);
-    return { positions, header, before };
-  });
-  expect(Math.min(...positions.positions)).toBeGreaterThan(positions.header);
-  expect(
-    Math.max(
-      ...positions.positions.map((top) => Math.abs(top - positions.before)),
-    ),
-  ).toBeLessThan(2);
-  await expect(page).toHaveURL('/es/#nube-camiska');
 });

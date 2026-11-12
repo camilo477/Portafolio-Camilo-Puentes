@@ -87,8 +87,8 @@ test('capture real desktop and mobile pages in both themes and languages', async
       ]) {
         await page.goto(`/es/#${project}`);
         await expect(
-          page.locator(`details[data-project="${project}"]`),
-        ).toHaveAttribute('open', '');
+          page.locator(`#${project} .project-content`),
+        ).toBeVisible();
         await page.evaluate(() => document.fonts.ready);
         // Capture actual hash navigation, without manually repairing its scroll position.
         await expect

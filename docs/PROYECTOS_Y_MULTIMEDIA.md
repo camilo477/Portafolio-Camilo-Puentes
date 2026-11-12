@@ -4,6 +4,10 @@ Registro de la entrega. [Tarea 05](CONTENIDO_Y_UX.md) retira los avisos público
 de pendientes, oculta Experiencia sin contenido aprobado y completa Homelab.
 El modelo y las instrucciones de integración multimedia siguen vigentes.
 
+Actualización posterior: Camilo pidió que los resúmenes estén siempre visibles.
+La sección [Descripciones siempre visibles](#descripciones-siempre-visibles)
+sustituye el comportamiento de apertura y cierre registrado en esta entrega.
+
 Se conserva el diseño de Tarea 03: tipografía, paleta provisional, composiciones
 propias de los tres proyectos, navegación sticky y comandos visuales de Linux.
 La instrucción de esta tarea añade páginas individuales y conserva el resumen
@@ -81,7 +85,7 @@ administrativos, topología de red ni configuración privada del homelab.
 ## Incorporar material auténtico
 
 Cada proyecto tiene contenido en `web/src/content/projects/<id>.es.md` y `.en.md`.
-El cuerpo Markdown es el resumen ampliable de portada. El frontmatter alimenta
+El cuerpo Markdown es el resumen siempre visible de portada. El frontmatter alimenta
 la ficha, sus enlaces y los medios. Las carpetas reservadas son:
 
 ```text
@@ -267,3 +271,27 @@ aprobadas. Se omiten los 3 casos de hover que no corresponden a móvil. La suite
 comprueba ambos reproductores, pistas de subtítulos, navegación sin JavaScript,
 teclado, idiomas, temas, índice y accesibilidad. Se generaron 24 capturas locales
 y se inspeccionaron la portada y la ficha en escritorio y móvil.
+
+## Descripciones siempre visibles
+
+Se retiran «Expand overview / Close overview» y sus equivalentes en español.
+`ProjectStory.astro` presenta cada proyecto con encabezado, descripción y cuerpo
+Markdown visibles desde el HTML inicial. Los títulos y «Ver proyecto» son enlaces
+convencionales a la ficha individual; hover y foco conservan el comando contextual.
+
+Se elimina el controlador de acordeón de proyectos y sus estilos de transición.
+Las anclas `#dianimilo`, `#nube-camiska`, `#convertix` y `#portafolio` conservan sus
+destinos, historial, idioma y posición bajo los controles. La lectura no requiere
+JavaScript. Los vídeos conservan sus controles y carga bajo demanda. Homelab y el
+inventario de tecnologías mantienen sus desplegables independientes.
+
+Las pruebas del acordeón retirado se reemplazan por comprobaciones de contenido
+visible, enlaces reales, teclado, toque, navegación por anclas y lectura sin
+JavaScript. README y el caso de estudio del propio portafolio describen el nuevo
+comportamiento en ambos idiomas.
+
+Validación de este ajuste: formato correcto, Astro/TypeScript sin errores ni
+advertencias y 13 páginas compiladas. Pasan 4 pruebas de contenido y 127 de
+navegador; se omiten 3 casos de hover en móvil. Se generaron 16 capturas de los
+proyectos en ES/EN, claro/oscuro y escritorio/móvil. Se inspeccionaron DianiMilo,
+Nube Camiska y el propio portafolio con el texto completo visible.

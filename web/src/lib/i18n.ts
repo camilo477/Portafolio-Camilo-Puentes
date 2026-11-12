@@ -40,8 +40,6 @@ export const copy = {
     homelab: 'Homelab',
     homelabText:
       'Mis proyectos web están alojados en una Raspberry Pi que utilizo como homelab. Allí administro servicios Linux, contenedores Docker y el despliegue de mis aplicaciones.',
-    expandProject: 'Ampliar resumen',
-    collapseProject: 'Cerrar resumen',
     viewProject: 'Ver proyecto',
     openDemo: 'Abrir demo',
     newTab: 'se abre en una pestaña nueva',
@@ -131,8 +129,6 @@ export const copy = {
     homelab: 'Homelab',
     homelabText:
       'My web projects are hosted on a Raspberry Pi that I use as a homelab. I manage Linux services, Docker containers and application deployments there.',
-    expandProject: 'Expand overview',
-    collapseProject: 'Close overview',
     viewProject: 'View project',
     openDemo: 'Open demo',
     newTab: 'opens in a new tab',

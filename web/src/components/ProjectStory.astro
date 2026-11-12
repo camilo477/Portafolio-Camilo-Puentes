@@ -1,0 +1,60 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import CommandLabel from './CommandLabel.astro';
+import ProjectActions from './ProjectActions.astro';
+import ProjectImage from './ProjectImage.astro';
+import ProjectMedia from './ProjectMedia.astro';
+import { commands, projectPath } from '../lib/routes';
+import '../styles/projects.css';
+interface Props {
+  entry: CollectionEntry<'projects'>;
+}
+const { entry } = Astro.props;
+const { lang, projectId, title, category, description, media } = entry.data;
+const { Content } = await render(entry);
+---
+
+<article
+  class:list={['project-story', `story-${projectId}`]}
+  id={projectId}
+  data-project={projectId}
+  aria-labelledby={`${projectId}-title`}
+>
+  <div class="project-row">
+    <header class="project-summary">
+      <p class="project-category">{category}</p>
+      <h3 class="project-title" id={`${projectId}-title`}>
+        <a
+          href={projectPath(lang, projectId)}
+          data-preview-command={commands[projectId]}
+        >
+          {title}
+        </a>
+      </h3>
+      <p class="project-description" id={`${projectId}-description`}>
+        {description}
+      </p>
+    </header>
+    <div class="project-content" id={`${projectId}-content`}>
+      <CommandLabel command={commands[projectId]} />
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+  </div>
+  <div class="project-visual">
+    {media.cover && <ProjectImage image={media.cover} />}
+    <span class="project-file" aria-hidden="true">
+      {projectId}/
+    </span>
+    <ProjectActions entry={entry} preview />
+    <ProjectMedia entry={entry} />
+    {projectId === 'nube-camiska' && (
+      <p class="project-platform">
+        <span>Linux</span>
+        <span aria-hidden="true">/</span>
+        <span>Docker</span>
+      </p>
+    )}
+  </div>
+</article>

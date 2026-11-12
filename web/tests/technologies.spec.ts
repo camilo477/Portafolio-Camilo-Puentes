@@ -132,17 +132,17 @@ test('keyboard opens the inventory and skips non-interactive technology names', 
   await expect(page).toHaveURL('/es/#tecnologias');
 });
 
-test('section language and history survive leaving an expanded project', async ({
+test('section language and history preserve the project anchor and visible text', async ({
   page,
 }) => {
   await page.goto('/es/#dianimilo');
-  await expect(page.locator('#dianimilo')).toHaveAttribute('open', '');
+  await expect(page.locator('#dianimilo .project-content')).toBeVisible();
   await page
     .locator('.main-nav')
     .getByRole('link', { name: 'Tecnologías', exact: true })
     .click();
   await expect(page).toHaveURL('/es/#tecnologias');
-  await expect(page.locator('#dianimilo')).not.toHaveAttribute('open');
+  await expect(page.locator('#dianimilo .project-content')).toBeVisible();
   await page.waitForTimeout(200);
   await expect(command(page)).toHaveText(stackCommand);
   await page.getByRole('link', { name: 'English', exact: true }).click();
@@ -152,7 +152,7 @@ test('section language and history survive leaving an expanded project', async (
   await expect(page).toHaveURL('/es/#tecnologias');
   await page.goBack();
   await expect(page).toHaveURL('/es/#dianimilo');
-  await expect(page.locator('#dianimilo')).toHaveAttribute('open', '');
+  await expect(page.locator('#dianimilo .project-content')).toBeVisible();
   await page.goForward();
   await expect(page).toHaveURL('/es/#tecnologias');
   await expect(command(page)).toHaveText(stackCommand);
@@ -208,7 +208,7 @@ test('reduced motion, touch pointers and blur never leave partial commands', asy
   });
   await page.waitForTimeout(220);
   await expect(command(page)).toHaveText(stackCommand);
-  await page.locator('#dianimilo > summary').focus();
+  await page.locator('#dianimilo .project-title a').focus();
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
   const values = await page.evaluate(async () => {
     const output = document.querySelector('[data-command]')!;

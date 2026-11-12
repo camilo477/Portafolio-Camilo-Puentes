@@ -2,12 +2,11 @@ import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 const command = (page: Page) => page.locator('[data-command]');
-// summary is a native disclosure; Playwright does not give it an implicit button role.
-const diani = (page: Page) => page.locator('#dianimilo > summary');
-const nube = (page: Page) => page.locator('#nube-camiska > summary');
-const convertix = (page: Page) => page.locator('#convertix > summary');
+const diani = (page: Page) => page.locator('#dianimilo .project-title a');
+const nube = (page: Page) => page.locator('#nube-camiska .project-title a');
+const convertix = (page: Page) => page.locator('#convertix .project-title a');
 const panel = (page: Page, id: string) =>
-  page.locator(`details[data-project="${id}"]`);
+  page.locator(`article[data-project="${id}"]`);
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/es/');
@@ -42,13 +41,17 @@ test('static content, visible controls, and four ordered projects are available'
     'Convertix',
     'Portafolio Camilo Puentes',
   ]);
-  await expect(page.locator('details[open]')).toHaveCount(0);
+  for (const content of await page.locator('.project-content').all())
+    await expect(content).toBeVisible();
+  await expect(
+    page.locator('.project-story details, .project-toggle'),
+  ).toHaveCount(0);
   await expect(page.locator('.media-placeholder')).toHaveCount(0);
   await expect(diani(page)).toHaveAccessibleName('DianiMilo');
   await expect(nube(page)).toHaveAccessibleName('Nube Camiska');
   await expect(convertix(page)).toHaveAccessibleName('Convertix');
   await expect(
-    panel(page, 'portafolio').locator('summary'),
+    panel(page, 'portafolio').locator('.project-title a'),
   ).toHaveAccessibleName('Portafolio Camilo Puentes');
 });
 
@@ -56,7 +59,7 @@ test('portfolio overview preserves its translated hash and opens GitHub separate
   page,
   isMobile,
 }) => {
-  const summary = panel(page, 'portafolio').locator('summary');
+  const summary = panel(page, 'portafolio').locator('.project-title a');
   if (!isMobile) {
     await summary.hover();
     await expect(command(page)).toHaveText('cd ~/proyectos/portafolio');
@@ -65,21 +68,27 @@ test('portfolio overview preserves its translated hash and opens GitHub separate
   }
   await summary.focus();
   await expect(command(page)).toHaveText('cd ~/proyectos/portafolio');
-  await page.keyboard.press('Enter');
+  await page.goto('/es/#portafolio');
   await expect(page).toHaveURL('/es/#portafolio');
-  await expect(panel(page, 'portafolio')).toHaveAttribute('open', '');
+  await expect(
+    panel(page, 'portafolio').locator('.project-content'),
+  ).toBeVisible();
   await expect(panel(page, 'portafolio').locator('.prose')).toContainText(
     'Astro',
   );
   await page.locator('[data-language="en"]').click();
   await expect(page).toHaveURL('/en/#portafolio');
-  await expect(panel(page, 'portafolio')).toHaveAttribute('open', '');
   await expect(
-    panel(page, 'portafolio').locator('summary'),
+    panel(page, 'portafolio').locator('.project-content'),
+  ).toBeVisible();
+  await expect(
+    panel(page, 'portafolio').locator('.project-title a'),
   ).toHaveAccessibleName('Camilo Puentes Portfolio');
   await page.goBack();
   await expect(page).toHaveURL('/es/#portafolio');
-  await expect(panel(page, 'portafolio')).toHaveAttribute('open', '');
+  await expect(
+    panel(page, 'portafolio').locator('.project-content'),
+  ).toBeVisible();
   const repository = page.locator('.story-portafolio .repository-link');
   const repoUrl = 'https://github.com/camilo477/Portafolio-Camilo-Puentes';
   await expect(repository).toHaveAttribute('href', repoUrl);
@@ -120,7 +129,7 @@ test('hover previews, cancels rapid changes, and restores the active path', asyn
   await expect(command(page)).toHaveText('cd ~');
 });
 
-test('keyboard focus previews and Enter or Space toggles inline details', async ({
+test('keyboard focus previews and Enter follows the project title link', async ({
   page,
 }) => {
   await page.keyboard.press('Tab');
@@ -129,31 +138,25 @@ test('keyboard focus previews and Enter or Space toggles inline details', async 
   ).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page.locator('#main')).toBeFocused();
-  // Walk the document with Tab, without focusing the project programmatically.
   for (
     let index = 0;
     index < 8 &&
     !(await diani(page).evaluate((el) => el === document.activeElement));
     index++
-  ) {
+  )
     await page.keyboard.press('Tab');
-  }
   await expect(diani(page)).toBeFocused();
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
-  const outline = await diani(page).evaluate(
-    (el) => getComputedStyle(el).outlineStyle,
-  );
-  expect(outline).not.toBe('none');
+  expect(
+    await diani(page).evaluate((el) => getComputedStyle(el).outlineStyle),
+  ).not.toBe('none');
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL('/es/#dianimilo');
-  await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
-  await expect(diani(page)).toBeFocused();
-  await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
-  await page.keyboard.press('Space');
-  await expect(panel(page, 'dianimilo')).not.toHaveAttribute('open');
-  await expect(page).toHaveURL('/es/#proyectos');
-  await expect(command(page)).toHaveText('ls ~/proyectos');
-  await expect(diani(page)).toBeFocused();
+  await expect(page).toHaveURL('/es/proyectos/dianimilo/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('DianiMilo');
+  await page.goBack();
+  await expect(
+    panel(page, 'dianimilo').locator('.project-content'),
+  ).toBeVisible();
 });
 
 test('blur restores the path without stealing focus', async ({ page }) => {
@@ -166,88 +169,80 @@ test('blur restores the path without stealing focus', async ({ page }) => {
   await expect(page.getByRole('button', { name: /tema/ })).toBeFocused();
 });
 
-test('click or tap, browser history and language preserve the expanded project', async ({
+test('project titles navigate with click or touch and preserve language and history', async ({
   page,
   isMobile,
 }) => {
   if (isMobile) await diani(page).tap();
   else await diani(page).click();
-  await expect(page).toHaveURL('/es/#dianimilo');
-  await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
+  await expect(page).toHaveURL('/es/proyectos/dianimilo/');
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
   await page.getByRole('link', { name: 'English', exact: true }).click();
-  await expect(page).toHaveURL('/en/#dianimilo');
-  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Camilo Alberto Puentes Valencia',
-  );
-  await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
+  await expect(page).toHaveURL('/en/projects/dianimilo/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('DianiMilo');
   await page.goBack();
-  await expect(page).toHaveURL('/es/#dianimilo');
-  await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
+  await expect(page).toHaveURL('/es/proyectos/dianimilo/');
   await page.goBack();
   await expect(page).toHaveURL('/es/');
-  await expect(page.locator('details[open]')).toHaveCount(0);
-  await expect(command(page)).toHaveText('cd ~');
+  for (const content of await page.locator('.project-content').all())
+    await expect(content).toBeVisible();
   await page.goForward();
+  await expect(page).toHaveURL('/es/proyectos/dianimilo/');
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
-  await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
 });
 
-test('projects expand in the same document, one at a time, and can be closed', async ({
+test('project content stays visible when following section anchors and browser history', async ({
   page,
 }) => {
-  const documentRequests: string[] = [];
-  page.on('request', (request) => {
-    if (request.isNavigationRequest() && request.frame() === page.mainFrame())
-      documentRequests.push(request.url());
-  });
-  await diani(page).click();
+  await page.goto('/es/#dianimilo');
+  await page
+    .locator('.main-nav')
+    .getByRole('link', { name: 'Tecnologías', exact: true })
+    .click();
+  await expect(page).toHaveURL('/es/#tecnologias');
+  for (const content of await page.locator('.project-content').all())
+    await expect(content).toBeVisible();
+  await page.goBack();
+  await expect(page).toHaveURL('/es/#dianimilo');
+  await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
+  await expect(page.locator('.project-list')).not.toContainText(
+    /Ampliar resumen|Cerrar resumen|Expand overview|Close overview/,
+  );
   await expect(
-    panel(page, 'dianimilo').locator('.project-expanded'),
-  ).toBeVisible();
-  await nube(page).click();
-  await expect(panel(page, 'nube-camiska')).toHaveAttribute('open', '');
-  await expect(panel(page, 'dianimilo')).not.toHaveAttribute('open');
-  await convertix(page).click();
-  await expect(page).toHaveURL('/es/#convertix');
-  await expect(
-    page.locator('.story-convertix .repository-link'),
-  ).toHaveAttribute('href', 'https://github.com/camilo477/Converter-files');
-  await expect(page.locator('details[open]')).toHaveCount(1);
-  await convertix(page).click();
-  await expect(page.locator('details[open]')).toHaveCount(0);
-  await expect(page).toHaveURL('/es/#proyectos');
-  await expect(command(page)).toHaveText('ls ~/proyectos');
-  expect(documentRequests).toEqual([]);
+    page.locator('.project-story summary, .project-story [aria-expanded]'),
+  ).toHaveCount(0);
 });
 
-test('hovering another project restores the expanded project on leave', async ({
+test('hovering another project restores the active anchor on leave', async ({
   page,
   isMobile,
 }) => {
   test.skip(isMobile, 'Hover is not available on touch devices.');
-  await diani(page).click();
+  await page.goto('/es/#dianimilo');
   await convertix(page).hover();
   await expect(command(page)).toHaveText('cd ~/proyectos/convertix');
   await page.mouse.move(0, 0);
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
-  await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
+  await expect(
+    panel(page, 'dianimilo').locator('.project-content'),
+  ).toBeVisible();
 });
 
-test('old hash links still open the corresponding inline project', async ({
+test('direct project hashes retain visible content and the current command', async ({
   page,
 }) => {
   for (const lang of ['es', 'en']) {
     for (const id of ['dianimilo', 'nube-camiska', 'convertix', 'portafolio']) {
       await page.goto(`/${lang}/#${id}`);
       await expect(page).toHaveURL(`/${lang}/#${id}`);
-      await expect(panel(page, id)).toHaveAttribute('open', '');
+      await expect(panel(page, id).locator('.project-content')).toBeVisible();
       await expect(command(page)).toHaveText(`cd ~/proyectos/${id}`);
     }
   }
   await page.reload();
-  await expect(panel(page, 'portafolio')).toHaveAttribute('open', '');
+  await expect(
+    panel(page, 'portafolio').locator('.project-content'),
+  ).toBeVisible();
 });
 
 test('project section and language switch preserve the active anchor', async ({
@@ -297,7 +292,7 @@ test('reduced motion writes only the complete command', async ({ page }) => {
       values.push(output.textContent ?? ''),
     );
     observer.observe(output, { childList: true });
-    document.querySelector<HTMLElement>('#dianimilo > summary')!.focus();
+    document.querySelector<HTMLElement>('#dianimilo .project-title a')!.focus();
     await new Promise((resolve) => setTimeout(resolve, 280));
     observer.disconnect();
     return values;
@@ -324,7 +319,7 @@ test('optional motion preference persists and cancels typing', async ({
   ).not.toBeChecked();
 });
 
-test('all four projects expand and close without JavaScript in both languages', async ({
+test('all project descriptions and title links work without JavaScript in both languages', async ({
   browser,
   isMobile,
 }) => {
@@ -336,22 +331,19 @@ test('all four projects expand and close without JavaScript in both languages', 
       : { width: 1440, height: 1000 },
   });
   const page = await context.newPage();
-  await page.goto('/es/');
   for (const lang of ['es', 'en']) {
-    if (lang === 'en')
-      await page.getByRole('link', { name: 'English', exact: true }).click();
+    await page.goto(`/${lang}/`);
+    await expect(page.locator('.project-content')).toHaveCount(4);
     for (const id of ['dianimilo', 'nube-camiska', 'convertix', 'portafolio']) {
-      await panel(page, id).locator('summary').click();
-      await expect(page).toHaveURL(`/${lang}/`);
-      await expect(panel(page, id)).toHaveAttribute('open', '');
-      await expect(panel(page, id).locator('.project-expanded')).toBeVisible();
-      await expect(
-        page.locator(`.story-${id} .project-page-link`),
-      ).toBeVisible();
-      await expect(page.locator('details[open]')).toHaveCount(1);
+      await expect(panel(page, id).locator('.project-content')).toBeVisible();
+      const link = panel(page, id).locator('.project-title a');
+      await link.click();
+      await expect(page).toHaveURL(
+        `/${lang}/${lang === 'es' ? 'proyectos' : 'projects'}/${id}/`,
+      );
+      await page.goBack();
+      await expect(panel(page, id).locator('.project-content')).toBeVisible();
     }
-    await panel(page, 'portafolio').locator('summary').click();
-    await expect(page.locator('details[open]')).toHaveCount(0);
   }
   expect(
     await page
@@ -376,7 +368,7 @@ test('blocked storage does not break preferences or navigation', async ({
   await page.reload();
   await page.getByRole('button', { name: /tema/ }).click();
   await diani(page).click();
-  await expect(page).toHaveURL('/es/#dianimilo');
+  await expect(page).toHaveURL('/es/proyectos/dianimilo/');
   expect(errors).toEqual([]);
 });
 
@@ -392,7 +384,9 @@ test('narrow layouts and the bottom bar leave controls unobscured', async ({
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 844 });
     await page.goto('/es/#convertix');
-    await expect(panel(page, 'convertix')).toHaveAttribute('open', '');
+    await expect(
+      panel(page, 'convertix').locator('.project-content'),
+    ).toBeVisible();
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
@@ -410,35 +404,21 @@ test('narrow layouts and the bottom bar leave controls unobscured', async ({
   }
 });
 
-test('collapsed and expanded projects pass accessibility checks in both themes and languages', async ({
+test('all project descriptions pass accessibility checks in both themes and languages', async ({
   page,
 }) => {
-  // This case scans twenty full-page states, including the inline Homelab DOM.
-  test.setTimeout(60_000);
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   for (const lang of ['es', 'en']) {
-    for (const theme of ['light', 'dark']) {
-      const response = await page.goto(`/${lang}/`);
-      expect(response?.status()).toBe(200);
-      await page.evaluate((value) => {
-        document.documentElement.dataset.theme = value;
-      }, theme);
-      for (const id of [
-        '',
-        'dianimilo',
-        'nube-camiska',
-        'convertix',
-        'portafolio',
-      ]) {
-        if (id) await panel(page, id).locator('summary').click();
-        const result = await new AxeBuilder({ page })
-          .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
-          .analyze();
-        expect(result.violations, `${lang} ${theme} ${id || 'closed'}`).toEqual(
-          [],
-        );
-      }
+    for (const theme of ['light', 'dark'] as const) {
+      await page.emulateMedia({ colorScheme: theme });
+      expect((await page.goto(`/${lang}/`))?.status()).toBe(200);
+      for (const content of await page.locator('.project-content').all())
+        await expect(content).toBeVisible();
+      const result = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+        .analyze();
+      expect(result.violations, `${lang} ${theme}`).toEqual([]);
     }
   }
   expect(errors).toEqual([]);
