@@ -255,15 +255,20 @@ test('reading updates the index without changing the URL or adding history entri
       .evaluateAll((links) =>
         links.map((link) => link.getAttribute('data-index-target')),
       ),
-  ).toEqual(['home', 'technologies', 'projects', 'homelab']);
+  ).toEqual(['home', 'technologies', 'projects', 'experience', 'homelab']);
   expect(
     await page
       .locator('main > section')
       .evaluateAll((sections) =>
         sections.map((section) => section.getAttribute('aria-labelledby')),
       ),
-  ).toEqual(['intro-heading', 'technologies-heading', 'projects-heading']);
-  for (const id of ['technologies', 'projects', 'home']) {
+  ).toEqual([
+    'intro-heading',
+    'technologies-heading',
+    'projects-heading',
+    'experience-heading',
+  ]);
+  for (const id of ['technologies', 'projects', 'experience', 'home']) {
     await page
       .locator(`#${id}`)
       .evaluate((el) => el.scrollIntoView({ block: 'start' }));
@@ -271,7 +276,7 @@ test('reading updates the index without changing the URL or adding history entri
     await expect(page).toHaveURL('/en/');
     expect(await page.evaluate(() => history.length)).toBe(originalHistory);
   }
-  await expect(index(page).locator('a[href*="experience"]')).toHaveCount(0);
+  await expect(index(page).locator('a[href*="experience"]')).toHaveCount(1);
   await expect(index(page).locator('a').last()).toHaveAttribute(
     'data-index-target',
     'homelab',

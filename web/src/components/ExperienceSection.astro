@@ -23,32 +23,37 @@ const entries = await publishedExperience(lang);
         <h2 id="experience-heading">{t.experience}</h2>
       </div>
     </div>
-    {entries.map((entry) => (
-      <article class="experience-entry">
-        <header>
+    {entries.map((entry, index) => (
+      <article
+        class="experience-entry"
+        aria-labelledby={`experience-role-${index}`}
+      >
+        <header class="experience-meta">
+          <p class="experience-company">{entry.company}</p>
           <p class="experience-period">{entry.period}</p>
-          <h3>{entry.role}</h3>
-          <p>{entry.company}</p>
+          {entry.progression && (
+            <p class="experience-progression">{entry.progression}</p>
+          )}
         </header>
-        <div>
-          <h4>{t.responsibilities}</h4>
-          <ul>
-            {entry.responsibilities.map((item) => (
-              <li>{item}</li>
-            ))}
-          </ul>
-          <h4>{t.projectStack}</h4>
-          <p>{entry.technologies.join(' · ')}</p>
+        <div class="experience-body">
+          <h3 id={`experience-role-${index}`}>{entry.role}</h3>
+          {entry.responsibilities.map((item) => (
+            <p class="experience-description">{item}</p>
+          ))}
           {entry.contributions.length > 0 && (
             <>
               <h4>{t.contributions}</h4>
-              <ul>
+              <ul class="experience-contributions">
                 {entry.contributions.map((item) => (
                   <li>{item}</li>
                 ))}
               </ul>
             </>
           )}
+          <div class="experience-technologies">
+            <h4>{t.projectStack}</h4>
+            <p>{entry.technologies.join(' · ')}</p>
+          </div>
         </div>
       </article>
     ))}

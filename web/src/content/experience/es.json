@@ -1,1 +1,34 @@
-{ "lang": "es", "entries": [] }
+{
+  "lang": "es",
+  "entries": [
+    {
+      "approvedForPublication": true,
+      "company": "ICOMM Solutions",
+      "role": "Desarrollador de software",
+      "period": "Octubre 2025 – Actualidad",
+      "progression": "De práctica profesional a contrato indefinido.",
+      "responsibilities": [
+        "Desarrollo y mantenimiento de aplicaciones empresariales con Python, Django, Java, Spring Boot, React y PostgreSQL. Mi trabajo incluye implementación de APIs, integración entre sistemas, automatización de procesos y tratamiento de datos."
+      ],
+      "contributions": [
+        "Implementación de procesos de importación masiva con validación previa, controles de duplicados y resultados por registro.",
+        "Desarrollo de funcionalidades backend, APIs y reglas de negocio en Python/Django y Java/Spring Boot.",
+        "Implementación y corrección de permisos para restringir el acceso a información según roles y entidades.",
+        "Desarrollo de procesos programados, renovaciones automáticas y mecanismos de recuperación ante errores.",
+        "Corrección de inconsistencias en datos históricos, migraciones, indicadores y reportes."
+      ],
+      "technologies": [
+        "Python",
+        "Django",
+        "Java",
+        "Spring Boot",
+        "React",
+        "TypeScript",
+        "PostgreSQL",
+        "SQL",
+        "Git",
+        "GitHub Actions"
+      ]
+    }
+  ]
+}

@@ -1,7 +1,6 @@
 ---
 import { technologies, type TechnologyId } from '../data/technologies';
 import { commands, type Language } from '../lib/routes';
-import { copy } from '../lib/i18n';
 
 interface Props {
   items: readonly TechnologyId[];
@@ -26,9 +25,6 @@ const { items, lang } = Astro.props;
         >
           {name}
         </span>
-        {id === 'spring' && (
-          <span class="learning-label">{copy[lang].learning}</span>
-        )}
       </li>
     );
   })}

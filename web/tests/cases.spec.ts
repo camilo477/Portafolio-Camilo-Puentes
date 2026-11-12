@@ -341,17 +341,17 @@ test('case commands revert to the actual page and reduced motion leaves no typin
   ).toBeGreaterThan((await page.locator('.site-header').boundingBox())!.height);
 });
 
-test('unapproved experience stays hidden and Homelab has primary navigation in both languages', async ({
+test('approved experience and Homelab have primary navigation in both languages', async ({
   page,
 }) => {
   for (const lang of ['es', 'en']) {
     await page.goto(`/${lang}/`);
-    await expect(page.locator('.experience, .experience-entry')).toHaveCount(0);
+    await expect(page.locator('.experience-entry')).toHaveCount(1);
     await expect(
       page.locator(
         `a[href*="#${lang === 'es' ? 'experiencia' : 'experience'}"]`,
       ),
-    ).toHaveCount(0);
+    ).toHaveCount(2);
     await page
       .locator('.main-nav')
       .getByRole('link', { name: 'Homelab', exact: true })

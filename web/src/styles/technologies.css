@@ -94,12 +94,6 @@
   font-size: 2.25rem;
   color: var(--accent);
 }
-.learning-label {
-  display: block;
-  font-size: 0.7rem;
-  color: var(--amber);
-  margin-top: -0.2rem;
-}
 .stack-exploration {
   display: grid;
   grid-template-columns: 1fr 1.6fr;

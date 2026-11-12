@@ -122,7 +122,7 @@ export const mainStackAreas = [
 ] as const satisfies readonly { id: string; items: readonly TechnologyId[] }[];
 
 // Only the learning/initial-exploration entries explicitly described by Camilo.
-export const explorationIds: readonly TechnologyId[] = ['spring', 'lua'];
+export const explorationIds: readonly TechnologyId[] = ['lua'];
 export type TechnologyCategoryId =
   | 'languages'
   | 'frameworks'

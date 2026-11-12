@@ -55,6 +55,7 @@ export const experienceSchema = z.object({
       company: text,
       role: text,
       period: text,
+      progression: text.optional(),
       responsibilities: z.array(text).min(1),
       technologies: z.array(text),
       contributions: z.array(text),

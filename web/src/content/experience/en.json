@@ -1,1 +1,34 @@
-{ "lang": "en", "entries": [] }
+{
+  "lang": "en",
+  "entries": [
+    {
+      "approvedForPublication": true,
+      "company": "ICOMM Solutions",
+      "role": "Software Developer",
+      "period": "October 2025 – Present",
+      "progression": "Joined as an intern and continued under an open-ended employment contract.",
+      "responsibilities": [
+        "I develop and maintain business applications using Python, Django, Java, Spring Boot, React and PostgreSQL. My work includes building APIs, integrating systems, automating workflows and handling application data."
+      ],
+      "contributions": [
+        "Implemented bulk data import workflows with pre-import validation, duplicate checks and per-record results.",
+        "Developed backend features, APIs and business logic using Python/Django and Java/Spring Boot.",
+        "Implemented and improved access controls to restrict information according to user roles and associated entities.",
+        "Developed scheduled workflows, automatic renewal processes and error recovery mechanisms.",
+        "Resolved data inconsistencies involving historical records, migrations, indicators and reports."
+      ],
+      "technologies": [
+        "Python",
+        "Django",
+        "Java",
+        "Spring Boot",
+        "React",
+        "TypeScript",
+        "PostgreSQL",
+        "SQL",
+        "Git",
+        "GitHub Actions"
+      ]
+    }
+  ]
+}

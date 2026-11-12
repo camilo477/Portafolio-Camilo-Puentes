@@ -116,22 +116,22 @@ test('preferences stay compact and footer navigation works with the keyboard on 
       ).toBeLessThan(80);
       const links = page.locator('.site-footer .main-nav a');
       await expect(page.locator('.site-header .main-nav')).toHaveCount(0);
-      await expect(links).toHaveCount(4);
+      await expect(links).toHaveCount(5);
       await expect(links).toHaveText(
         lang === 'es'
-          ? ['Inicio', 'Tecnologías', 'Proyectos', 'Homelab']
-          : ['Home', 'Technologies', 'Projects', 'Homelab'],
+          ? ['Inicio', 'Tecnologías', 'Proyectos', 'Experiencia', 'Homelab']
+          : ['Home', 'Technologies', 'Projects', 'Experience', 'Homelab'],
       );
       for (const link of await links.all()) {
         const box = (await link.boundingBox())!;
         expect(box.x).toBeGreaterThanOrEqual(0);
         expect(box.x + box.width).toBeLessThanOrEqual(width);
       }
-      await links.nth(2).focus();
+      await links.nth(3).focus();
       await page.keyboard.press('Tab');
-      await expect(links.nth(3)).toBeFocused();
+      await expect(links.nth(4)).toBeFocused();
       expect(
-        await links.nth(3).evaluate((el) => getComputedStyle(el).outlineStyle),
+        await links.nth(4).evaluate((el) => getComputedStyle(el).outlineStyle),
       ).not.toBe('none');
       await page.keyboard.press('Enter');
       await expect(page).toHaveURL(`/${lang}/#homelab`);
@@ -139,7 +139,7 @@ test('preferences stay compact and footer navigation works with the keyboard on 
   }
 });
 
-test('public content contains no development notices, empty experience or internal configuration', async ({
+test('public content contains approved experience without development notices or internal configuration', async ({
   page,
   request,
 }) => {
@@ -157,9 +157,12 @@ test('public content contains no development notices, empty experience or intern
       await expect(page.locator('body')).not.toContainText(banned);
       await expect(
         page.locator(
-          '.experience, .media-placeholder, .palette-note, #contribution-heading',
+          '.media-placeholder, .palette-note, #contribution-heading',
         ),
       ).toHaveCount(0);
+      await expect(page.locator('.experience-entry')).toHaveCount(
+        suffix === '' || suffix === 'homelab/' ? 1 : 0,
+      );
       await expect(page.locator('#media-heading')).toHaveCount(
         Number(/\/(dianimilo|nube-camiska|convertix)\/$/.test(suffix)),
       );
@@ -173,10 +176,12 @@ test('public content contains no development notices, empty experience or intern
     (await request.get('/docs/borradores/EXPERIENCIA_PROFESIONAL.md')).status(),
   ).toBe(404);
   await page.goto('/es/#experiencia');
-  await expect(page.locator('[data-command]')).toHaveText('cd ~');
+  await expect(page.locator('[data-command]')).toHaveText(
+    'cat ~/experiencia.md',
+  );
   await expect(page.locator('[data-language="en"]')).toHaveAttribute(
     'href',
-    '/en/',
+    '/en/#experience',
   );
 });
 

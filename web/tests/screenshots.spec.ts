@@ -2,6 +2,74 @@ import { test, expect } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
+test('capture professional experience in both languages and themes', async ({
+  browser,
+}) => {
+  test.setTimeout(90_000);
+  const output = resolve('../docs/capturas/experience');
+  await mkdir(output, { recursive: true });
+  for (const [device, viewport] of Object.entries({
+    desktop: { width: 1920, height: 1080 },
+    laptop: { width: 1280, height: 900 },
+    mobile: { width: 390, height: 844 },
+  })) {
+    for (const theme of ['light', 'dark'] as const) {
+      const context = await browser.newContext({
+        viewport,
+        colorScheme: theme,
+        isMobile: device === 'mobile',
+        hasTouch: device === 'mobile',
+        reducedMotion: 'reduce',
+      });
+      try {
+        const page = await context.newPage();
+        for (const lang of ['es', 'en']) {
+          await page.goto(
+            `/${lang}/#${lang === 'es' ? 'experiencia' : 'experience'}`,
+          );
+          await page.evaluate(() => document.fonts.ready);
+          await expect(page.locator('.experience-entry')).toBeVisible();
+          await expect
+            .poll(() =>
+              page.locator('.experience').evaluate((element) => {
+                const offset = parseFloat(
+                  getComputedStyle(document.documentElement).getPropertyValue(
+                    '--header-height',
+                  ),
+                );
+                return Math.abs(
+                  element.getBoundingClientRect().top - offset - 16,
+                );
+              }),
+            )
+            .toBeLessThan(2);
+          await page.screenshot({
+            path: resolve(output, `${device}-${theme}-${lang}.png`),
+          });
+          if (device === 'mobile') {
+            // Record the reading viewport in two parts so fixed controls stay
+            // at its edges instead of covering a tall element screenshot.
+            await page
+              .locator('.experience-contributions')
+              .evaluate((list) => list.scrollIntoView({ block: 'start' }));
+            await expect(
+              page.locator('.experience-technologies'),
+            ).toBeInViewport();
+            await page.screenshot({
+              path: resolve(
+                output,
+                `${device}-${theme}-${lang}-contributions.png`,
+              ),
+            });
+          }
+        }
+      } finally {
+        await context.close();
+      }
+    }
+  }
+});
+
 test('capture real desktop and mobile pages in both themes and languages', async ({
   browser,
 }) => {
