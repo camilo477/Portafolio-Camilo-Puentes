@@ -119,8 +119,8 @@ test('preferences stay compact and footer navigation works with the keyboard on 
       await expect(links).toHaveCount(5);
       await expect(links).toHaveText(
         lang === 'es'
-          ? ['Inicio', 'Tecnologías', 'Proyectos', 'Experiencia', 'Homelab']
-          : ['Home', 'Technologies', 'Projects', 'Experience', 'Homelab'],
+          ? ['Inicio', 'Tecnologías', 'Experiencia', 'Proyectos', 'Homelab']
+          : ['Home', 'Technologies', 'Experience', 'Projects', 'Homelab'],
       );
       for (const link of await links.all()) {
         const box = (await link.boundingBox())!;

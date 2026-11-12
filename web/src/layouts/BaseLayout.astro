@@ -137,6 +137,14 @@ const indexEntries =
           >
             {t.technologies}
           </a>
+          {hasExperience && (
+            <a
+              href={experiencePath(lang)}
+              data-preview-command={commands.experience}
+            >
+              {t.experienceShort}
+            </a>
+          )}
           <a
             href={projectsPath(lang)}
             data-preview-command={commands.projects}
@@ -146,14 +154,6 @@ const indexEntries =
           >
             {t.projects}
           </a>
-          {hasExperience && (
-            <a
-              href={experiencePath(lang)}
-              data-preview-command={commands.experience}
-            >
-              {t.experienceShort}
-            </a>
-          )}
           <a
             href={homelabPath(lang)}
             data-preview-command={commands.homelab}

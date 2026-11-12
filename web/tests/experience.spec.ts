@@ -167,6 +167,7 @@ test('wide index includes experience in order and supports keyboard command prev
     name: 'Experience',
     exact: true,
   });
+  await expect(experience.locator('.index-number')).toHaveText('03');
   await experience.focus();
   await expect(command(page)).toHaveText('cat ~/experiencia.md');
   await page.keyboard.press('Enter');

@@ -255,7 +255,7 @@ test('reading updates the index without changing the URL or adding history entri
       .evaluateAll((links) =>
         links.map((link) => link.getAttribute('data-index-target')),
       ),
-  ).toEqual(['home', 'technologies', 'projects', 'experience', 'homelab']);
+  ).toEqual(['home', 'technologies', 'experience', 'projects', 'homelab']);
   expect(
     await page
       .locator('main > section')
@@ -265,10 +265,10 @@ test('reading updates the index without changing the URL or adding history entri
   ).toEqual([
     'intro-heading',
     'technologies-heading',
-    'projects-heading',
     'experience-heading',
+    'projects-heading',
   ]);
-  for (const id of ['technologies', 'projects', 'experience', 'home']) {
+  for (const id of ['technologies', 'experience', 'projects', 'home']) {
     await page
       .locator(`#${id}`)
       .evaluate((el) => el.scrollIntoView({ block: 'start' }));

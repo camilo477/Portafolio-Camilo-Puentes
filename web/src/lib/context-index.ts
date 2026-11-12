@@ -33,22 +33,22 @@ export function homeIndex(
       command: commands.technologies,
       number: '02',
     },
-    {
-      id: projectAnchor(lang),
-      label: t.projects,
-      command: commands.projects,
-      number: '03',
-    },
     ...(hasExperience
       ? [
           {
             id: experienceAnchor(lang),
             label: t.experienceShort,
             command: commands.experience,
-            number: '04',
+            number: '03',
           },
         ]
       : []),
+    {
+      id: projectAnchor(lang),
+      label: t.projects,
+      command: commands.projects,
+      number: '04',
+    },
     {
       id: 'homelab',
       label: t.homelab,
