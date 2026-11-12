@@ -37,6 +37,20 @@ test('professional introduction and homelab replace desktop decoration in ES/EN'
       /Planes compartidos|Shared plans|Backend, interfaces|Backend, interfaces, data/,
     );
     await expect(page.locator('.intro-links a')).toHaveCount(2);
+    const siteBuild = page.getByRole('complementary', {
+      name:
+        lang === 'es' ? 'Este sitio está hecho con' : 'This site is built with',
+    });
+    await expect(siteBuild).toBeVisible();
+    await expect(siteBuild).toContainText(
+      lang === 'es'
+        ? 'Astro, TypeScript, HTML, CSS propio y Markdown.'
+        : 'Astro, TypeScript, HTML, custom CSS and Markdown.',
+    );
+    await expect(siteBuild.getByRole('link')).toHaveAttribute(
+      'href',
+      `/${lang}/${lang === 'es' ? 'proyectos' : 'projects'}/portafolio/`,
+    );
   }
 });
 

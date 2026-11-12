@@ -15,6 +15,7 @@ import {
   homeAnchor,
   projectAnchor,
   projectIds,
+  projectPath,
   projectsPath,
   type Language,
 } from '../../lib/routes';
@@ -59,6 +60,33 @@ const orderedProjects = projectIds.map((id) =>
         </a>
       </div>
     </div>
+    <aside class="site-build" aria-labelledby="site-build-heading">
+      <CommandLabel command="cat ./package.json" />
+      <h2 id="site-build-heading">{t.siteBuild.heading}</h2>
+      <p class="site-build-stack">{t.siteBuild.stack}</p>
+      <dl>
+        <div>
+          <dt>{t.siteBuild.development}</dt>
+          <dd>Node.js, npm, Vite, Git, Prettier</dd>
+        </div>
+        <div>
+          <dt>{t.siteBuild.validation}</dt>
+          <dd>Zod, Playwright, axe-core, GitHub Actions</dd>
+        </div>
+        <div>
+          <dt>{t.siteBuild.typography}</dt>
+          <dd>Noto Sans, JetBrains Mono</dd>
+        </div>
+      </dl>
+      <a
+        class="site-build-link"
+        href={projectPath(lang, 'portafolio')}
+        data-preview-command={commands.portafolio}
+      >
+        {t.siteBuild.details}
+        <span aria-hidden="true">↗</span>
+      </a>
+    </aside>
   </section>
   <TechnologySection lang={lang} />
   <section

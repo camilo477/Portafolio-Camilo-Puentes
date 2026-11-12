@@ -2,6 +2,14 @@ export const copy = {
   es: {
     siteTitle: 'Portafolio Camilo Puentes',
     professionalPortfolio: 'Portafolio profesional',
+    siteBuild: {
+      heading: 'Este sitio está hecho con',
+      stack: 'Astro, TypeScript, HTML, CSS propio y Markdown.',
+      development: 'Desarrollo',
+      validation: 'Validación y pruebas',
+      typography: 'Tipografía',
+      details: 'Cómo construí este portafolio',
+    },
     professionalLinks: 'Enlaces profesionales',
     pageIndex: 'En esta página',
     overview: 'Resumen',
@@ -91,6 +99,14 @@ export const copy = {
   en: {
     siteTitle: 'Camilo Puentes Portfolio',
     professionalPortfolio: 'Professional portfolio',
+    siteBuild: {
+      heading: 'This site is built with',
+      stack: 'Astro, TypeScript, HTML, custom CSS and Markdown.',
+      development: 'Development',
+      validation: 'Validation and testing',
+      typography: 'Typography',
+      details: 'How I built this portfolio',
+    },
     professionalLinks: 'Professional links',
     pageIndex: 'On this page',
     overview: 'Overview',

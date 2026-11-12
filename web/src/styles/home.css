@@ -1,4 +1,8 @@
 .introduction {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 4rem;
   padding-block: 3rem 5rem;
 }
 .intro-copy {
@@ -43,7 +47,58 @@
   margin-top: 1.75rem;
   font-size: 0.95rem;
 }
+.site-build {
+  padding-left: 2rem;
+  border-left: 1px solid var(--border);
+}
+.site-build h2 {
+  margin-block: 1.6rem 0.65rem;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+}
+.site-build-stack {
+  max-width: 24rem;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.site-build dl {
+  display: grid;
+  gap: 0.85rem;
+  margin-block: 1.3rem;
+}
+.site-build dt {
+  margin-bottom: 0.15rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.site-build dd {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+.site-build-link {
+  display: inline-block;
+  padding-block: 0.4rem;
+  font-size: 0.85rem;
+}
+.site-build-link span {
+  margin-left: 0.25rem;
+}
 @media (max-width: 960px) {
+  .introduction {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem;
+  }
+  .site-build {
+    max-width: 40rem;
+    padding: 1.5rem 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+  .site-build h2 {
+    margin-top: 1rem;
+  }
   h1 {
     font-size: 2.65rem;
   }
