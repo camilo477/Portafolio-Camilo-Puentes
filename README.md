@@ -110,10 +110,11 @@ docs/                    Documentación técnica y verificación de la implement
   Las capturas reales, diagramas y el detalle de las contribuciones quedan pendientes.
 - Experiencia profesional preparada con borrador local excluido de Git. La sección
   y el acceso principal aparecen solo cuando exista contenido aprobado.
-- La portada, el índice y el footer siguen el orden Inicio → Tecnologías → Proyectos.
+- La portada, el índice y el footer siguen el orden Inicio → Tecnologías → Experiencia → Proyectos → Homelab.
 - Homelab cierra la portada, después de Proyectos y de Experiencia cuando haya
   contenido aprobado. Se amplía en la misma página (`/es/#homelab` y `/en/#homelab`), con diagrama
-  de la Raspberry, Docker y Cloudflare Tunnel contrastado por SSH de solo lectura.
+  de la Raspberry, Docker y Cloudflare Tunnel contrastado por SSH, con el portafolio
+  servido por Nginx.
   Nginx se distingue como servicio estático independiente. Las rutas antiguas
   redirigen al bloque; se conserva apertura nativa sin JavaScript.
 - Índice lateral y navegación de secciones en el footer. ES/EN y el control de tema
