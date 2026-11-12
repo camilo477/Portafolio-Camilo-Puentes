@@ -26,13 +26,7 @@ technologies:
   - Vite
   - Firebase
   - Node.js
-contribution: >-
-  Trabajé en la interfaz React y TypeScript y conecté sus vistas de películas, planes y metas
-  con una capa de acceso a datos compartida. Mi principal reto fue abrir la aplicación a
-  visitantes sin reutilizar el acceso privado con Firebase y Node.js. Para resolverlo, adapté
-  las mismas operaciones a un almacén de ejemplos por pestaña, con restablecimiento y respaldo
-  en memoria. Añadí pruebas sobre persistencia, aislamiento y cambios de estado: la demo
-  permite editar datos ficticios incluso cuando el navegador bloquea el almacenamiento.
+contribution: null
 architecture:
   summary:
     Una interfaz React y TypeScript compilada con Vite. La demo usa un almacén local; la aplicación

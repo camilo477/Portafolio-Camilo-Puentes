@@ -25,14 +25,7 @@ technologies:
   - Node.js
   - Docker
   - Linux
-contribution: >-
-  I implemented per-account storage contexts in Node.js so file operations stay within the
-  owner's space, including concurrent requests. I adapted the TypeScript interface for demo
-  access and permissions, and added tests for account isolation and rejected writes. For the
-  Docker deployment, I separated personal files, session state and public examples into
-  persistent storage locations. This allows the demo to remain available when the personal
-  disk is missing, while the backend rejects access to that storage until it recognizes the
-  disk again.
+contribution: null
 architecture:
   summary:
     A TypeScript web interface, a Node.js server and file-based storage. Docker packages the application

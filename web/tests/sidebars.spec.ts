@@ -355,29 +355,21 @@ test('case indices contain only rendered headings and preserve translated sectio
     expect(targets.includes('media-heading')).toBe(
       ['dianimilo', 'nube-camiska', 'convertix'].includes(id),
     );
-    expect(targets).toContain('contribution-heading');
+    expect(targets).not.toContain('contribution-heading');
     for (const target of targets)
       await expect(page.locator(`#${target}`)).toHaveCount(1);
     await index(page)
       .locator('[data-index-target="architecture-heading"]')
-      .click();
+      .focus();
+    await page.keyboard.press('Enter');
     await expect(page.locator('#architecture-heading')).toBeInViewport();
     await expect(active(page)).toHaveAttribute(
       'data-index-target',
       'architecture-heading',
     );
-    await index(page)
-      .locator('[data-index-target="contribution-heading"]')
-      .focus();
-    await page.keyboard.press('Enter');
-    await expect(page.locator('#contribution-heading')).toBeInViewport();
-    await expect(active(page)).toHaveAttribute(
-      'data-index-target',
-      'contribution-heading',
-    );
     await page.locator('[data-language="es"]').click();
-    await expect(page).toHaveURL(`/es/proyectos/${id}/#contribution-heading`);
-    await expect(page.locator('#contribution-heading')).toBeInViewport();
+    await expect(page).toHaveURL(`/es/proyectos/${id}/#architecture-heading`);
+    await expect(page.locator('#architecture-heading')).toBeInViewport();
     const historyLength = await page.evaluate(() => history.length);
     await page.mouse.wheel(0, -5000);
     await expect(active(page)).toHaveAttribute('data-index-target', 'overview');

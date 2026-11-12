@@ -25,14 +25,7 @@ technologies:
   - Node.js
   - Docker
   - Linux
-contribution: >-
-  Implementé en Node.js un contexto de almacenamiento por cuenta para que las operaciones de
-  archivos respetaran al propietario, incluso con peticiones simultáneas. Adapté la interfaz
-  TypeScript a los permisos y al acceso de demostración, y añadí pruebas de aislamiento y
-  bloqueo de escrituras. En el despliegue Docker separé los archivos personales, el estado de
-  las sesiones y los ejemplos públicos en almacenamiento persistente. Así, la demo puede
-  seguir disponible si falta el disco personal, mientras el backend rechaza el acceso a ese
-  almacenamiento hasta reconocerlo de nuevo.
+contribution: null
 architecture:
   summary:
     Interfaz web en TypeScript, servidor Node.js y almacenamiento en archivos. Docker empaqueta

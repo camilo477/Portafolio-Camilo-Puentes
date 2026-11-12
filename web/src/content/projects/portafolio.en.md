@@ -31,14 +31,7 @@ technologies:
   - Playwright
   - axe-core
   - GitHub Actions
-contribution: >-
-  I built the site with Astro, TypeScript and custom CSS, separating Markdown entries from
-  presentation so both languages share a common structure. The challenge was to give
-  navigation a Linux identity while preserving familiar browser behavior. I coordinated
-  command previews, focus, history and language switching around conventional links, and added
-  persistent themes, mobile layouts and reduced-motion support. I integrated Playwright user
-  journeys into GitHub Actions and prepared static hosting on my Raspberry Pi with Nginx and
-  Cloudflare Tunnel, keeping the content independent of an API.
+contribution: null
 architecture:
   summary:
     The monorepo keeps the site in web/. Markdown entries are validated against schemas and supply both
