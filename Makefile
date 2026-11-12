@@ -10,7 +10,7 @@ ifneq ($(wildcard $(PORTFOLIO_NODE_BIN)/node),)
 export PATH := $(PORTFOLIO_NODE_BIN):$(PATH)
 endif
 
-.PHONY: help check-node install dev lint check build preview browsers test screenshots verify
+.PHONY: help check-node install dev lint check build preview browsers test screenshots verify deploy
 
 help:
 	@printf '%s\n' \
@@ -27,6 +27,7 @@ help:
 		'make test         Compilar y ejecutar las pruebas de navegador' \
 		'make screenshots  Compilar y generar capturas locales' \
 		'make verify       Ejecutar formato, tipos, build y pruebas' \
+		'make deploy PORTFOLIO_SSH=usuario@servidor  Publicar por SSH en Nginx' \
 		'' \
 		'Puerto alternativo: make dev PORTFOLIO_PORT=4322'
 
@@ -52,6 +53,7 @@ lint: check-node
 
 check: check-node
 	npm run check
+	bash -n scripts/deploy-raspberry.sh infra/raspberry/activate-release.sh
 
 build: check-node
 	npm run build
@@ -69,3 +71,6 @@ screenshots: build
 	npm run screenshots
 
 verify: lint check test
+
+deploy: lint check build
+	bash scripts/deploy-raspberry.sh

@@ -1,7 +1,19 @@
 # Portafolio de Camilo Puentes
 
 Portafolio con presentación, tecnologías y fichas de proyectos bilingües. Astro + TypeScript, CSS
-propio, contenido Markdown y salida estática. No hay API, base de datos ni despliegue.
+propio, contenido Markdown y salida estática. No necesita API ni base de datos.
+Incluye publicación por SSH en Nginx y una guía para Cloudflare Tunnel.
+
+## Publicar en la Raspberry
+
+```bash
+make verify
+make deploy PORTFOLIO_SSH=usuario@servidor
+```
+
+La compilación se realiza localmente y solo se transfieren los archivos públicos.
+Consulta [infra/README.md](infra/README.md) para los requisitos, el cambio de
+dominios y la recuperación de una versión anterior.
 
 ## Ejecutar localmente
 
@@ -63,7 +75,8 @@ web/
   tests/                 Playwright, axe y generación de capturas
   public/                Favicon, licencias y carpetas para medios reales
 api-status/              Reservado; Java 21 + Spring Boot en una etapa posterior
-infra/                   Reservado; sin conexión a Raspberry
+infra/                   Nginx, activación de versiones y guía de Cloudflare
+scripts/                 Publicación del sitio compilado por SSH
 docs/                    Documentación técnica y verificación de la implementación
 .github/workflows/       Verificación del frontend, sin despliegue
 ```
