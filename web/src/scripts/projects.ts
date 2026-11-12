@@ -10,6 +10,7 @@ export function initializeProjects() {
   const panels = [
     ...document.querySelectorAll<HTMLDetailsElement>('[data-project]'),
   ];
+  if (!panels.length) return;
 
   function syncFromLocation() {
     const active = routeFromHash(lang, location.hash);
@@ -34,7 +35,11 @@ export function initializeProjects() {
         (!next && !panels.some((item) => item.dataset.project === current))
       )
         return;
-      history.pushState(null, '', localizedPath(lang, next ?? 'projects'));
+      history.pushState(
+        null,
+        '',
+        localizedPath(lang, next ?? 'projects', 'preview'),
+      );
       window.dispatchEvent(new Event('portfolio:locationchange'));
 
       if (opened) {

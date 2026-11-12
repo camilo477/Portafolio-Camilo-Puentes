@@ -1,0 +1,159 @@
+@import './project-media.css';
+.case-study,
+.homelab-page {
+  padding-block: 2rem 3rem;
+}
+.case-study {
+  --case-accent: var(--accent);
+  --case-tint: var(--tint-teal);
+}
+.case-nube-camiska {
+  --case-accent: var(--green);
+  --case-tint: var(--tint-green);
+}
+.case-convertix {
+  --case-accent: var(--amber);
+  --case-tint: var(--tint-amber);
+}
+.back-link {
+  display: inline-block;
+  padding-block: 0.6rem;
+  font-size: 0.85rem;
+}
+.case-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 3rem;
+  align-items: center;
+  margin-block: 1.5rem 3rem;
+  padding: 2.5rem;
+  background: var(--case-tint);
+  border-radius: 5px 5px 2rem 5px;
+}
+.case-title h1 {
+  margin-block: 0.75rem 1rem;
+}
+.case-title .command-heading {
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+.case-description {
+  max-width: 36rem;
+  color: var(--text-muted);
+}
+.case-category {
+  font-size: 0.8rem;
+  color: var(--case-accent);
+  margin-bottom: 1rem;
+}
+.case-access {
+  min-width: 0;
+}
+.case-cover {
+  margin-bottom: 3rem;
+}
+.case-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.7fr);
+  gap: 1.5rem 4rem;
+  padding-block: 2rem;
+  border-top: 1px solid var(--border);
+}
+.case-section > * {
+  min-width: 0;
+}
+.case-section h2 {
+  font-size: 1.3rem;
+  letter-spacing: -0.025em;
+  line-height: 1.4;
+}
+.case-section > p,
+.case-section > div,
+.case-list {
+  max-width: 44rem;
+}
+.case-list {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.case-list li {
+  padding-left: 0.3rem;
+}
+.case-list li + li {
+  margin-top: 0.85rem;
+}
+.case-list li::marker {
+  color: var(--case-accent);
+}
+.case-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.case-stack li {
+  font: 0.85rem/1.7 var(--mono);
+  color: var(--case-accent);
+}
+.case-architecture > * + * {
+  margin-top: 1rem;
+}
+.case-sources {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+.case-sources h2 {
+  font-size: 1rem;
+}
+.case-sources ul {
+  margin-bottom: 0;
+  padding-left: 1.2rem;
+}
+.case-sources a {
+  display: inline-block;
+  padding-block: 0.45rem;
+  overflow-wrap: anywhere;
+}
+.case-back {
+  margin-top: 1rem;
+}
+.homelab-page {
+  min-height: 65vh;
+}
+.homelab-intro {
+  max-width: 42rem;
+  padding-block: 2rem 3rem;
+}
+.homelab-intro h1 {
+  margin-block: 0.75rem 1.25rem;
+}
+@media (max-width: 960px) {
+  .case-intro {
+    padding: 2rem;
+    gap: 2rem;
+  }
+  .case-section {
+    gap: 1.5rem 2rem;
+  }
+}
+@media (max-width: 700px) {
+  .case-intro {
+    grid-template-columns: 1fr;
+    padding: 1.5rem 1.1rem;
+    margin-bottom: 2rem;
+    gap: 1.5rem;
+  }
+  .case-title h1 {
+    font-size: 2.6rem;
+  }
+  .case-section {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding-block: 1.5rem;
+  }
+  .case-title .command-heading {
+    font-size: 0.7rem;
+  }
+}

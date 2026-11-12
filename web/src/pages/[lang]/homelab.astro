@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CommandLabel from '../../components/CommandLabel.astro';
+import { copy } from '../../lib/i18n';
+import {
+  commands,
+  languages,
+  projectsPath,
+  type Language,
+} from '../../lib/routes';
+import '../../styles/case-study.css';
+export function getStaticPaths() {
+  return languages.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Language;
+const t = copy[lang];
+---
+
+<BaseLayout
+  lang={lang}
+  title={`${t.homelab} · ${t.siteTitle}`}
+  description={t.homelabText}
+  route="homelab"
+>
+  <article class="homelab-page">
+    <a
+      class="back-link"
+      href={projectsPath(lang)}
+      data-preview-command={commands.projects}
+    >
+      <span aria-hidden="true">← </span>
+      {t.backProjects}
+    </a>
+    <header class="homelab-intro">
+      <CommandLabel command={commands.homelab} />
+      <h1>{t.homelab}</h1>
+      <p>{t.homelabText}</p>
+    </header>
+    <section class="case-section" aria-labelledby="homelab-architecture">
+      <h2 id="homelab-architecture">{t.architecture}</h2>
+      <p class="pending-note">{t.homelabPending}</p>
+    </section>
+  </article>
+</BaseLayout>

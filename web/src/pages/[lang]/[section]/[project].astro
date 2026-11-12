@@ -1,6 +1,13 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { projectAnchor, projectPath } from '../../../lib/routes';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CommandLabel from '../../../components/CommandLabel.astro';
+import ProjectActions from '../../../components/ProjectActions.astro';
+import ProjectImage from '../../../components/ProjectImage.astro';
+import ProjectMedia from '../../../components/ProjectMedia.astro';
+import { copy } from '../../../lib/i18n';
+import { commands, projectAnchor, projectsPath } from '../../../lib/routes';
+import '../../../styles/case-study.css';
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
   return projects.map((entry) => ({
@@ -16,6 +23,142 @@ interface Props {
   entry: CollectionEntry<'projects'>;
 }
 const { entry } = Astro.props;
-// Keep previously shared URLs working; project content now lives on the homepage.
-return Astro.redirect(projectPath(entry.data.lang, entry.data.projectId));
+const {
+  lang,
+  projectId,
+  title,
+  category,
+  description,
+  problem,
+  features,
+  technologies,
+  contribution,
+  decisions,
+  architecture,
+  media,
+  sources,
+} = entry.data;
+const t = copy[lang];
 ---
+
+<BaseLayout
+  lang={lang}
+  title={`${title} · ${t.siteTitle}`}
+  description={description}
+  route={projectId}
+>
+  <article class:list={['case-study', `case-${projectId}`]}>
+    <a
+      class="back-link"
+      href={projectsPath(lang)}
+      data-preview-command={commands.projects}
+    >
+      <span aria-hidden="true">← </span>
+      {t.backProjects}
+    </a>
+    <header class="case-intro">
+      <div class="case-title">
+        <CommandLabel command={commands[projectId]} />
+        <h1>{title}</h1>
+        <p class="case-description">{description}</p>
+      </div>
+      <div class="case-access">
+        <p class="case-category">{category}</p>
+        <ProjectActions entry={entry} />
+      </div>
+    </header>
+    {media.cover && (
+      <div class="case-cover">
+        <ProjectImage image={media.cover} eager />
+      </div>
+    )}
+    <section class="case-section" aria-labelledby="problem-heading">
+      <h2 id="problem-heading">{t.problem}</h2>
+      <p>{problem ?? t.contentPending}</p>
+    </section>
+    <section class="case-section" aria-labelledby="features-heading">
+      <h2 id="features-heading">{t.features}</h2>
+      {features.length ? (
+        <ul class="case-list">
+          {features.map((feature) => (
+            <li>{feature}</li>
+          ))}
+        </ul>
+      ) : (
+        <p class="pending-note">{t.contentPending}</p>
+      )}
+    </section>
+    <section class="case-section" aria-labelledby="stack-heading">
+      <h2 id="stack-heading">{t.projectStack}</h2>
+      <ul class="case-stack">
+        {technologies.map((technology) => (
+          <li>{technology}</li>
+        ))}
+      </ul>
+    </section>
+    <section class="case-section" aria-labelledby="contribution-heading">
+      <h2 id="contribution-heading">{t.contribution}</h2>
+      <p class:list={{ 'pending-note': !contribution }}>
+        {contribution ?? t.contributionPending}
+      </p>
+    </section>
+    <section class="case-section" aria-labelledby="decisions-heading">
+      <h2 id="decisions-heading">{t.decisions}</h2>
+      {decisions.length ? (
+        <ul class="case-list">
+          {decisions.map((decision) => (
+            <li>{decision}</li>
+          ))}
+        </ul>
+      ) : (
+        <p class="pending-note">{t.contentPending}</p>
+      )}
+    </section>
+    <section class="case-section" aria-labelledby="architecture-heading">
+      <h2 id="architecture-heading">{t.architecture}</h2>
+      <div class="case-architecture">
+        <p>{architecture.summary ?? t.contentPending}</p>
+        {architecture.diagram ? (
+          <ProjectImage image={architecture.diagram} />
+        ) : (
+          <p class="pending-note">{t.diagramPending}</p>
+        )}
+      </div>
+    </section>
+    <section class="case-section" aria-labelledby="media-heading">
+      <h2 id="media-heading">{t.mediaHeading}</h2>
+      <div>
+        <ProjectMedia entry={entry} />
+      </div>
+    </section>
+    {sources.length > 0 && (
+      <section
+        class="case-section case-sources"
+        aria-labelledby="sources-heading"
+      >
+        <h2 id="sources-heading">{t.sources}</h2>
+        <div>
+          <p>{t.sourcesNote}</p>
+          <ul>
+            {sources.map((source) => (
+              <li>
+                <a href={source.url} target="_blank" rel="noopener noreferrer">
+                  {source.label}
+                  <span class="sr-only">, {t.newTab}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )}
+    <a
+      class="back-link case-back"
+      href={projectsPath(lang)}
+      data-preview-command={commands.projects}
+    >
+      <span aria-hidden="true">← </span>
+      {t.backProjects}
+    </a>
+  </article>
+</BaseLayout>

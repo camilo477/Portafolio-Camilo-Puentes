@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import CommandLabel from './CommandLabel.astro';
+import { copy } from '../lib/i18n';
+import { commands, experienceAnchor, type Language } from '../lib/routes';
+interface Props {
+  lang: Language;
+}
+const { lang } = Astro.props;
+const t = copy[lang];
+const content = await getCollection(
+  'experience',
+  ({ data }) => data.lang === lang,
+);
+const entries = content.flatMap(({ data }) => data.entries);
+---
+
+<section
+  class="experience"
+  id={experienceAnchor(lang)}
+  aria-labelledby="experience-heading"
+>
+  <div class="section-heading">
+    <div>
+      <CommandLabel command={commands.experience} />
+      <h2 id="experience-heading">{t.experience}</h2>
+    </div>
+  </div>
+  {entries.length === 0 ? (
+    <p class="pending-note">{t.contentPending}</p>
+  ) : (
+    entries.map((entry) => (
+      <article class="experience-entry">
+        <header>
+          <p class="experience-period">{entry.period}</p>
+          <h3>{entry.role}</h3>
+          <p>{entry.company}</p>
+        </header>
+        <div>
+          <h4>{t.responsibilities}</h4>
+          <ul>
+            {entry.responsibilities.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+          <h4>{t.projectStack}</h4>
+          <p>{entry.technologies.join(' · ')}</p>
+          {entry.contributions.length > 0 && (
+            <>
+              <h4>{t.contributions}</h4>
+              <ul>
+                {entry.contributions.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      </article>
+    ))
+  )}
+</section>

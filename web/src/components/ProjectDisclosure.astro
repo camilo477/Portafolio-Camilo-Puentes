@@ -2,6 +2,8 @@
 import { render, type CollectionEntry } from 'astro:content';
 import MediaPlaceholder from './MediaPlaceholder.astro';
 import CommandLabel from './CommandLabel.astro';
+import ProjectActions from './ProjectActions.astro';
+import ProjectImage from './ProjectImage.astro';
 import { copy } from '../lib/i18n';
 import { commands } from '../lib/routes';
 import '../styles/projects.css';
@@ -9,7 +11,7 @@ interface Props {
   entry: CollectionEntry<'projects'>;
 }
 const { entry } = Astro.props;
-const { lang, projectId, title, category, description, repository, media } =
+const { lang, projectId, title, category, description, media, videoPlanned } =
   entry.data;
 const t = copy[lang];
 const { Content } = await render(entry);
@@ -52,22 +54,22 @@ const { Content } = await render(entry);
         <div class="prose">
           <Content />
         </div>
-        <a class="repository-link" href={repository}>
-          {t.repository}
-          <span class="sr-only">: {title}</span>
-        </a>
-        <p class="project-status">{t.draft}</p>
       </div>
     </div>
   </details>
   <div class="project-visual">
-    <div class="project-media-caption">
-      <span>{projectId === 'convertix' ? t.videoFormat : t.projectMedia}</span>
-      <span class="project-file" aria-hidden="true">
-        {projectId}/
-      </span>
-    </div>
-    <MediaPlaceholder lang={lang} name={projectId} kind={media} />
+    {media.cover && <ProjectImage image={media.cover} />}
+    <span class="project-file" aria-hidden="true">
+      {projectId}/
+    </span>
+    <ProjectActions entry={entry} preview />
+    {!media.cover && (
+      <MediaPlaceholder
+        lang={lang}
+        name={projectId}
+        kind={videoPlanned ? 'video' : 'screenshot'}
+      />
+    )}
     {projectId === 'nube-camiska' && (
       <p class="project-platform">
         <span>Linux</span>

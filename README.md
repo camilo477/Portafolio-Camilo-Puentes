@@ -1,6 +1,6 @@
 # Portafolio de Camilo Puentes
 
-Primera entrega para revisar composición e interacción. Astro + TypeScript, CSS
+Portafolio con presentación, tecnologías y fichas de proyectos bilingües. Astro + TypeScript, CSS
 propio, contenido Markdown y salida estática. No hay API, base de datos ni despliegue.
 
 ## Ejecutar localmente
@@ -51,16 +51,17 @@ sigue el sistema. Las fuentes se sirven localmente, con sus licencias en
 ```text
 web/
   src/
-    components/          Proyectos desplegables, tecnologías y material pendiente
-    content/projects/    Tres proyectos, cada uno en español e inglés
+    components/          Resúmenes, acciones, galerías, tecnologías y experiencia
+    content/projects/    Tres fichas, cada una en español e inglés
+    content/experience/  Datos profesionales pendientes de aprobación
     data/                Inventario tipado de tecnologías y categorías
     layouts/             HTML, navegación y controles comunes
     lib/                 Traducciones y mapa tipado de rutas/comandos
-    pages/               Portadas bilingües y redirección de URLs anteriores
+    pages/               Portadas, seis fichas y Homelab bilingüe
     scripts/             Proyectos, comandos, tema y movimiento
     styles/              CSS y tokens de color provisionales
   tests/                 Playwright, axe y generación de capturas
-  public/                Favicon y licencias
+  public/                Favicon, licencias y carpetas para medios reales
 api-status/              Reservado; Java 21 + Spring Boot en una etapa posterior
 infra/                   Reservado; sin conexión a Raspberry
 docs/                    Documentación técnica y verificación de la implementación
@@ -78,23 +79,29 @@ docs/                    Documentación técnica y verificación de la implement
   Sin porcentajes ni niveles de dominio inventados.
 - Navegación a `/es/#tecnologias` y `/en/#technologies`; tecnologías como texto,
   sin enlaces externos ni paradas de teclado, con comandos decorativos en hover.
-- Proyectos que se amplían en la misma página al pulsar su título o «Abrir proyecto». Otro clic los
+- Proyectos que se amplían en la misma página al pulsar su título o «Ampliar resumen». Otro clic los
   cierra; al abrir uno se cierra el anterior. Funciona con teclado y sin JavaScript.
 - Enlaces directos como `/es/#convertix`, idioma y Atrás/Adelante conservan el
-  proyecto abierto con JavaScript. Las URLs de fichas anteriores redirigen a la portada.
+  proyecto abierto con JavaScript. «Ver proyecto» abre su ficha individual estática.
+- Fichas en `/es/proyectos/{id}/` y `/en/projects/{id}/`, con `id` igual a
+  `dianimilo`, `nube-camiska` o `convertix`, e idiomas equivalentes.
+- «Abrir demo» lleva a las URLs reales aprobadas de DianiMilo y Nube Camiska en
+  otra pestaña. Convertix es una aplicación de escritorio y enlaza su repositorio.
 - Franja visual: hover/foco, tipeo de 180 ms, cancelación y restauración.
 - Temas claro/oscuro, preferencia persistente y esquema inicial del sistema.
 - Movimiento reducido y control adicional para desactivar efectos.
-- Capturas y vídeo de Convertix pendientes, identificados como tales. No se simulan demos.
+- Galerías y vídeos preparados; sin archivos se muestran avisos compactos.
+  Las capturas reales, diagramas y el detalle de las contribuciones quedan pendientes.
+- Experiencia profesional preparada con datos vacíos, y `/es/homelab/` y
+  `/en/homelab/` listas para documentar la infraestructura pública.
 - Se conserva el diseño de Tarea 02: proyectos con distintas proporciones,
-  medios visibles y paleta turquesa/ámbar provisional.
+  acciones visibles y paleta turquesa/ámbar provisional.
 - Refinamiento Tarea 03: presentación concreta, nota de homelab sin ilustración
   del escritorio, navegación sticky y apertura/cierre de proyectos en 240 ms.
   Movimiento reducido y navegación por historial omiten esa transición.
 
 La paleta **no es una identificación del tema Plasma**. Falta recibir su esquema
-real. Las demás secciones, el CV, el contacto y los casos completos no están
-implementados. React no se añadió: la interacción actual no necesita una isla.
+real. El CV y el contacto aún no están implementados. React no se añadió: la interacción actual no necesita una isla.
 
 ## Verificar
 
@@ -105,7 +112,7 @@ make screenshots
 ```
 
 `make lint` comprueba formato con Prettier; `make check` valida Astro y TypeScript.
-`make verify` ejecuta formato, tipos, compilación y pruebas en orden.
+`make verify` ejecuta formato, tipos, compilación, esquemas de contenido y pruebas en orden.
 `make test` y `make screenshots` también compilan antes de ejecutar Playwright.
 `make browsers` instala el navegador una vez o al actualizar Playwright.
 Playwright inicia y cierra su servidor en el puerto 4322, separado de `make` (4321).
@@ -128,6 +135,7 @@ ni una evaluación manual con lector de pantalla.
 [Sección de tecnologías y actualización del nombre](docs/TECNOLOGIAS.md).
 [Rediseño visual, paleta y decisiones de Tarea 02](docs/REDISENO_VISUAL.md).
 [Refinamiento de textos, navegación y proyectos de Tarea 03](docs/REFINAMIENTO.md).
+[Fichas, demos, fuentes y guía para añadir medios de Tarea 04](docs/PROYECTOS_Y_MULTIMEDIA.md).
 
 El repositorio contiene código, contenido del sitio, pruebas, configuración de
 compilación e integración continua y documentación técnica. Las instrucciones de

@@ -1,0 +1,66 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { copy } from '../lib/i18n';
+import ProjectImage from './ProjectImage.astro';
+interface Props {
+  entry: CollectionEntry<'projects'>;
+}
+const { entry } = Astro.props;
+const { media, lang, videoPlanned } = entry.data;
+const t = copy[lang];
+---
+
+{media.gallery.length > 0 && (
+  <div class="project-gallery">
+    {media.gallery.map((image) => (
+      <ProjectImage image={image} />
+    ))}
+  </div>
+)}
+{media.videos.map((video, index) => (
+  <figure class="project-video">
+    <video
+      controls
+      preload="none"
+      playsinline
+      poster={video.poster}
+      width={video.width}
+      height={video.height}
+      aria-labelledby={`video-title-${index}`}
+      aria-describedby={`video-description-${index}`}
+    >
+      <source
+        src={video.src}
+        type={video.src.endsWith('.webm') ? 'video/webm' : 'video/mp4'}
+      />
+      {video.captions.map((track) => (
+        <track
+          kind="captions"
+          src={track.src}
+          srclang={track.lang}
+          label={track.label}
+          default={track.lang === lang}
+        />
+      ))}
+      <a href={video.src}>{t.downloadVideo}</a>
+    </video>
+    <figcaption>
+      <strong id={`video-title-${index}`}>{video.title}</strong>
+      <p id={`video-description-${index}`}>{video.description}</p>
+    </figcaption>
+    <a class="video-download" href={video.src} download>
+      {t.downloadVideo}
+    </a>
+    {video.transcript && (
+      <details class="video-transcript">
+        <summary>{t.transcript}</summary>
+        <p>{video.transcript}</p>
+      </details>
+    )}
+  </figure>
+))}
+{media.gallery.length === 0 && media.videos.length === 0 && (
+  <p class="pending-note">
+    {videoPlanned ? t.mediaVideoPending : t.mediaPending}
+  </p>
+)}

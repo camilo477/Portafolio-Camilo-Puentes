@@ -1,0 +1,53 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { copy } from '../lib/i18n';
+import { commands, projectPath } from '../lib/routes';
+import '../styles/project-media.css';
+interface Props {
+  entry: CollectionEntry<'projects'>;
+  preview?: boolean;
+}
+const { entry, preview = false } = Astro.props;
+const { lang, projectId, title, repository, demoUrl, demoNote } = entry.data;
+const t = copy[lang];
+---
+
+<div class="project-actions">
+  {preview && (
+    <a
+      class="project-page-link"
+      href={projectPath(lang, projectId)}
+      data-preview-command={commands[projectId]}
+    >
+      {t.viewProject}
+      <span aria-hidden="true"> →</span>
+      <span class="sr-only">: {title}</span>
+    </a>
+  )}
+  {demoUrl && (
+    <a
+      class="demo-link"
+      href={demoUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {t.openDemo}
+      <span aria-hidden="true"> ↗</span>
+      <span class="sr-only">
+        : {title}, {t.newTab}
+      </span>
+    </a>
+  )}
+  <a
+    class="repository-link"
+    href={repository}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    GitHub
+    <span class="sr-only">
+      : {title}, {t.newTab}
+    </span>
+  </a>
+</div>
+{demoNote && <p class="demo-note">{demoNote}</p>}

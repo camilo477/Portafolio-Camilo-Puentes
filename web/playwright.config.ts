@@ -10,7 +10,7 @@ export default defineConfig({
   testDir: './tests',
   testMatch: process.env.CAPTURE_SCREENSHOTS
     ? '**/screenshots.spec.ts'
-    : '**/{portfolio,technologies,refinements}.spec.ts',
+    : '**/{portfolio,technologies,refinements,cases}.spec.ts',
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,

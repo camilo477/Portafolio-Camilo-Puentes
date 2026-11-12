@@ -7,7 +7,7 @@
     "build": "astro build",
     "check": "astro check",
     "preview": "astro preview --host 127.0.0.1",
-    "test": "playwright test",
+    "test": "node --test tests/content.test.mjs && playwright test",
     "screenshots": "CAPTURE_SCREENSHOTS=1 playwright test tests/screenshots.spec.ts --project=desktop --workers=1"
   },
   "dependencies": {

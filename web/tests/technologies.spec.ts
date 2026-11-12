@@ -103,7 +103,7 @@ test('keyboard opens the inventory and skips non-interactive technology names', 
     ),
   ).toHaveCount(0);
   await page.keyboard.press('Tab');
-  await expect(page.locator('[data-motion-toggle]')).toBeFocused();
+  await expect(page.locator('.footer-nav a').first()).toBeFocused();
   await page.keyboard.press('Shift+Tab');
   await expect(summary).toBeFocused();
   await page.keyboard.press('Space');

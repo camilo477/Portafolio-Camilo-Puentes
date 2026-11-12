@@ -5,6 +5,7 @@ import { resolve } from 'node:path';
 test('capture real desktop and mobile pages in both themes and languages', async ({
   browser,
 }) => {
+  test.setTimeout(90_000);
   const output = resolve('../docs/capturas');
   await mkdir(output, { recursive: true });
   for (const [device, viewport] of Object.entries({
@@ -74,6 +75,34 @@ test('capture real desktop and mobile pages in both themes and languages', async
         await page.screenshot({
           path: resolve(output, `${project}-${device}-${theme}.png`),
           fullPage: false,
+        });
+      }
+      for (const lang of ['es', 'en']) {
+        for (const project of ['dianimilo', 'nube-camiska', 'convertix']) {
+          await page.goto(
+            `/${lang}/${lang === 'es' ? 'proyectos' : 'projects'}/${project}/`,
+          );
+          await page.evaluate(() => document.fonts.ready);
+          await page.screenshot({
+            path: resolve(
+              output,
+              `case-${project}-${device}-${theme}-${lang}.png`,
+            ),
+            fullPage: true,
+          });
+          await page.screenshot({
+            path: resolve(
+              output,
+              `case-${project}-${device}-${theme}-${lang}-viewport.png`,
+            ),
+            fullPage: false,
+          });
+        }
+        await page.goto(`/${lang}/homelab/`);
+        await page.evaluate(() => document.fonts.ready);
+        await page.screenshot({
+          path: resolve(output, `homelab-${device}-${theme}-${lang}.png`),
+          fullPage: true,
         });
       }
       await context.close();

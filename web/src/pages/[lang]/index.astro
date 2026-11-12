@@ -3,11 +3,13 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectDisclosure from '../../components/ProjectDisclosure.astro';
 import TechnologySection from '../../components/TechnologySection.astro';
+import ExperienceSection from '../../components/ExperienceSection.astro';
 import CommandLabel from '../../components/CommandLabel.astro';
 import '../../styles/home.css';
 import { copy } from '../../lib/i18n';
 import {
   commands,
+  homelabPath,
   languages,
   projectAnchor,
   projectIds,
@@ -60,6 +62,14 @@ const orderedProjects = projectIds.map((id) =>
       <CommandLabel command="cd ~/homelab" />
       <h2 id="homelab-heading">{t.homelab}</h2>
       <p>{t.homelabText}</p>
+      <a
+        class="homelab-link"
+        href={homelabPath(lang)}
+        data-preview-command={commands.homelab}
+      >
+        {t.readHomelab}
+        <span aria-hidden="true"> →</span>
+      </a>
     </aside>
   </section>
   <section
@@ -80,4 +90,5 @@ const orderedProjects = projectIds.map((id) =>
     </div>
   </section>
   <TechnologySection lang={lang} />
+  <ExperienceSection lang={lang} />
 </BaseLayout>

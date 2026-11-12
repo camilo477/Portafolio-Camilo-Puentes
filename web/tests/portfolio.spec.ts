@@ -164,12 +164,11 @@ test('projects expand in the same document, one at a time, and can be closed', a
   await expect(
     page
       .locator('[data-media-for="convertix"]')
-      .getByText('Vídeo pendiente', { exact: true }),
+      .getByText('Capturas y vídeo de uso pendientes.', { exact: true }),
   ).toBeVisible();
-  await expect(panel(page, 'convertix').getByRole('link')).toHaveAttribute(
-    'href',
-    'https://github.com/camilo477/Converter-files',
-  );
+  await expect(
+    page.locator('.story-convertix .repository-link'),
+  ).toHaveAttribute('href', 'https://github.com/camilo477/Converter-files');
   await expect(page.locator('details[open]')).toHaveCount(1);
   await convertix(page).click();
   await expect(page.locator('details[open]')).toHaveCount(0);
@@ -191,14 +190,12 @@ test('hovering another project restores the expanded project on leave', async ({
   await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
 });
 
-test('direct anchors and old project URLs open the corresponding inline project', async ({
+test('old hash links still open the corresponding inline project', async ({
   page,
 }) => {
   for (const lang of ['es', 'en']) {
     for (const id of ['dianimilo', 'nube-camiska', 'convertix']) {
-      await page.goto(
-        `/${lang}/${lang === 'es' ? 'proyectos' : 'projects'}/${id}/`,
-      );
+      await page.goto(`/${lang}/#${id}`);
       await expect(page).toHaveURL(`/${lang}/#${id}`);
       await expect(panel(page, id)).toHaveAttribute('open', '');
       await expect(command(page)).toHaveText(`cd ~/proyectos/${id}`);
@@ -303,7 +300,9 @@ test('all three projects expand and close without JavaScript in both languages',
       await expect(page).toHaveURL(`/${lang}/`);
       await expect(panel(page, id)).toHaveAttribute('open', '');
       await expect(panel(page, id).locator('.project-expanded')).toBeVisible();
-      await expect(panel(page, id).getByRole('link')).toBeVisible();
+      await expect(
+        page.locator(`.story-${id} .project-page-link`),
+      ).toBeVisible();
       await expect(page.locator('details[open]')).toHaveCount(1);
     }
     await convertix(page).click();

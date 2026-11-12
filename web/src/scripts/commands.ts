@@ -2,6 +2,8 @@ import {
   commands,
   localizedPath,
   routeFromHash,
+  projectIds,
+  type ProjectId,
   type Language,
   type RouteId,
 } from '../lib/routes';
@@ -75,14 +77,16 @@ export function initializeCommands() {
         link.href = localizedPath(
           link.dataset.language as Language,
           activeRoute(),
+          route === 'home' ? 'preview' : 'page',
         );
       });
     document
       .querySelectorAll<HTMLAnchorElement>('.main-nav a')
       .forEach((link) => {
         const active = activeRoute();
-        const navigationRoute =
-          active === 'home' || active === 'technologies' ? active : 'projects';
+        const navigationRoute = projectIds.includes(active as ProjectId)
+          ? 'projects'
+          : active;
         const isActive =
           link.dataset.previewCommand === commands[navigationRoute];
         if (isActive)

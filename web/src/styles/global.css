@@ -292,6 +292,16 @@ h3 {
   font-weight: 550;
   color: var(--amber);
 }
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin-block: 0.6rem;
+}
+.footer-nav a {
+  display: inline-block;
+  padding-block: 0.4rem;
+}
 .motion-control {
   display: inline-flex;
   align-items: center;
