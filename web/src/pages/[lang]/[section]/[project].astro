@@ -42,6 +42,11 @@ const {
 const t = copy[lang];
 const sections = [
   { id: 'overview', label: t.overview, visible: true },
+  {
+    id: 'media-heading',
+    label: t.mediaHeading,
+    visible: media.gallery.length > 0 || media.videos.length > 0,
+  },
   { id: 'problem-heading', label: t.problem, visible: Boolean(problem) },
   { id: 'features-heading', label: t.features, visible: features.length > 0 },
   { id: 'stack-heading', label: t.projectStack, visible: true },
@@ -59,11 +64,6 @@ const sections = [
     id: 'architecture-heading',
     label: t.architecture,
     visible: Boolean(architecture.summary || architecture.diagram),
-  },
-  {
-    id: 'media-heading',
-    label: t.mediaHeading,
-    visible: media.gallery.length > 0 || media.videos.length > 0,
   },
   { id: 'sources-heading', label: t.sources, visible: sources.length > 0 },
 ];
@@ -103,6 +103,14 @@ const indexEntries: IndexEntry[] = sections
       <div class="case-cover">
         <ProjectImage image={media.cover} eager />
       </div>
+    )}
+    {(media.gallery.length > 0 || media.videos.length > 0) && (
+      <section class="case-section case-media" aria-labelledby="media-heading">
+        <h2 id="media-heading">{t.mediaHeading}</h2>
+        <div>
+          <ProjectMedia entry={entry} />
+        </div>
+      </section>
     )}
     {problem && (
       <section class="case-section" aria-labelledby="problem-heading">
@@ -152,14 +160,6 @@ const indexEntries: IndexEntry[] = sections
           {architecture.diagram && (
             <ProjectImage image={architecture.diagram} />
           )}
-        </div>
-      </section>
-    )}
-    {(media.gallery.length > 0 || media.videos.length > 0) && (
-      <section class="case-section" aria-labelledby="media-heading">
-        <h2 id="media-heading">{t.mediaHeading}</h2>
-        <div>
-          <ProjectMedia entry={entry} />
         </div>
       </section>
     )}

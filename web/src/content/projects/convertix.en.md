@@ -35,8 +35,31 @@ architecture:
 media:
   cover: null
   gallery: []
-  videos: []
-videoPlanned: true
+  videos:
+    - src: /media/projects/convertix/videos/desktop-demo.mp4
+      poster: /media/projects/convertix/images/desktop-demo.jpg
+      title: From JPG to PNG and PDF on KDE
+      description:
+        44 seconds of actual use with Dolphin, Convertix, Gwenview and Okular. Two local conversions,
+        opening the results and keeping the original file. No audio; ES/EN captions.
+      width: 1440
+      height: 900
+      silent: true
+      captions:
+        - src: /media/projects/convertix/captions/desktop-demo-es.vtt
+          lang: es
+          label: Español
+        - src: /media/projects/convertix/captions/desktop-demo-en.vtt
+          lang: en
+          label: English
+      transcript: |
+        00:00 — From Dolphin, open a JPG screenshot of the portfolio in Gwenview.
+        00:06 — Choose “Convertir…” from Dolphin’s context menu, then select PNG in Convertix.
+        00:15 — Open the generated PNG in Gwenview to check the image.
+        00:22 — Back in Dolphin, select the PNG and convert it to PDF with Convertix.
+        00:31 — Open the PDF in Okular and check the page containing the image.
+        00:40 — Dolphin shows the original JPG, PNG and PDF together.
+videoPlanned: false
 sources:
   - label: README.md
     url: https://github.com/camilo477/Converter-files/blob/main/README.md

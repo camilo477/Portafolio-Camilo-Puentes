@@ -1,0 +1,37 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:01.700
+Convertix: JPG → PNG → PDF on KDE.
+
+00:00:02.050 --> 00:00:05.700
+We start with a JPG screenshot of the portfolio.
+
+00:00:06.300 --> 00:00:08.800
+Open Convertix from Dolphin’s context menu.
+
+00:00:09.000 --> 00:00:12.500
+Choose PNG from the format menu.
+
+00:00:12.700 --> 00:00:15.700
+Convertix saves the PNG and keeps the original JPG.
+
+00:00:15.900 --> 00:00:19.700
+Open the PNG in Gwenview to check the result.
+
+00:00:20.000 --> 00:00:23.800
+Back in Dolphin, select the generated PNG.
+
+00:00:24.000 --> 00:00:28.200
+This time, choose PDF.
+
+00:00:28.400 --> 00:00:31.700
+The second conversion creates portafolio.pdf.
+
+00:00:31.900 --> 00:00:37.800
+Open the PDF in Okular: one page containing the image.
+
+00:00:38.000 --> 00:00:40.000
+Return to the demonstration folder.
+
+00:00:40.200 --> 00:00:44.000
+Original JPG, PNG and PDF: three local files.

@@ -6,7 +6,7 @@ interface Props {
   entry: CollectionEntry<'projects'>;
 }
 const { entry } = Astro.props;
-const { media, lang } = entry.data;
+const { media, lang, projectId } = entry.data;
 const t = copy[lang];
 ---
 
@@ -26,8 +26,8 @@ const t = copy[lang];
       poster={video.poster}
       width={video.width}
       height={video.height}
-      aria-labelledby={`video-title-${index}`}
-      aria-describedby={`video-description-${index}`}
+      aria-labelledby={`${projectId}-video-title-${index}`}
+      aria-describedby={`${projectId}-video-description-${index}`}
     >
       <source
         src={video.src}
@@ -45,8 +45,8 @@ const t = copy[lang];
       <a href={video.src}>{t.downloadVideo}</a>
     </video>
     <figcaption>
-      <strong id={`video-title-${index}`}>{video.title}</strong>
-      <p id={`video-description-${index}`}>{video.description}</p>
+      <strong id={`${projectId}-video-title-${index}`}>{video.title}</strong>
+      <p id={`${projectId}-video-description-${index}`}>{video.description}</p>
     </figcaption>
     <a class="video-download" href={video.src} download>
       {t.downloadVideo}

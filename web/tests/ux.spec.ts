@@ -152,9 +152,12 @@ test('public content contains no development notices, empty experience or intern
       await expect(page.locator('body')).not.toContainText(banned);
       await expect(
         page.locator(
-          '.experience, .media-placeholder, .palette-note, #contribution-heading, #media-heading',
+          '.experience, .media-placeholder, .palette-note, #contribution-heading',
         ),
       ).toHaveCount(0);
+      await expect(page.locator('#media-heading')).toHaveCount(
+        Number(suffix.endsWith('/convertix/')),
+      );
       const text = await page.locator('body').innerText();
       expect(text).not.toMatch(
         /\b(?:10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(?:1[6-9]|2\d|3[01])\.\d+\.\d+)\b|\/api\/internal|\/home\/|\/mnt\/|SECURITY_TOKEN|HUB_PASSWORD/,

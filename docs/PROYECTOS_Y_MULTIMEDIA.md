@@ -70,7 +70,8 @@ El contenido técnico procede de los repositorios públicos del propietario:
 Cada ficha enlaza estas fuentes. Las funcionalidades y decisiones descritas se
 limitan a lo documentado en esos archivos; no se atribuyen pruebas ejecutadas en
 esos repositorios. Convertix es una aplicación de escritorio Python/PySide6 para
-KDE, por lo que no se inventó una demo web. Su vídeo de uso queda pendiente.
+KDE, por lo que no se inventó una demo web. El vídeo de uso se incorporó después
+de la revisión de Camilo; su alcance se detalla al final de este documento.
 
 `contribution: null` conserva el detalle de la aportación personal pendiente de
 confirmación. Los resúmenes de arquitectura describen componentes documentados;
@@ -193,3 +194,35 @@ Quedan pendientes los archivos auténticos de medios, los diagramas, la descripc
 aprobada de las contribuciones personales, la experiencia profesional autorizada
 y la documentación pública de la infraestructura. La siguiente etapa requiere
 la revisión visual de Camilo.
+
+## Vídeo aprobado de Convertix — 12 de noviembre de 2026
+
+Se incorpora la grabación de 44 segundos aprobada por Camilo: JPG → PNG → PDF,
+con Dolphin, Convertix, Gwenview y Okular. Procede de una sesión real de KDE/KWin
+aislada, capturada con PipeWire; muestra clics, conversiones y apertura de resultados.
+Se conserva el archivo JPG original. Se verificaron su hash, los píxeles del PNG
+respecto al JPG decodificado y la página del PDF. La entrada es una captura del
+portafolio; no aparecen documentos privados ni credenciales.
+
+El vídeo aparece junto a Convertix en la portada y al inicio de sus dos fichas.
+El índice lateral incluye la sección de demostración. La entrada Markdown de cada
+idioma define título, descripción y transcripción. El reproductor nativo permite
+pausa, búsqueda, pantalla completa y descarga; carga el vídeo al reproducirlo,
+sin autoplay. Los subtítulos VTT ES/EN seleccionan por defecto el idioma de la página.
+
+Recursos publicados en `web/public/media/projects/convertix/`:
+
+- `videos/desktop-demo.mp4`: H.264, 1440 × 900, 30 fps, 44 segundos, sin audio.
+- `images/desktop-demo.jpg`: fotograma real usado como portada del vídeo.
+- `captions/desktop-demo-es.vtt` y `desktop-demo-en.vtt`: 12 bloques por idioma.
+
+Los ensayos, scripts de grabación y archivos de trabajo permanecen en las capturas
+locales ignoradas por Git. El vídeo de Homelab no forma parte de este incremento.
+
+Validación de este incremento: formato correcto, Astro/TypeScript sin errores ni
+advertencias y 13 páginas compiladas. Pasaron 4 pruebas de contenido y las suites
+completas por separado: 68 pruebas de escritorio y 65 de móvil emulado, con 3 casos
+de hover omitidos en móvil. Se verificaron carga bajo demanda, reproducción con
+teclado, búsqueda en el vídeo, las dos pistas VTT, transcripción y funcionamiento
+sin JavaScript. Se generaron 24 capturas de portada/ficha en ES/EN, claro/oscuro y
+escritorio/móvil; se inspeccionaron las vistas del reproductor sin desbordamiento.

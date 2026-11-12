@@ -72,6 +72,12 @@
 .case-list {
   max-width: 44rem;
 }
+.case-media {
+  grid-template-columns: minmax(0, 1fr);
+}
+.case-media > div {
+  max-width: none;
+}
 .case-list {
   margin: 0;
   padding-left: 1.1rem;

@@ -3,6 +3,7 @@ import { render, type CollectionEntry } from 'astro:content';
 import CommandLabel from './CommandLabel.astro';
 import ProjectActions from './ProjectActions.astro';
 import ProjectImage from './ProjectImage.astro';
+import ProjectMedia from './ProjectMedia.astro';
 import { copy } from '../lib/i18n';
 import { commands } from '../lib/routes';
 import '../styles/projects.css';
@@ -61,6 +62,7 @@ const { Content } = await render(entry);
       {projectId}/
     </span>
     <ProjectActions entry={entry} preview />
+    <ProjectMedia entry={entry} />
     {projectId === 'nube-camiska' && (
       <p class="project-platform">
         <span>Linux</span>
