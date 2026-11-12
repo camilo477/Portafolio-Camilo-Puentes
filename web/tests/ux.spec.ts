@@ -104,7 +104,7 @@ test('native hashes and Homelab navigation also work without JavaScript', async 
   await context.close();
 });
 
-test('primary navigation is compact and keyboard accessible on narrow screens', async ({
+test('preferences stay compact and footer navigation works with the keyboard on narrow screens', async ({
   page,
 }) => {
   for (const lang of ['es', 'en']) {
@@ -113,8 +113,9 @@ test('primary navigation is compact and keyboard accessible on narrow screens', 
       await page.goto(`/${lang}/`);
       expect(
         (await page.locator('.site-header').boundingBox())!.height,
-      ).toBeLessThan(135);
-      const links = page.locator('.main-nav a');
+      ).toBeLessThan(80);
+      const links = page.locator('.site-footer .main-nav a');
+      await expect(page.locator('.site-header .main-nav')).toHaveCount(0);
       await expect(links).toHaveCount(4);
       for (const link of await links.all()) {
         const box = (await link.boundingBox())!;

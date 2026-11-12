@@ -99,12 +99,13 @@ docs/                    Documentación técnica y verificación de la implement
   de la Raspberry, Docker y Cloudflare Tunnel contrastado por SSH de solo lectura.
   Nginx se distingue como servicio estático independiente. Las rutas antiguas
   redirigen al bloque; se conserva apertura nativa sin JavaScript.
-- Homelab accesible desde la navegación principal; encabezados protegidos bajo
-  la barra sticky al navegar con hashes, y barra compacta en móvil.
+- Índice lateral y navegación de secciones en el footer. Arriba quedan únicamente
+  ES/EN y el control de tema a la derecha, sin barra de menú ni franja de fondo.
+  Los encabezados mantienen espacio respecto a esos controles al navegar con hashes.
 - Se conserva el diseño de Tarea 02: proyectos con distintas proporciones,
   acciones visibles y paleta turquesa/ámbar provisional.
 - Refinamiento Tarea 03: presentación concreta, nota de homelab sin ilustración
-  del escritorio, navegación sticky y apertura/cierre de proyectos en 240 ms.
+  del escritorio y apertura/cierre de proyectos en 240 ms.
   Movimiento reducido y navegación por historial omiten esa transición.
 
 La paleta **no es una identificación del tema Plasma**. Falta recibir su esquema

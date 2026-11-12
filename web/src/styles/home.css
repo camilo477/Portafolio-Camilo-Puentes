@@ -70,7 +70,8 @@
 @media (max-width: 700px) {
   .introduction {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+    /* At the Homelab anchor, keep the preceding actions above the floating controls. */
+    gap: calc(var(--header-height) + 1rem);
     padding-block: 2.3rem 3.5rem;
   }
   h1 {

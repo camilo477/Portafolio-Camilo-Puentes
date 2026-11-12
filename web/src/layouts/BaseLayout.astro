@@ -67,60 +67,6 @@ const indexEntries =
     </a>
     <header class="site-header">
       <div class="header-inner wrap">
-        <nav class="main-nav" aria-label={t.navigation}>
-          <a
-            href={homePath(lang)}
-            data-preview-command={commands.home}
-            aria-current={route === 'home' ? 'page' : undefined}
-          >
-            <span class="nav-path" aria-hidden="true">
-              ~/
-            </span>
-            {t.home}
-          </a>
-          <a
-            href={projectsPath(lang)}
-            data-preview-command={commands.projects}
-            aria-current={
-              projectIds.includes(route as ProjectId) ? 'true' : undefined
-            }
-          >
-            <span class="nav-path" aria-hidden="true">
-              ./
-            </span>
-            {t.projects}
-          </a>
-          <a
-            href={technologiesPath(lang)}
-            data-preview-command={commands.technologies}
-          >
-            <span class="nav-path" aria-hidden="true">
-              ./
-            </span>
-            {t.technologies}
-          </a>
-          {hasExperience && (
-            <a
-              href={experiencePath(lang)}
-              data-preview-command={commands.experience}
-            >
-              <span class="nav-path" aria-hidden="true">
-                ./
-              </span>
-              {t.experienceShort}
-            </a>
-          )}
-          <a
-            href={homelabPath(lang)}
-            data-preview-command={commands.homelab}
-            aria-current={route === 'homelab' ? 'page' : undefined}
-          >
-            <span class="nav-path" aria-hidden="true">
-              ./
-            </span>
-            {t.homelab}
-          </a>
-        </nav>
         <div class="preferences">
           <nav class="languages" aria-label={t.language}>
             {(['es', 'en'] as const).map((language) => (
@@ -177,16 +123,35 @@ const indexEntries =
     <footer class="site-footer wrap">
       <div>
         <p>{t.footer}</p>
-        <nav
-          class="footer-nav"
-          aria-label={lang === 'es' ? 'Más sobre mí' : 'More about me'}
-        >
+        <nav class="main-nav footer-nav" aria-label={t.navigation}>
+          <a
+            href={homePath(lang)}
+            data-preview-command={commands.home}
+            aria-current={route === 'home' ? 'page' : undefined}
+          >
+            {t.home}
+          </a>
+          <a
+            href={projectsPath(lang)}
+            data-preview-command={commands.projects}
+            aria-current={
+              projectIds.includes(route as ProjectId) ? 'true' : undefined
+            }
+          >
+            {t.projects}
+          </a>
+          <a
+            href={technologiesPath(lang)}
+            data-preview-command={commands.technologies}
+          >
+            {t.technologies}
+          </a>
           {hasExperience && (
             <a
               href={experiencePath(lang)}
               data-preview-command={commands.experience}
             >
-              {t.experience}
+              {t.experienceShort}
             </a>
           )}
           <a

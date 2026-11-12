@@ -40,13 +40,29 @@ test('professional introduction and homelab replace desktop decoration in ES/EN'
   }
 });
 
-test('sticky navigation stays opaque and anchors remain below it in both themes and languages', async ({
+test('only preferences remain at the top right and anchors stay clear in both themes and languages', async ({
   page,
 }) => {
   for (const lang of ['es', 'en']) {
     for (const theme of ['light', 'dark'] as const) {
       await page.emulateMedia({ colorScheme: theme });
       await page.goto(`/${lang}/`);
+      await expect(page.locator('.site-header .main-nav')).toHaveCount(0);
+      await expect(page.locator('.site-header a')).toHaveCount(2);
+      const controls = (await page.locator('.preferences').boundingBox())!;
+      const wrap = (await page.locator('.header-inner').boundingBox())!;
+      expect(controls.x + controls.width).toBeCloseTo(wrap.x + wrap.width, 0);
+      expect(
+        await page.locator('.site-header').evaluate((el) => ({
+          background: getComputedStyle(el).backgroundColor,
+          border: getComputedStyle(el).borderBottomWidth,
+          events: getComputedStyle(el).pointerEvents,
+        })),
+      ).toEqual({
+        background: 'rgba(0, 0, 0, 0)',
+        border: '0px',
+        events: 'none',
+      });
       for (const section of [
         lang === 'es' ? 'Proyectos' : 'Projects',
         lang === 'es' ? 'Tecnologías' : 'Technologies',
@@ -66,7 +82,7 @@ test('sticky navigation stays opaque and anchors remain below it in both themes 
         expect(title!.y).toBeGreaterThan(header!.height);
         expect(
           await page
-            .locator('.site-header')
+            .locator('.preferences')
             .evaluate((el) => getComputedStyle(el).backgroundColor),
         ).toBe(theme === 'dark' ? 'rgb(19, 27, 34)' : 'rgb(242, 240, 233)');
         for (const control of await page

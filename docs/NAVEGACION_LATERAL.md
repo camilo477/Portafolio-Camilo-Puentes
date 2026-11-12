@@ -3,9 +3,21 @@
 ## Alcance y decisiones
 
 Se conserva el ancho máximo de lectura de 1120 px, el diseño de proyectos, la
-paleta, las fuentes, la cabecera sticky y la consola inferior. No se añaden
+paleta, las fuentes y la consola inferior. No se añaden
 bibliotecas, backend ni despliegue. La raíz `/` y `make` abren inglés por petición
 explícita; `/es/` sigue disponible y el selector mantiene las rutas equivalentes.
+
+La petición posterior elimina el menú superior y su franja de fondo. Solo quedan
+ES/EN y el selector de tema, alineados a la derecha y disponibles durante el scroll.
+El área transparente no intercepta clics sobre el contenido; únicamente los
+controles reciben eventos. Se reduce la reserva superior en móvil y se conserva
+la medición de su altura para anclas, fuentes ampliadas e índice lateral.
+En móvil, la separación antes de Homelab considera esa altura para que los
+enlaces de la presentación no queden parcialmente bajo los controles al abrir
+su ancla directa.
+Los enlaces a Inicio, Proyectos, Tecnologías y Homelab pasan al footer, donde
+siguen funcionando con teclado y sin JavaScript; Experiencia continúa condicionada
+a contenido aprobado. El índice derecho permanece disponible en pantallas amplias.
 
 La referencia del encargo a una página independiente de Homelab describe un estado
 anterior. Homelab ya es un bloque real de portada por la petición previa de Camilo:
@@ -111,3 +123,10 @@ otra pestaña, conservando la URL del portafolio, en ambos idiomas y tamaños.
 Las respuestas externas se interceptan en la prueba para no depender de terceros.
 Capturas nuevas en ambos temas; revisión visual del lateral oscuro y footer móvil
 claro con LinkedIn disponible.
+
+Retirada del menú superior: formato, tipos y build aprobados; 4 pruebas de
+contenido, 65 de escritorio y 62 de móvil aprobadas. Se omiten los 3 casos de
+hover en táctil. La suite completa de navegador se ejecutó por perfil después
+de corregir la superposición del enlace de presentación al abrir Homelab en móvil.
+Se capturaron ambos temas e idiomas en escritorio, portátil y móvil; se revisaron
+la portada grande clara, el móvil oscuro, el footer y el ancla de Homelab corregida.
