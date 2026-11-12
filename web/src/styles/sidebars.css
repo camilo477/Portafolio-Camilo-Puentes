@@ -58,6 +58,9 @@
 }
 /* Avoid reserving a top row before JavaScript measures the responsive controls. */
 @media (min-height: 40rem) and (min-width: calc(1120px + 28rem)) {
+  .intro-github {
+    display: none;
+  }
   :root {
     --header-height: 0px;
   }

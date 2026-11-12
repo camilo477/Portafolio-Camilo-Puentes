@@ -54,7 +54,12 @@ const orderedProjects = projectIds.map((id) =>
           {t.explore}
           <span aria-hidden="true">↓</span>
         </a>
-        <a href={professional.github} target="_blank" rel="noopener noreferrer">
+        <a
+          class="intro-github"
+          href={professional.github}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {t.github}
           <span class="sr-only">, {t.newTab}</span>
         </a>

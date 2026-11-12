@@ -38,17 +38,30 @@ test('English is the default even without JavaScript; explicit Spanish remains a
   const native = await context.newPage();
   await native.goto('/');
   await expect(native).toHaveURL('/en/');
+  await native.setViewportSize({ width: 1920, height: 1080 });
+  await expect(rail(native)).toBeVisible();
+  await expect(native.locator('.intro-github')).toBeHidden();
+  await native.setViewportSize({ width: 390, height: 844 });
+  await expect(rail(native)).toBeHidden();
+  await expect(native.locator('.intro-github')).toBeVisible();
+  await expect(native.locator('.intro-github')).toHaveAttribute(
+    'target',
+    '_blank',
+  );
   await context.close();
 });
 
 test('sidebars use spare margins, disappear on smaller screens and keep the reading width', async ({
   page,
 }) => {
-  for (const width of [2560, 1920, 1600, 1536, 1440, 1280, 820, 390, 320]) {
+  for (const width of [
+    2560, 1920, 1600, 1568, 1567, 1536, 1440, 1280, 820, 390, 320,
+  ]) {
     await page.setViewportSize({ width, height: 1080 });
     await page.goto('/en/');
-    if (width >= 1600) {
+    if (width >= 1568) {
       await expect(rail(page)).toBeVisible();
+      await expect(page.locator('.intro-github')).toBeHidden();
       await expect(index(page)).toBeVisible();
       const main = (await page.locator('main').boundingBox())!;
       const left = (await rail(page).boundingBox())!;
@@ -64,6 +77,7 @@ test('sidebars use spare margins, disappear on smaller screens and keep the read
       expect(main.width).toBe(1120);
     } else {
       await expect(rail(page)).toBeHidden();
+      await expect(page.locator('.intro-github')).toBeVisible();
       await expect(index(page)).toBeHidden();
       await expect(page.locator('.preferences')).toBeVisible();
     }
@@ -88,9 +102,15 @@ test('sidebars use spare margins, disappear on smaller screens and keep the read
     ),
   ).toBe(true);
   await page.setViewportSize({ width: 960, height: 540 });
+  await expect(page.locator('.intro-github')).toBeVisible();
   await expect(
     page.locator('.professional-footer a[href^="mailto:"]'),
   ).toBeVisible();
+  await page.goto('/es/');
+  await page.setViewportSize({ width: 1920, height: 600 });
+  await expect(rail(page)).toBeHidden();
+  await expect(page.locator('.intro-github')).toBeVisible();
+  await expect(page.locator('.intro-github')).toContainText('Mi GitHub');
 });
 
 test('professional links have real destinations, accessible tooltips and Linux previews', async ({
@@ -157,9 +177,9 @@ test('professional profiles open in a new tab and keep the portfolio in place', 
   for (const lang of ['es', 'en']) {
     await page.goto(`/${lang}/`);
     const links = page.locator(
-      `${isMobile ? '.professional-footer' : '.professional-rail'} a[href^="https:"], .intro-links a[href^="https:"]`,
+      `${isMobile ? '.professional-footer' : '.professional-rail'} a[href^="https:"], .intro-github:visible`,
     );
-    await expect(links).toHaveCount(3);
+    await expect(links).toHaveCount(isMobile ? 3 : 2);
     for (const link of await links.all()) {
       const destination = (await link.getAttribute('href'))!;
       const popupPromise = page.waitForEvent('popup');
