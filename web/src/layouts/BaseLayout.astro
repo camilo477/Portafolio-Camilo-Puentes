@@ -132,6 +132,12 @@ const indexEntries =
             {t.home}
           </a>
           <a
+            href={technologiesPath(lang)}
+            data-preview-command={commands.technologies}
+          >
+            {t.technologies}
+          </a>
+          <a
             href={projectsPath(lang)}
             data-preview-command={commands.projects}
             aria-current={
@@ -139,12 +145,6 @@ const indexEntries =
             }
           >
             {t.projects}
-          </a>
-          <a
-            href={technologiesPath(lang)}
-            data-preview-command={commands.technologies}
-          >
-            {t.technologies}
           </a>
           {hasExperience && (
             <a

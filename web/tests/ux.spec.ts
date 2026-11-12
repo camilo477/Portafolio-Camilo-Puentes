@@ -117,6 +117,11 @@ test('preferences stay compact and footer navigation works with the keyboard on 
       const links = page.locator('.site-footer .main-nav a');
       await expect(page.locator('.site-header .main-nav')).toHaveCount(0);
       await expect(links).toHaveCount(4);
+      await expect(links).toHaveText(
+        lang === 'es'
+          ? ['Inicio', 'Tecnologías', 'Proyectos', 'Homelab']
+          : ['Home', 'Technologies', 'Projects', 'Homelab'],
+      );
       for (const link of await links.all()) {
         const box = (await link.boundingBox())!;
         expect(box.x).toBeGreaterThanOrEqual(0);

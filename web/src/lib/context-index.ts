@@ -28,15 +28,15 @@ export function homeIndex(
       number: '01',
     },
     {
-      id: projectAnchor(lang),
-      label: t.projects,
-      command: commands.projects,
-      number: '02',
-    },
-    {
       id: technologiesAnchor(lang),
       label: t.technologies,
       command: commands.technologies,
+      number: '02',
+    },
+    {
+      id: projectAnchor(lang),
+      label: t.projects,
+      command: commands.projects,
       number: '03',
     },
     ...(hasExperience

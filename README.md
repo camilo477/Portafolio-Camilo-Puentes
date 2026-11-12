@@ -97,7 +97,8 @@ docs/                    Documentación técnica y verificación de la implement
   Las capturas reales, diagramas y el detalle de las contribuciones quedan pendientes.
 - Experiencia profesional preparada con borrador local excluido de Git. La sección
   y el acceso principal aparecen solo cuando exista contenido aprobado.
-- Homelab cierra la portada, después de Tecnologías y de Experiencia cuando haya
+- La portada, el índice y el footer siguen el orden Inicio → Tecnologías → Proyectos.
+- Homelab cierra la portada, después de Proyectos y de Experiencia cuando haya
   contenido aprobado. Se amplía en la misma página (`/es/#homelab` y `/en/#homelab`), con diagrama
   de la Raspberry, Docker y Cloudflare Tunnel contrastado por SSH de solo lectura.
   Nginx se distingue como servicio estático independiente. Las rutas antiguas

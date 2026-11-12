@@ -16,7 +16,7 @@ El área transparente no intercepta clics sobre el contenido; únicamente los
 controles reciben eventos. La reserva superior de las anclas es cero cuando el
 grupo está en el lateral; en móvil y portátil se mide la altura de los controles.
 El comportamiento de colocación también funciona sin JavaScript.
-Los enlaces a Inicio, Proyectos, Tecnologías y Homelab pasan al footer, donde
+Los enlaces a Inicio, Tecnologías, Proyectos y Homelab pasan al footer, donde
 siguen funcionando con teclado y sin JavaScript; Experiencia continúa condicionada
 a contenido aprobado. El índice derecho permanece disponible en pantallas amplias.
 
@@ -26,7 +26,15 @@ el índice utiliza `#homelab`, abre su contenido y conserva las redirecciones an
 Experiencia sigue condicionada a contenido aprobado. No hay enlace a una sección
 vacía; se reserva su número 04 y Homelab conserva el 05 solicitado.
 
-Homelab está ahora al final de la portada, después de Tecnologías y de Experiencia
+La portada y sus enlaces siguen el orden Inicio → Tecnologías → Proyectos,
+equivalente a Home → Technologies → Projects. El índice numera estas secciones
+como 01, 02 y 03, respectivamente.
+
+El cambio de orden se comprobó con formato, Astro/TypeScript, compilación de las
+13 páginas y 22 pruebas de navegación en escritorio y móvil. Se revisaron capturas
+reales de la portada en inglés y español, con los temas claro y oscuro.
+
+Homelab está al final de la portada, después de Proyectos y de Experiencia
 cuando exista contenido aprobado. El orden del documento coincide con el del
 índice; ya no forma parte de la presentación. Conserva la expansión nativa.
 Su resumen cerrado también cuenta como zona de lectura. Un observador del footer

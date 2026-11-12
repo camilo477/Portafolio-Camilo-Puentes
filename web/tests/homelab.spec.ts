@@ -66,7 +66,13 @@ test('hash, language, theme and history preserve Homelab while project text stay
     await page.reload();
     await expect(page.locator('#homelab')).toHaveAttribute('open', '');
     await expect(page.locator('#homelab-heading')).toBeInViewport();
-    await page.locator('.main-nav a').nth(1).click();
+    await page
+      .locator('.main-nav')
+      .getByRole('link', {
+        name: other === 'es' ? 'Proyectos' : 'Projects',
+        exact: true,
+      })
+      .click();
     await expect(page.locator('#homelab')).not.toHaveAttribute('open');
     await expect
       .poll(

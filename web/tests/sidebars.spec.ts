@@ -229,7 +229,21 @@ test('reading updates the index without changing the URL or adding history entri
   await wide(page);
   const originalHistory = await page.evaluate(() => history.length);
   await expect(active(page)).toHaveAttribute('data-index-target', 'home');
-  for (const id of ['projects', 'technologies', 'home']) {
+  expect(
+    await index(page)
+      .locator('a')
+      .evaluateAll((links) =>
+        links.map((link) => link.getAttribute('data-index-target')),
+      ),
+  ).toEqual(['home', 'technologies', 'projects', 'homelab']);
+  expect(
+    await page
+      .locator('main > section')
+      .evaluateAll((sections) =>
+        sections.map((section) => section.getAttribute('aria-labelledby')),
+      ),
+  ).toEqual(['intro-heading', 'technologies-heading', 'projects-heading']);
+  for (const id of ['technologies', 'projects', 'home']) {
     await page
       .locator(`#${id}`)
       .evaluate((el) => el.scrollIntoView({ block: 'start' }));
