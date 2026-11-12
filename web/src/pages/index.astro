@@ -1,3 +1,4 @@
 ---
-return Astro.redirect('/es/');
+import { defaultLanguage, homePath } from '../lib/routes';
+return Astro.redirect(homePath(defaultLanguage));
 ---

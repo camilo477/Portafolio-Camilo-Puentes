@@ -1,0 +1,181 @@
+/* Match .wrap's maximum without changing the reading width. Each container
+   measures the actual spare margin; enlarged text needs more room, too. */
+.side-margin {
+  position: fixed;
+  top: calc(var(--header-height) + 2rem);
+  bottom: calc(var(--bar-height) + 2rem);
+  width: max(0px, calc((100vw - 1120px) / 2));
+  container: side-margin / inline-size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 6;
+}
+.side-margin-left {
+  left: 0;
+}
+.side-margin-right {
+  right: 0;
+}
+.professional-rail,
+.context-index {
+  display: none;
+}
+@media (min-height: 40rem) {
+  @container side-margin (min-width: 14rem) {
+    .professional-rail,
+    .context-index {
+      display: block;
+      pointer-events: auto;
+    }
+  }
+}
+.professional-links {
+  position: relative;
+}
+.professional-links ul,
+.context-index ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.professional-rail ul {
+  display: grid;
+  gap: 0.6rem;
+}
+.professional-rail::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 3rem;
+  background: var(--border);
+  margin: 1rem auto 0;
+}
+.professional-item {
+  position: relative;
+}
+.professional-item:has([data-copy-email][hidden]) {
+  display: none;
+}
+.professional-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0.5rem;
+  color: var(--text-muted);
+  background: none;
+  border: 0;
+  text-decoration: none;
+}
+.professional-control[hidden] {
+  display: none;
+}
+.professional-control svg {
+  flex-shrink: 0;
+}
+.professional-control:hover,
+.professional-control:focus-visible {
+  color: var(--accent);
+}
+.copy-email svg {
+  width: 1rem;
+  height: 1rem;
+}
+.professional-tooltip {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  z-index: 1;
+}
+.professional-tooltip strong {
+  display: block;
+  color: var(--text);
+  font-weight: 550;
+  margin-bottom: 0.2rem;
+}
+.professional-item:not([data-tooltip-dismissed]):hover .professional-tooltip,
+.professional-item:not([data-tooltip-dismissed]):focus-within
+  .professional-tooltip {
+  display: block;
+}
+.professional-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+}
+.professional-footer .professional-control {
+  padding-inline: 0;
+  font-size: 0.8rem;
+}
+.professional-footer .professional-control span {
+  overflow-wrap: anywhere;
+}
+.professional-footer .professional-control:hover span {
+  text-decoration: underline;
+}
+.professional-footer .professional-control svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+.copy-feedback {
+  color: var(--green);
+  max-width: 22rem;
+  font-size: 0.8rem;
+}
+.professional-rail .copy-feedback {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 14rem;
+}
+.context-index {
+  width: 11rem;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+.index-heading {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding-left: 0.6rem;
+}
+.index-heading > span {
+  font-family: var(--mono);
+  color: var(--accent);
+}
+.context-index a {
+  display: flex;
+  gap: 0.65rem;
+  align-items: baseline;
+  padding: 0.6rem;
+  border-left: 2px solid transparent;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.index-number {
+  font: 0.7rem var(--mono);
+}
+.context-index a:hover {
+  color: var(--text);
+}
+.context-index a[aria-current='location'] {
+  color: var(--accent);
+  border-left-color: var(--accent);
+}

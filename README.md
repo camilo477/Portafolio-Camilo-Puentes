@@ -11,8 +11,8 @@ Desde la raíz, para iniciar el portafolio y abrirlo en el navegador:
 make
 ```
 
-Abre **http://127.0.0.1:4321/es/**. La versión en inglés está en
-**http://127.0.0.1:4321/en/**. Detener el servidor con **Ctrl+C**.
+Abre **http://127.0.0.1:4321/en/**. Inglés es el idioma predeterminado; la versión
+en español está en **http://127.0.0.1:4321/es/**. Detener el servidor con **Ctrl+C**.
 `make dev` hace lo mismo y `make help` muestra todos los comandos.
 
 Requiere Node **24.22.2** (fijado en `.nvmrc`), npm y GNU Make.
@@ -108,7 +108,7 @@ docs/                    Documentación técnica y verificación de la implement
   Movimiento reducido y navegación por historial omiten esa transición.
 
 La paleta **no es una identificación del tema Plasma**. Falta recibir su esquema
-real. El CV y el contacto aún no están implementados. React no se añadió: la interacción actual no necesita una isla.
+real. El correo está disponible; el CV y LinkedIn esperan los recursos definitivos. React no se añadió: la interacción actual no necesita una isla.
 
 ## Verificar
 
@@ -145,6 +145,7 @@ ni una evaluación manual con lector de pantalla.
 [Fichas, demos, fuentes y guía para añadir medios de Tarea 04](docs/PROYECTOS_Y_MULTIMEDIA.md).
 [Contenido profesional y ajustes de navegación de Tarea 05](docs/CONTENIDO_Y_UX.md).
 [Homelab: evidencia, arquitectura y límites](docs/HOMELAB.md).
+[Navegación lateral, enlaces profesionales e idioma predeterminado](docs/NAVEGACION_LATERAL.md).
 
 El repositorio contiene código, contenido del sitio, pruebas, configuración de
 compilación e integración continua y documentación técnica. Las instrucciones de

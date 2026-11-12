@@ -80,11 +80,20 @@ export function initializeCommands() {
     document
       .querySelectorAll<HTMLAnchorElement>('[data-language]')
       .forEach((link) => {
-        link.href = localizedPath(
+        const path = localizedPath(
           link.dataset.language as Language,
           activeRoute(),
           route === 'home' ? 'preview' : 'page',
         );
+        // Case headings share stable IDs between their translations.
+        const caseAnchor =
+          route !== 'home' &&
+          [
+            ...document.querySelectorAll<HTMLAnchorElement>(
+              '[data-index-target]',
+            ),
+          ].some((entry) => `#${entry.dataset.indexTarget}` === location.hash);
+        link.href = caseAnchor ? `${path}${location.hash}` : path;
       });
     document
       .querySelectorAll<HTMLAnchorElement>('.main-nav a')
@@ -154,6 +163,7 @@ export function initializeCommands() {
   window.addEventListener('hashchange', syncRoute);
   window.addEventListener('popstate', syncRoute);
   window.addEventListener('portfolio:locationchange', syncRoute);
+  window.addEventListener('portfolio:indexnavigate', syncRoute);
   window.addEventListener('pageshow', syncRoute);
   window.addEventListener('pagehide', () => {
     cancelAnimationFrame(typingFrame);

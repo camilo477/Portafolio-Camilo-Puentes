@@ -2,6 +2,7 @@ export function initializeHeader() {
   const header = document.querySelector<HTMLElement>('.site-header')!;
   let frame = 0;
   let followAnchor = Boolean(location.hash);
+  let anchorBehavior: ScrollBehavior = 'instant';
 
   const anchorTarget = () => {
     let id: string;
@@ -25,7 +26,7 @@ export function initializeHeader() {
         if (followAnchor)
           anchorTarget()?.scrollIntoView({
             block: 'start',
-            behavior: 'instant',
+            behavior: anchorBehavior,
           });
       });
     });
@@ -38,6 +39,7 @@ export function initializeHeader() {
     if (followAnchor) alignAnchor();
   };
   const navigate = () => {
+    anchorBehavior = 'instant';
     followAnchor = Boolean(location.hash);
     alignAnchor();
   };
@@ -55,6 +57,15 @@ export function initializeHeader() {
   window.addEventListener('hashchange', navigate);
   window.addEventListener('popstate', navigate);
   window.addEventListener('pageshow', navigate);
+  window.addEventListener('portfolio:indexnavigate', () => {
+    anchorBehavior =
+      matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      document.documentElement.dataset.motion === 'off'
+        ? 'instant'
+        : 'smooth';
+    followAnchor = Boolean(location.hash);
+    alignAnchor();
+  });
   window.addEventListener('pagehide', releaseAnchor);
   window.addEventListener('wheel', releaseAnchor, { passive: true });
   window.addEventListener('touchstart', releaseAnchor, { passive: true });

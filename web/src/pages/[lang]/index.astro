@@ -11,6 +11,7 @@ import { copy } from '../../lib/i18n';
 import {
   commands,
   languages,
+  homeAnchor,
   projectAnchor,
   projectIds,
   projectsPath,
@@ -32,7 +33,7 @@ const orderedProjects = projectIds.map((id) =>
 
 <BaseLayout lang={lang} title={t.siteTitle}>
   <section class="introduction" aria-labelledby="intro-heading">
-    <div class="intro-copy">
+    <div class="intro-copy" id={homeAnchor(lang)}>
       <div class="intro-overline">
         <CommandLabel command="whoami" />
         <span>{t.professionalPortfolio}</span>

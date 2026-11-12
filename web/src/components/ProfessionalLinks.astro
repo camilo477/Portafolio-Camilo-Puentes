@@ -1,0 +1,111 @@
+---
+import ProfessionalIcon from './ProfessionalIcon.astro';
+import { professional } from '../data/professional';
+import { copy } from '../lib/i18n';
+import type { Language } from '../lib/routes';
+interface Props {
+  lang: Language;
+  variant: 'rail' | 'footer';
+}
+const { lang, variant } = Astro.props;
+const t = copy[lang];
+const items = [
+  {
+    id: 'github' as const,
+    href: professional.github,
+    label: 'GitHub',
+    description: t.githubDescription,
+    command: `xdg-open ${professional.github}`,
+  },
+  {
+    id: 'linkedin' as const,
+    href: professional.linkedin,
+    label: 'LinkedIn',
+    description: t.linkedinDescription,
+    command: `xdg-open ${professional.linkedin}`,
+  },
+  {
+    id: 'email' as const,
+    href: `mailto:${professional.email}`,
+    label: t.email,
+    description: t.emailDescription,
+    command: `xdg-email ${professional.email}`,
+  },
+  {
+    id: 'cv' as const,
+    href: professional.cv,
+    label: t.cv,
+    description: t.cvDescription,
+    command: 'xdg-open ~/cv.pdf',
+  },
+].filter((item) => item.href);
+---
+
+<nav
+  class:list={['professional-links', `professional-${variant}`]}
+  aria-label={t.professionalLinks}
+  data-professional-links
+>
+  <ul role="list">
+    {items.map((item) => (
+      <li class="professional-item" data-tooltip-item>
+        <a
+          href={item.href!}
+          class="professional-control"
+          aria-label={item.label}
+          aria-describedby={
+            variant === 'rail' ? `${variant}-${item.id}-tip` : undefined
+          }
+          data-preview-command={item.command}
+        >
+          <ProfessionalIcon name={item.id} />
+          {variant === 'footer' && (
+            <span>{item.id === 'email' ? professional.email : item.label}</span>
+          )}
+        </a>
+        {variant === 'rail' && (
+          <span
+            class="professional-tooltip"
+            id={`${variant}-${item.id}-tip`}
+            role="tooltip"
+          >
+            <strong>{item.label}</strong>
+            <span>{item.description}</span>
+          </span>
+        )}
+      </li>
+    ))}
+    <li class="professional-item" data-tooltip-item>
+      <button
+        class="professional-control copy-email"
+        type="button"
+        hidden
+        data-copy-email={professional.email}
+        aria-label={t.copyEmail}
+        aria-describedby={
+          variant === 'rail' ? `${variant}-copy-tip` : undefined
+        }
+      >
+        <ProfessionalIcon name="copy" />
+        {variant === 'footer' && <span>{t.copyEmail}</span>}
+      </button>
+      {variant === 'rail' && (
+        <span
+          class="professional-tooltip"
+          id={`${variant}-copy-tip`}
+          role="tooltip"
+        >
+          <strong>{t.copyEmail}</strong>
+          <span>{professional.email}</span>
+        </span>
+      )}
+    </li>
+  </ul>
+  <p
+    class="copy-feedback"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+    data-copy-status
+  ></p>
+</nav>

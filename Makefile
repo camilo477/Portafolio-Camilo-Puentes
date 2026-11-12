@@ -45,7 +45,7 @@ install: check-node
 	npm ci
 
 dev: check-node
-	npm run dev -- --port "$(PORTFOLIO_PORT)" --ignore-lock --open /es/
+	npm run dev -- --port "$(PORTFOLIO_PORT)" --ignore-lock --open /en/
 
 lint: check-node
 	npm run lint

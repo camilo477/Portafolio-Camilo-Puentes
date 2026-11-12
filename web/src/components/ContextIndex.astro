@@ -1,0 +1,33 @@
+---
+import { copy } from '../lib/i18n';
+import type { IndexEntry } from '../lib/context-index';
+import type { Language } from '../lib/routes';
+interface Props {
+  lang: Language;
+  entries: IndexEntry[];
+}
+const { lang, entries } = Astro.props;
+---
+
+<nav class="context-index" aria-label={copy[lang].pageIndex}>
+  <p class="index-heading">
+    <span aria-hidden="true">./ </span>
+    {copy[lang].pageIndex}
+  </p>
+  <ol role="list">
+    {entries.map((entry, i) => (
+      <li>
+        <a
+          href={`${Astro.url.pathname}#${entry.id}`}
+          data-index-target={entry.id}
+          data-preview-command={entry.command}
+        >
+          <span class="index-number" aria-hidden="true">
+            {entry.number ?? String(i + 1).padStart(2, '0')}
+          </span>
+          <span>{entry.label}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+</nav>

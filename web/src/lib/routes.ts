@@ -1,3 +1,6 @@
+export const defaultLanguage = 'en';
+export const homeAnchor = (lang: Language) =>
+  lang === 'es' ? 'inicio' : 'home';
 export const languages = ['es', 'en'] as const;
 export type Language = (typeof languages)[number];
 export const projectIds = ['dianimilo', 'nube-camiska', 'convertix'] as const;

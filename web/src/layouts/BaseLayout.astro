@@ -1,5 +1,9 @@
 ---
 import '../styles/global.css';
+import '../styles/sidebars.css';
+import ProfessionalLinks from '../components/ProfessionalLinks.astro';
+import ContextIndex from '../components/ContextIndex.astro';
+import { homeIndex, type IndexEntry } from '../lib/context-index';
 import { publishedExperience } from '../lib/experience';
 import { copy } from '../lib/i18n';
 import {
@@ -21,6 +25,7 @@ interface Props {
   title: string;
   description?: string;
   route?: RouteId;
+  indexEntries?: IndexEntry[];
 }
 const {
   lang,
@@ -30,6 +35,9 @@ const {
 } = Astro.props;
 const t = copy[lang];
 const hasExperience = (await publishedExperience(lang)).length > 0;
+const indexEntries =
+  Astro.props.indexEntries ??
+  (route === 'home' ? homeIndex(lang, hasExperience) : []);
 ---
 
 <!doctype html>
@@ -157,6 +165,12 @@ const hasExperience = (await publishedExperience(lang)).length > 0;
         </div>
       </div>
     </header>
+    <div class="side-margin side-margin-left">
+      <ProfessionalLinks lang={lang} variant="rail" />
+    </div>
+    <div class="side-margin side-margin-right">
+      <ContextIndex lang={lang} entries={indexEntries} />
+    </div>
     <main id="main" class="wrap" tabindex="-1">
       <slot />
     </main>
@@ -184,6 +198,7 @@ const hasExperience = (await publishedExperience(lang)).length > 0;
           </a>
         </nav>
       </div>
+      <ProfessionalLinks lang={lang} variant="footer" />
       <label class="motion-control">
         <input type="checkbox" data-motion-toggle checked disabled />
         {t.motion}
@@ -216,11 +231,13 @@ const hasExperience = (await publishedExperience(lang)).length > 0;
       import { initializeProjects } from '../scripts/projects';
       import { initializeHeader } from '../scripts/header';
       import { initializeHomelab } from '../scripts/homelab';
+      import { initializeSidebars } from '../scripts/sidebars';
       initializeHeader();
       initializePreferences();
       initializeProjects();
       initializeHomelab();
       initializeCommands();
+      initializeSidebars();
     </script>
   </body>
 </html>

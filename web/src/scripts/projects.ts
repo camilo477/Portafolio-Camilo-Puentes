@@ -61,5 +61,6 @@ export function initializeProjects() {
   window.addEventListener('hashchange', syncFromLocation);
   window.addEventListener('popstate', syncFromLocation);
   window.addEventListener('pageshow', syncFromLocation);
+  window.addEventListener('portfolio:indexnavigate', syncFromLocation);
   syncFromLocation();
 }

@@ -31,5 +31,6 @@ export function initializeHomelab() {
   window.addEventListener('popstate', syncFromLocation);
   window.addEventListener('pageshow', syncFromLocation);
   window.addEventListener('portfolio:locationchange', syncFromLocation);
+  window.addEventListener('portfolio:indexnavigate', syncFromLocation);
   syncFromLocation();
 }

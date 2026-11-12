@@ -9,7 +9,9 @@ test('capture real desktop and mobile pages in both themes and languages', async
   const output = resolve('../docs/capturas');
   await mkdir(output, { recursive: true });
   for (const [device, viewport] of Object.entries({
+    wide: { width: 1920, height: 1080 },
     desktop: { width: 1440, height: 1000 },
+    laptop: { width: 1280, height: 900 },
     tablet: { width: 820, height: 1180 },
     mobile: { width: 390, height: 844 },
   })) {
@@ -28,6 +30,20 @@ test('capture real desktop and mobile pages in both themes and languages', async
         await page.screenshot({
           path: resolve(output, `${device}-${theme}-${lang}.png`),
           fullPage: false,
+        });
+        if (device === 'wide') {
+          await page.locator('.professional-rail a').first().focus();
+          await page.screenshot({
+            path: resolve(output, `professional-tooltip-${theme}-${lang}.png`),
+          });
+          await page.keyboard.press('Escape');
+        }
+        await page.locator('.professional-footer').scrollIntoViewIfNeeded();
+        await page.screenshot({
+          path: resolve(
+            output,
+            `professional-footer-${device}-${theme}-${lang}.png`,
+          ),
         });
         await page
           .getByRole('link', {
