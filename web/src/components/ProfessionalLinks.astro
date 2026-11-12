@@ -41,6 +41,8 @@ const items = [
 ].filter((item) => item.href);
 ---
 
+<!-- Keep the approved public contact usable without Cloudflare's decode script. -->
+<!--email_off-->
 <nav
   class:list={['professional-links', `professional-${variant}`]}
   aria-label={t.professionalLinks}
@@ -55,7 +57,11 @@ const items = [
           rel={item.id === 'email' ? undefined : 'noopener noreferrer'}
           class="professional-control"
           aria-label={
-            item.id === 'email' ? item.label : `${item.label}, ${t.newTab}`
+            item.id === 'email'
+              ? variant === 'footer'
+                ? `${item.label}: ${professional.email}`
+                : item.label
+              : `${item.label}, ${t.newTab}`
           }
           aria-describedby={
             variant === 'rail' ? `${variant}-${item.id}-tip` : undefined
@@ -81,3 +87,4 @@ const items = [
     ))}
   </ul>
 </nav>
+<!--/email_off-->

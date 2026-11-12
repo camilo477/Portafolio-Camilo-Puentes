@@ -22,7 +22,7 @@ test('static content, visible controls, and four ordered projects are available'
     page.getByRole('heading', { name: 'Proyectos', exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByRole('link', { name: 'English', exact: true }),
+    page.getByRole('link', { name: 'EN — English', exact: true }),
   ).toBeVisible();
   await expect(page.getByRole('button', { name: /tema/ })).toBeVisible();
   await expect(command(page)).toHaveText('cd ~');
@@ -177,7 +177,7 @@ test('project titles navigate with click or touch and preserve language and hist
   else await diani(page).click();
   await expect(page).toHaveURL('/es/proyectos/dianimilo/');
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
-  await page.getByRole('link', { name: 'English', exact: true }).click();
+  await page.getByRole('link', { name: 'EN — English', exact: true }).click();
   await expect(page).toHaveURL('/en/projects/dianimilo/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('DianiMilo');
   await page.goBack();
@@ -253,7 +253,7 @@ test('project section and language switch preserve the active anchor', async ({
   await expect(command(page)).toHaveText('ls ~/proyectos');
   await diani(page).focus();
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
-  await page.getByRole('link', { name: 'English', exact: true }).focus();
+  await page.getByRole('link', { name: 'EN — English', exact: true }).focus();
   await expect(command(page)).toHaveText('ls ~/proyectos');
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL('/en/#projects');
@@ -276,7 +276,7 @@ test('theme follows the system and the explicit choice survives navigation and r
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
-  await page.getByRole('link', { name: 'English', exact: true }).click();
+  await page.getByRole('link', { name: 'EN — English', exact: true }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   await page.getByRole('button', { name: 'Switch to dark theme' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
@@ -393,7 +393,7 @@ test('narrow layouts and the bottom bar leave controls unobscured', async ({
       ),
     ).toBe(true);
     await expect(
-      page.getByRole('link', { name: 'English', exact: true }),
+      page.getByRole('link', { name: 'EN — English', exact: true }),
     ).toBeVisible();
     await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
     const checkbox = await page

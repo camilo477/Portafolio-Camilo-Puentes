@@ -390,7 +390,10 @@ test('approved experience and Homelab have primary navigation in both languages'
     await expect(page.locator('#homelab-summary')).toContainText(
       'Raspberry Pi',
     );
-    await expect(page.locator('#homelab-summary')).toContainText('Docker');
+    await expect(page.locator('#homelab-summary')).toContainText('Nginx');
+    await expect(page.locator('#homelab-summary')).toContainText(
+      'Cloudflare Tunnel',
+    );
     await expect(command(page)).toHaveText('cd ~/homelab');
     await expect(page.locator('.main-nav [aria-current]')).toHaveAccessibleName(
       'Homelab',

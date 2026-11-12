@@ -424,12 +424,24 @@ test('short final case sections become active when reading to the bottom', async
         'data-index-target',
         'decisions-heading',
       );
+      // Reading keys should scroll the document, not the focused, scrollable index.
+      await page.locator('#main').focus();
       await page.keyboard.press('End');
+      await expect
+        .poll(() =>
+          page.evaluate(() =>
+            Math.abs(
+              scrollY + innerHeight - document.documentElement.scrollHeight,
+            ),
+          ),
+        )
+        .toBeLessThanOrEqual(1);
       await expect(active(page)).toHaveAttribute(
         'data-index-target',
         'sources-heading',
       );
       await page.keyboard.press('Home');
+      await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
       await expect(active(page)).toHaveAttribute(
         'data-index-target',
         'overview',

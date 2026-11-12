@@ -25,7 +25,7 @@ test('professional introduction and homelab replace desktop decoration in ES/EN'
     await expect(page.locator('#homelab-summary')).toHaveText(homelab);
     await expect(page.locator('meta[name="description"]')).toHaveAttribute(
       'content',
-      intro,
+      /Camilo Puentes.*Python, Django, Java.*Spring Boot.*Linux/,
     );
     await expect(page.locator('.introduction')).not.toContainText(
       /En mi escritorio|On my desktop|KDE Plasma/,

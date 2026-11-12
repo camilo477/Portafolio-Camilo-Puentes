@@ -78,6 +78,7 @@ const indexEntries: IndexEntry[] = sections
   description={description}
   route={projectId}
   indexEntries={indexEntries}
+  project={{ repository: entry.data.repository }}
 >
   <article class:list={['case-study', `case-${projectId}`]}>
     <a

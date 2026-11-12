@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 
 async function expectBelowHeader(page: Page, selector: string) {
   await expect
@@ -275,4 +276,55 @@ test('secondary categories are compact, exclusive and preserve non-link technolo
   await expect(
     page.locator('.technologies a, .technology-name[tabindex]'),
   ).toHaveCount(0);
+});
+
+test('visible labels remain part of accessible names for voice navigation', async ({
+  page,
+}) => {
+  for (const lang of ['es', 'en']) {
+    await page.goto(`/${lang}/`);
+    await expect(page.locator('[data-language="es"]')).toHaveAccessibleName(
+      'ES — Español',
+    );
+    await expect(page.locator('[data-language="en"]')).toHaveAccessibleName(
+      'EN — English',
+    );
+    await expect(
+      page.locator('.professional-footer a[href^="mailto:"]'),
+    ).toHaveAccessibleName(/camilopuentes.av@gmail.com/);
+    for (const open of [false, true]) {
+      if (open) await page.locator('#homelab > summary').click();
+      const result = await new AxeBuilder({ page })
+        .withRules(['label-content-name-mismatch'])
+        .analyze();
+      expect(result.violations).toEqual([]);
+    }
+  }
+});
+
+test('the approved public email remains a native link without JavaScript and opts out of CDN rewriting', async ({
+  browser,
+  request,
+  baseURL,
+}) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  for (const lang of ['es', 'en']) {
+    const response = await request.get(`/${lang}/`);
+    const html = await response.text();
+    const exclusions = [
+      ...html.matchAll(/<!--email_off-->([\s\S]*?)<!--\/email_off-->/g),
+    ];
+    expect(exclusions).toHaveLength(3);
+    for (const section of exclusions)
+      expect(section[1]).toContain('href="mailto:camilopuentes.av@gmail.com"');
+    await page.goto(`${baseURL}/${lang}/`);
+    await expect(page.locator('.intro-contact a[href^="mailto:"]')).toHaveText(
+      'camilopuentes.av@gmail.com',
+    );
+    await expect(
+      page.locator('.professional-footer a[href^="mailto:"]'),
+    ).toHaveAccessibleName(/camilopuentes.av@gmail.com/);
+  }
+  await context.close();
 });

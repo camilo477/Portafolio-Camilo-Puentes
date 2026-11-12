@@ -33,7 +33,15 @@ const orderedProjects = projectIds.map((id) =>
 );
 ---
 
-<BaseLayout lang={lang} title={t.siteTitle}>
+<BaseLayout
+  lang={lang}
+  title={`${t.siteTitle} · ${t.role}`}
+  description={
+    lang === 'es'
+      ? 'Camilo Puentes: desarrollo backend y full stack con Python, Django, Java y Spring Boot. Proyectos reales, APIs y aplicaciones alojadas en Linux.'
+      : 'Camilo Puentes: backend and full stack development with Python, Django, Java and Spring Boot. Real projects, APIs and applications hosted on Linux.'
+  }
+>
   <section class="introduction" aria-labelledby="intro-heading">
     <div class="intro-copy" id={homeAnchor(lang)}>
       <div class="intro-overline">
@@ -44,12 +52,14 @@ const orderedProjects = projectIds.map((id) =>
         <span>Camilo Alberto</span> <span>Puentes Valencia</span>
       </h1>
       <div class="intro-contact">
+        <!--email_off-->
         <a
           href={`mailto:${professional.email}`}
           data-preview-command={`xdg-email ${professional.email}`}
         >
           {professional.email}
         </a>
+        <!--/email_off-->
         <a
           href={professional.cv}
           target="_blank"

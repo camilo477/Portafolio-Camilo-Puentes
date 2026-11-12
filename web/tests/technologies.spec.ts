@@ -22,8 +22,18 @@ test('full name, page title and technology navigation are translated', async ({
   page,
 }) => {
   for (const [lang, title, anchor, label] of [
-    ['es', 'Portafolio Camilo Puentes', 'tecnologias', 'Tecnologías'],
-    ['en', 'Camilo Puentes Portfolio', 'technologies', 'Technologies'],
+    [
+      'es',
+      'Portafolio Camilo Puentes · Desarrollador backend y full stack',
+      'tecnologias',
+      'Tecnologías',
+    ],
+    [
+      'en',
+      'Camilo Puentes Portfolio · Backend and full stack developer',
+      'technologies',
+      'Technologies',
+    ],
   ]) {
     await page.goto(`/${lang}/`);
     await expect(page).toHaveTitle(title);
@@ -145,7 +155,7 @@ test('section language and history preserve the project anchor and visible text'
   await expect(page.locator('#dianimilo .project-content')).toBeVisible();
   await page.waitForTimeout(200);
   await expect(command(page)).toHaveText(stackCommand);
-  await page.getByRole('link', { name: 'English', exact: true }).click();
+  await page.getByRole('link', { name: 'EN — English', exact: true }).click();
   await expect(page).toHaveURL('/en/#technologies');
   await expect(command(page)).toHaveText(stackCommand);
   await page.goBack();
@@ -254,14 +264,14 @@ test('full name and expanded technologies fit narrow screens without covering co
   }
 });
 
-test('all expanded categories pass accessibility checks in both themes and languages', async ({
-  page,
-}) => {
-  test.setTimeout(60000);
-  const errors: string[] = [];
-  page.on('pageerror', (error) => errors.push(error.message));
-  for (const lang of ['es', 'en']) {
-    for (const theme of ['light', 'dark'] as const) {
+for (const lang of ['es', 'en']) {
+  for (const theme of ['light', 'dark'] as const) {
+    test(`${lang} ${theme}: all expanded categories pass accessibility checks`, async ({
+      page,
+    }) => {
+      test.setTimeout(60000);
+      const errors: string[] = [];
+      page.on('pageerror', (error) => errors.push(error.message));
       await page.emulateMedia({ colorScheme: theme });
       await page.goto(
         `/${lang}/#${lang === 'es' ? 'tecnologias' : 'technologies'}`,
@@ -282,14 +292,14 @@ test('all expanded categories pass accessibility checks in both themes and langu
         ).toBeVisible();
         const result = await new AxeBuilder({ page })
           .include('.technologies')
-          .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+          .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
           .analyze();
         expect(result.violations, `${lang} ${theme}`).toEqual([]);
       }
-    }
+      expect(errors).toEqual([]);
+    });
   }
-  expect(errors).toEqual([]);
-});
+}
 
 test('main areas are visible while declared exploration stays separate', async ({
   page,

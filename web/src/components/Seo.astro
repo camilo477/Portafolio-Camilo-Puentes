@@ -1,0 +1,104 @@
+---
+import { professional } from '../data/professional';
+import { copy } from '../lib/i18n';
+import { absoluteURL, siteOrigin } from '../lib/site';
+import {
+  defaultLanguage,
+  localizedPath,
+  type Language,
+  type RouteId,
+} from '../lib/routes';
+
+interface Props {
+  lang: Language;
+  route: RouteId;
+  title: string;
+  description: string;
+  project?: { repository: string };
+}
+
+const { lang, route, title, description, project } = Astro.props;
+const canonical = absoluteURL(localizedPath(lang, route).split('#')[0]);
+const image = absoluteURL(`/social/portfolio-${lang}.png`);
+const imageAlt = `Camilo Alberto Puentes Valencia — ${copy[lang].role} — camiska.lat`;
+const locales = { es: 'es_CO', en: 'en_US' };
+const websiteId = `${siteOrigin}/#website`;
+const personId = `${siteOrigin}/#person`;
+const graph = [
+  {
+    '@type': 'WebSite',
+    '@id': websiteId,
+    url: `${siteOrigin}/`,
+    name: 'Portafolio Camilo Puentes',
+    inLanguage: ['es', 'en'],
+  },
+  ...(route === 'home'
+    ? [
+        {
+          '@type': 'Person',
+          '@id': personId,
+          name: 'Camilo Alberto Puentes Valencia',
+          url: absoluteURL(localizedPath(defaultLanguage, 'home')),
+          jobTitle: copy[lang].role,
+          email: professional.email,
+          sameAs: [professional.github, professional.linkedin],
+        },
+      ]
+    : []),
+  {
+    '@type': project ? 'CreativeWork' : 'WebPage',
+    '@id': `${canonical}#page`,
+    url: canonical,
+    name: title,
+    description,
+    inLanguage: lang,
+    isPartOf: { '@id': websiteId },
+    ...(project
+      ? { isBasedOn: project.repository }
+      : { about: { '@id': personId } }),
+  },
+];
+// Keep structured data inert even if future content contains HTML delimiters.
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': graph,
+}).replace(/</g, '\\u003c');
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{(['es', 'en'] as const).map((language) => (
+  <link
+    rel="alternate"
+    hreflang={language}
+    href={absoluteURL(localizedPath(language, route).split('#')[0])}
+  />
+))}
+<link
+  rel="alternate"
+  hreflang="x-default"
+  href={absoluteURL(localizedPath(defaultLanguage, route).split('#')[0])}
+/>
+<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Portafolio Camilo Puentes" />
+<meta property="og:locale" content={locales[lang]} />
+<meta
+  property="og:locale:alternate"
+  content={locales[lang === 'es' ? 'en' : 'es']}
+/>
+<meta property="og:image" content={image} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={imageAlt} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+<meta name="twitter:image:alt" content={imageAlt} />
+<script type="application/ld+json" set:html={jsonLd} />
