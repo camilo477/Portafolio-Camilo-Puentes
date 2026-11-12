@@ -43,7 +43,7 @@ export const copy = {
     github: 'Mi GitHub',
     homelab: 'Homelab',
     homelabText:
-      'Mis proyectos web están alojados en una Raspberry Pi que utilizo como homelab. Allí administro servicios Linux, contenedores Docker y el despliegue de mis aplicaciones.',
+      'Este portafolio está alojado en mi Raspberry Pi, junto a Nube Camiska, DianiMilo y Camiska Hub. Nginx sirve el sitio y Cloudflare Tunnel lo conecta con camiska.lat.',
     viewProject: 'Ver proyecto',
     openDemo: 'Abrir demo',
     newTab: 'se abre en una pestaña nueva',
@@ -134,7 +134,7 @@ export const copy = {
     github: 'My GitHub',
     homelab: 'Homelab',
     homelabText:
-      'My web projects are hosted on a Raspberry Pi that I use as a homelab. I manage Linux services, Docker containers and application deployments there.',
+      'This portfolio is hosted on my Raspberry Pi alongside Nube Camiska, DianiMilo and Camiska Hub. Nginx serves the site, and Cloudflare Tunnel makes it available at camiska.lat.',
     viewProject: 'View project',
     openDemo: 'Open demo',
     newTab: 'opens in a new tab',

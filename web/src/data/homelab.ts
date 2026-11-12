@@ -9,7 +9,7 @@ export const homelabContent = {
       'Arquitectura verificada el 12 de noviembre de 2026, incluida la publicación del portafolio. Es una descripción del sistema observado, no un panel de estado en tiempo real.',
     purposeTitle: 'Alojar también es desarrollar',
     purpose:
-      'El homelab reúne aplicaciones con necesidades distintas: archivos personales, una aplicación compartida y un punto de entrada privado. El trabajo no termina al compilar la interfaz: también hay que conservar los datos y poder actualizar cada servicio.',
+      'Aquí alojo el portafolio que estás visitando, mi nube personal, DianiMilo y el acceso privado del Hub. El portafolio se compila con Astro y se sirve con Nginx; las otras aplicaciones usan contenedores Docker. Cloudflare Tunnel conecta cada dominio con su servicio.',
     diagramTitle: 'Del navegador a cada aplicación',
     diagramLabel: 'Arquitectura de aplicaciones del homelab',
     access: 'Navegador → Cloudflare Tunnel',
@@ -17,7 +17,7 @@ export const homelabContent = {
     connectorText:
       'El túnel dirige el portafolio a Nginx y las otras aplicaciones a sus contenedores.',
     host: 'Servidor personal · Raspberry Pi 4 con Debian 13',
-    nginx: 'Nginx · servicio independiente',
+    nginx: 'Nginx · servidor del portafolio',
     nginxText:
       'Sirve el portafolio estático. Nube, DianiMilo y Hub tienen rutas directas a sus contenedores.',
     containers: 'Aplicaciones en contenedores Docker',
@@ -26,7 +26,7 @@ export const homelabContent = {
     diagramHub: 'Node.js · acceso privado a las aplicaciones',
     portfolioTitle: 'Portafolio Camilo Puentes',
     diagramPortfolio:
-      'Astro · sitio estático alojado en la Raspberry Pi y servido por Nginx.',
+      'camiska.lat · Astro + Nginx · alojado en esta Raspberry Pi.',
     persistence: 'Datos fuera de las imágenes',
     persistenceText:
       'Nube usa directorios montados; DianiMilo combina directorios y volúmenes; Hub utiliza un volumen. Los datos persisten fuera de la imagen de cada aplicación.',
@@ -47,7 +47,7 @@ export const homelabContent = {
       {
         id: 'portafolio',
         title: 'Portafolio Camilo Puentes',
-        text: 'Este sitio reúne mis proyectos, experiencia y tecnologías. Astro genera los archivos estáticos que sirvo con Nginx en mi Raspberry Pi, sin necesitar una API para consultar el contenido.',
+        text: 'El sitio que estás visitando se publica en camiska.lat desde esta Raspberry Pi. Astro genera los archivos estáticos, Nginx los sirve y Cloudflare Tunnel permite acceder por HTTPS.',
       },
       {
         id: null,
@@ -67,7 +67,7 @@ export const homelabContent = {
       'Architecture checked on November 12, 2026, including the portfolio deployment. This describes the observed system; it is not a live status dashboard.',
     purposeTitle: 'Hosting is part of the work',
     purpose:
-      'The homelab brings together applications with different needs: personal files, a shared application and a private entry point. The work continues after building the interface: data must persist and each service needs an update path.',
+      'This is where I host the portfolio you are visiting, my personal cloud, DianiMilo and the private Hub. The portfolio is built with Astro and served by Nginx; the other applications run in Docker containers. Cloudflare Tunnel connects each domain to its service.',
     diagramTitle: 'From the browser to each application',
     diagramLabel: 'Homelab application architecture',
     access: 'Browser → Cloudflare Tunnel',
@@ -75,7 +75,7 @@ export const homelabContent = {
     connectorText:
       'The tunnel routes the portfolio to Nginx and the other applications to their containers.',
     host: 'Personal server · Raspberry Pi 4 running Debian 13',
-    nginx: 'Nginx · independent service',
+    nginx: 'Nginx · portfolio web server',
     nginxText:
       'Serves the static portfolio. Nube, DianiMilo and Hub have direct routes to their containers.',
     containers: 'Applications in Docker containers',
@@ -84,7 +84,7 @@ export const homelabContent = {
     diagramHub: 'Node.js · private access to the applications',
     portfolioTitle: 'Camilo Puentes Portfolio',
     diagramPortfolio:
-      'Astro · static site hosted on the Raspberry Pi and served by Nginx.',
+      'camiska.lat · Astro + Nginx · hosted on this Raspberry Pi.',
     persistence: 'Data outside the images',
     persistenceText:
       'Nube uses bind mounts; DianiMilo combines bind mounts and volumes; Hub uses a volume. Data persists outside each application image.',
@@ -105,7 +105,7 @@ export const homelabContent = {
       {
         id: 'portafolio',
         title: 'Camilo Puentes Portfolio',
-        text: 'This site brings together my projects, experience and technologies. Astro generates the static files I serve with Nginx on my Raspberry Pi; reading the content requires no API.',
+        text: 'The site you are visiting is published at camiska.lat from this Raspberry Pi. Astro generates the static files, Nginx serves them, and Cloudflare Tunnel provides HTTPS access.',
       },
       {
         id: null,

@@ -10,13 +10,13 @@ test('professional introduction and homelab replace desktop decoration in ES/EN'
       'es',
       'Desarrollador backend y full stack',
       'Desarrollo aplicaciones web y APIs con Python, Django, React y PostgreSQL. Soy una persona curiosa: me gusta aprender cosas nuevas, disfruto los retos y siempre busco mejorar.',
-      'Mis proyectos web están alojados en una Raspberry Pi que utilizo como homelab. Allí administro servicios Linux, contenedores Docker y el despliegue de mis aplicaciones.',
+      'Este portafolio está alojado en mi Raspberry Pi, junto a Nube Camiska, DianiMilo y Camiska Hub. Nginx sirve el sitio y Cloudflare Tunnel lo conecta con camiska.lat.',
     ],
     [
       'en',
       'Backend and full stack developer',
       'I develop web applications and APIs with Python, Django, React and PostgreSQL. I’m curious and enjoy learning new things. I like taking on challenges and am always looking for ways to improve.',
-      'My web projects are hosted on a Raspberry Pi that I use as a homelab. I manage Linux services, Docker containers and application deployments there.',
+      'This portfolio is hosted on my Raspberry Pi alongside Nube Camiska, DianiMilo and Camiska Hub. Nginx serves the site, and Cloudflare Tunnel makes it available at camiska.lat.',
     ],
   ]) {
     await page.goto(`/${lang}/`);
