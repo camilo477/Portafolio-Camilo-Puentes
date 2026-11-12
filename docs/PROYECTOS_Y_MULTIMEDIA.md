@@ -272,6 +272,37 @@ comprueba ambos reproductores, pistas de subtítulos, navegación sin JavaScript
 teclado, idiomas, temas, índice y accesibilidad. Se generaron 24 capturas locales
 y se inspeccionaron la portada y la ficha en escritorio y móvil.
 
+## Recorrido de Nube Camiska
+
+El vídeo de 45 segundos muestra una sesión nueva de la demo pública: entrada por
+«Explorar demo», Mis archivos, Documentos, Proyectos, vistas de lista y galería,
+búsqueda por nombre, Fotos, previsualización de la imagen ficticia, Notas,
+Recientes y regreso a Mis archivos. La grabación utiliza exclusivamente el espacio
+de demostración de solo lectura. No se suben, editan ni eliminan archivos.
+
+La previsualización de texto dentro del visor no forma parte del recorrido: durante
+la grabación, el servidor respondía con `X-Frame-Options: DENY` y el navegador
+bloqueaba su iframe. Se muestra la sección Notas con el archivo de ejemplo, sin
+atribuirle una lectura dentro del visor que no funcionó. No se modificó la aplicación.
+
+El vídeo aparece junto al proyecto en portada y en sus fichas ES/EN. Conserva
+controles nativos, carga bajo demanda, subtítulos seleccionables y ausencia de
+autoplay. No hay títulos visibles, transcripción ni enlaces de descarga debajo.
+Los recursos finales de `web/public/media/projects/nube-camiska/` son:
+
+- `videos/navigation-tour.mp4`: H.264, 1440 × 900, 30 fps, sin audio.
+- `images/navigation-tour.jpg`: fotograma real de Mis archivos.
+- `captions/navigation-tour-es.vtt` y `navigation-tour-en.vtt`: once bloques por idioma.
+
+Los originales, scripts y capturas de revisión permanecen locales e ignorados.
+
+Validación: formato y Astro/TypeScript sin incidencias, 13 páginas compiladas,
+validación de contenido y 18 pruebas de navegador aprobadas. Se comprueban los
+tres vídeos, carga bajo demanda, teclado, subtítulos, búsqueda temporal, navegación
+sin JavaScript, enlaces, índice y accesibilidad. Se generaron 18 capturas locales
+y se revisaron la portada en escritorio, la ficha en móvil y un fotograma con
+subtítulos en ambos tamaños. Los fotogramas del recorrido se revisaron por separado.
+
 ## Descripciones siempre visibles
 
 Se retiran «Expand overview / Close overview» y sus equivalentes en español.

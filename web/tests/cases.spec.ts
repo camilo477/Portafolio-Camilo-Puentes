@@ -25,6 +25,16 @@ const projects = [
 ];
 const projectVideos = [
   {
+    id: 'nube-camiska',
+    file: 'navigation-tour',
+    duration: 45,
+    captions: 11,
+    title: {
+      en: "A tour of Nube Camiska's files",
+      es: 'Recorrido por los archivos de Nube Camiska',
+    },
+  },
+  {
     id: 'convertix',
     file: 'desktop-demo',
     duration: 44,

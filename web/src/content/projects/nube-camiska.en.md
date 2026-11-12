@@ -34,7 +34,23 @@ architecture:
 media:
   cover: null
   gallery: []
-  videos: []
+  videos:
+    - src: /media/projects/nube-camiska/videos/navigation-tour.mp4
+      poster: /media/projects/nube-camiska/images/navigation-tour.jpg
+      title: A tour of Nube Camiska's files
+      description: >-
+        A 45-second tour of the read-only demo: folders, search, list and gallery views,
+        a sample image preview, Notes and Recent files. No audio; ES/EN captions.
+      width: 1440
+      height: 900
+      silent: true
+      captions:
+        - src: /media/projects/nube-camiska/captions/navigation-tour-es.vtt
+          lang: es
+          label: Español
+        - src: /media/projects/nube-camiska/captions/navigation-tour-en.vtt
+          lang: en
+          label: English
 videoPlanned: false
 sources:
   - label: README.md

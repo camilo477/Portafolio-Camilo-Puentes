@@ -34,7 +34,24 @@ architecture:
 media:
   cover: null
   gallery: []
-  videos: []
+  videos:
+    - src: /media/projects/nube-camiska/videos/navigation-tour.mp4
+      poster: /media/projects/nube-camiska/images/navigation-tour.jpg
+      title: Recorrido por los archivos de Nube Camiska
+      description: >-
+        Un recorrido de 45 segundos por la demo de solo lectura: carpetas, búsqueda,
+        vistas de lista y galería, previsualización de una imagen ficticia, Notas y Recientes.
+        Sin audio; subtítulos ES/EN.
+      width: 1440
+      height: 900
+      silent: true
+      captions:
+        - src: /media/projects/nube-camiska/captions/navigation-tour-es.vtt
+          lang: es
+          label: Español
+        - src: /media/projects/nube-camiska/captions/navigation-tour-en.vtt
+          lang: en
+          label: English
 videoPlanned: false
 sources:
   - label: README.md
