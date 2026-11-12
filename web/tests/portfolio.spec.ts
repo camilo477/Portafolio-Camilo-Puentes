@@ -31,7 +31,11 @@ test('static content, visible controls, and three ordered projects are available
     'aria-hidden',
     'true',
   );
-  await expect(page.locator('.identity')).not.toContainText('software');
+  await expect(
+    page
+      .locator('.site-header')
+      .getByRole('link', { name: 'Camilo Puentes', exact: true }),
+  ).toHaveCount(0);
   await expect(page.locator('.project-title')).toHaveText([
     'DianiMilo',
     'Nube Camiska',

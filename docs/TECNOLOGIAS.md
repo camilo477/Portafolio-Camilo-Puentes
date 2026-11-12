@@ -5,6 +5,10 @@
 El título del navegador es «Portafolio Camilo Puentes» en ES y «Camilo Puentes
 Portfolio» en EN. El encabezado principal muestra «Camilo Alberto Puentes Valencia».
 
+En la revisión posterior, Camilo pidió retirar el enlace textual «camilo / puentes»
+de la cabecera. Se elimina esa marca y sus estilos; la navegación conserva Inicio,
+Proyectos, Tecnologías, ES/EN y tema. El nombre completo permanece en la portada.
+
 Se incorpora el inventario proporcionado por Camilo, tanto en su mensaje como en
 el adjunto. Su petición explícita de omitir experiencia prevalece sobre la propuesta
 del adjunto de diferenciar niveles. No hay porcentajes, rangos, etiquetas de dominio,

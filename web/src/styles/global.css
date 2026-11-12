@@ -145,26 +145,10 @@ h3 {
   padding-block: 1.6rem;
   border-bottom: 1px solid var(--border);
 }
-.identity {
-  display: inline-flex;
-  flex-direction: column;
-  margin-right: auto;
-  text-decoration: none;
-  color: var(--text);
-}
-.identity-name {
-  font-weight: 650;
-  font-size: 1.1rem;
-  letter-spacing: -0.04em;
-}
-.identity-slash {
-  color: var(--text-muted);
-  padding-inline: 0.35rem;
-  font-weight: 400;
-}
 .main-nav {
   display: flex;
   gap: 1.75rem;
+  margin-right: auto;
 }
 .main-nav a {
   padding-block: 0.6rem;
@@ -562,11 +546,9 @@ h3 {
     gap: 1rem;
     padding-block: 1.15rem 0.3rem;
   }
-  .identity-name {
-    font-size: 1rem;
-  }
   .preferences {
     gap: 0.5rem;
+    margin-left: auto;
   }
   .theme-toggle {
     min-width: 5.5rem;
@@ -672,9 +654,6 @@ h3 {
   }
   .site-header {
     gap: 0.6rem;
-  }
-  .identity-name {
-    font-size: 0.85rem;
   }
   .theme-toggle {
     min-width: 2.75rem;
