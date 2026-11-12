@@ -59,6 +59,38 @@ const path = (lang: string, id: string) =>
   `/${lang}/${lang === 'es' ? 'proyectos' : 'projects'}/${id}/`;
 const command = (page: Page) => page.locator('[data-command]');
 
+test('fresh home starts at the top and portfolio back returns to the introduction', async ({
+  page,
+}) => {
+  for (const lang of ['es', 'en']) {
+    await page.goto(`/${lang}/`);
+    await page.evaluate(() => document.fonts.ready);
+    expect(await page.evaluate(() => scrollY)).toBe(0);
+    await page.locator('.site-build-link').click();
+    await expect(page).toHaveURL(path(lang, 'portafolio'));
+    await page.locator('.back-link').first().click();
+    await expect(page).toHaveURL(`/${lang}/`);
+    await expect(page.locator('h1')).toContainText('Camilo Alberto');
+    await expect(command(page)).toHaveText('cd ~');
+  }
+});
+
+test('direct project access falls back to the top of the home page', async ({
+  page,
+}) => {
+  for (const lang of ['es', 'en']) {
+    for (const project of projects) {
+      await page.goto(path(lang, project.id));
+      await expect(page.locator('.back-link').first()).toHaveAccessibleName(
+        lang === 'es' ? 'Volver' : 'Go back',
+      );
+      await page.locator('.back-link').first().click();
+      await expect(page).toHaveURL(`/${lang}/`);
+      await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
+    }
+  }
+});
+
 for (const project of projects) {
   test(`${project.title}: direct pages, equivalent language, theme and back navigation`, async ({
     page,
@@ -99,12 +131,8 @@ for (const project of projects) {
       await page.reload();
       await expect(page.locator('html')).toHaveAttribute('data-theme', theme!);
       await page.locator('.back-link').first().click();
-      await expect(page).toHaveURL(
-        `/${other}/#${other === 'es' ? 'proyectos' : 'projects'}`,
-      );
-      const heading = await page.locator('#projects-heading').boundingBox();
-      const header = await page.locator('.site-header').boundingBox();
-      expect(heading!.y).toBeGreaterThan(header!.height);
+      // Go back returns to the previous language/page in browser history.
+      await expect(page).toHaveURL(path(lang, project.id));
     }
     expect(errors).toEqual([]);
   });
@@ -192,9 +220,9 @@ test('project navigation and equivalent language work without JavaScript', async
       await expect(video).toHaveAccessibleName(demo.title.en);
     }
     await page.locator('.back-link').first().click();
-    await expect(page).toHaveURL('/en/#projects');
+    await expect(page).toHaveURL('/en/');
     expect(
-      (await page.locator('#projects-heading').boundingBox())!.y,
+      (await page.locator('#intro-heading').boundingBox())!.y,
     ).toBeGreaterThan(
       (await page.locator('.site-header').boundingBox())!.height,
     );
@@ -309,7 +337,7 @@ test('case commands revert to the actual page and reduced motion leaves no typin
   await page.goto(path('es', 'dianimilo'));
   const back = page.locator('.back-link').first();
   await back.focus();
-  await expect(command(page)).toHaveText('ls ~/proyectos');
+  await expect(command(page)).toHaveText('cd ~');
   await page.locator('[data-language="en"]').focus();
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
   if (!isMobile) {
@@ -333,7 +361,7 @@ test('case commands revert to the actual page and reduced motion leaves no typin
     return changes;
   });
   expect(values.length).toBeGreaterThan(0);
-  expect(values.every((value) => value === 'ls ~/proyectos')).toBe(true);
+  expect(values.every((value) => value === 'cd ~')).toBe(true);
   await page.goto(`${path('es', 'dianimilo')}#architecture-heading`);
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
   expect(

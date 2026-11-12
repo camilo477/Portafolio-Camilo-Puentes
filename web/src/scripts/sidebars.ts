@@ -1,32 +1,4 @@
-import { copy } from '../lib/i18n';
-import type { Language } from '../lib/routes';
-
 export function initializeSidebars() {
-  const lang = document.documentElement.lang as Language;
-  document
-    .querySelectorAll<HTMLButtonElement>('[data-copy-email]')
-    .forEach((button) => {
-      if (!navigator.clipboard?.writeText) return;
-      button.hidden = false;
-      button.addEventListener('click', async () => {
-        const status = button
-          .closest('[data-professional-links]')!
-          .querySelector<HTMLElement>('[data-copy-status]')!;
-        status.textContent = '';
-        button.disabled = true;
-        button.closest<HTMLElement>(
-          '[data-tooltip-item]',
-        )!.dataset.tooltipDismissed = '';
-        try {
-          await navigator.clipboard.writeText(button.dataset.copyEmail!);
-          status.textContent = copy[lang].emailCopied;
-        } catch {
-          status.textContent = copy[lang].emailCopyFailed;
-        } finally {
-          button.disabled = false;
-        }
-      });
-    });
   const tooltipItems = document.querySelectorAll<HTMLElement>(
     '[data-tooltip-item]',
   );
@@ -80,7 +52,7 @@ export function initializeSidebars() {
       return;
     }
     const last = entries.at(-1)!;
-    // The final collapsed section can be read before it reaches the top band.
+    // Short final sections may never reach the reading band, on case pages too.
     if (
       atPageEnd &&
       scrollY > 1 &&
@@ -161,8 +133,7 @@ export function initializeSidebars() {
   );
   const footer = document.querySelector('.site-footer');
   const observeEnd = () => {
-    if (entries.at(-1)!.area instanceof HTMLDetailsElement && footer)
-      endObserver.observe(footer);
+    if (footer) endObserver.observe(footer);
   };
   observeEnd();
   window.addEventListener('pageshow', observeEnd);

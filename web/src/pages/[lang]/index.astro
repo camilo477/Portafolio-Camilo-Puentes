@@ -43,6 +43,23 @@ const orderedProjects = projectIds.map((id) =>
       <h1 id="intro-heading">
         <span>Camilo Alberto</span> <span>Puentes Valencia</span>
       </h1>
+      <div class="intro-contact">
+        <a
+          href={`mailto:${professional.email}`}
+          data-preview-command={`xdg-email ${professional.email}`}
+        >
+          {professional.email}
+        </a>
+        <a
+          href={professional.cv}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-preview-command="xdg-open ~/cv.pdf"
+        >
+          {t.cv} <span class="cv-format">PDF</span>
+          <span class="sr-only">, {t.newTab}</span>
+        </a>
+      </div>
       <p class="role">{t.role}</p>
       <p class="intro-text">{t.intro}</p>
       <div class="intro-links">

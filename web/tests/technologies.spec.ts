@@ -317,7 +317,7 @@ test('main areas are visible while declared exploration stays separate', async (
   }
   await expect(page.locator('.area-java .learning-label')).toHaveCount(0);
   await expect(page.locator('.stack-exploration [data-technology]')).toHaveText(
-    ['Lua'],
+    ['Lua', 'C#'],
   );
   await expect(
     page.locator('.stack-exploration [data-technology="python"]'),

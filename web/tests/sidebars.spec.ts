@@ -125,11 +125,11 @@ test('professional links have real destinations, accessible tooltips and Linux p
   await expect(linkedInLink).toHaveAttribute('href', linkedin);
   await expect(mail).toHaveAttribute('href', `mailto:${email}`);
   await expect(page.locator('.professional-links a[href$=".pdf"]')).toHaveCount(
-    0,
+    2,
   );
   await expect(
     page.locator('[data-preview-command="xdg-open ~/cv.pdf"]'),
-  ).toHaveCount(0);
+  ).toHaveCount(3);
   await github.focus();
   await expect(page.locator('#rail-github-tip')).toBeVisible();
   await expect(command(page)).toHaveText(
@@ -194,53 +194,34 @@ test('professional profiles open in a new tab and keep the portfolio in place', 
   }
 });
 
-test('copy writes the public email, announces success and handles denied or absent clipboard access', async ({
+test('contact and the supplied PDF are available beside the name without a clipboard button', async ({
   page,
-  context,
-  browser,
+  request,
 }) => {
-  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
-  await wide(page);
-  await rail(page)
-    .getByRole('button', { name: 'Copy email', exact: true })
-    .click();
-  await expect(rail(page).getByRole('status')).toHaveText(
-    'Email address copied.',
-  );
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(email);
-  await page.addInitScript(() => {
-    Object.defineProperty(navigator, 'clipboard', {
-      configurable: true,
-      value: {
-        writeText: () =>
-          Promise.reject(new DOMException('Denied', 'NotAllowedError')),
-      },
-    });
-  });
-  await page.reload();
-  await rail(page)
-    .getByRole('button', { name: 'Copy email', exact: true })
-    .click();
-  await expect(rail(page).getByRole('status')).toContainText('Could not copy');
-  await expect(
-    rail(page).getByRole('button', { name: 'Copy email', exact: true }),
-  ).toBeEnabled();
-  const unavailableContext = await browser.newContext({
-    viewport: { width: 1920, height: 1080 },
-  });
-  await unavailableContext.addInitScript(() => {
-    Object.defineProperty(navigator, 'clipboard', {
-      configurable: true,
-      value: undefined,
-    });
-  });
-  const unavailable = await unavailableContext.newPage();
-  await unavailable.goto('/en/');
-  await expect(unavailable.locator('[data-copy-email]:visible')).toHaveCount(0);
-  await expect(unavailable.locator('.professional-footer')).toContainText(
-    email,
-  );
-  await unavailableContext.close();
+  for (const lang of ['es', 'en']) {
+    await page.goto(`/${lang}/`);
+    const contact = page.locator('.intro-contact');
+    await expect(contact.getByRole('link', { name: email })).toHaveAttribute(
+      'href',
+      `mailto:${email}`,
+    );
+    const cv = contact.locator('a[href$=".pdf"]');
+    await expect(cv).toBeVisible();
+    await expect(cv).toHaveAttribute('href', '/cv/Camilo_Puentes_CV.pdf');
+    await expect(cv).toHaveAttribute('target', '_blank');
+    await expect(cv).toHaveAttribute('rel', 'noopener noreferrer');
+    await expect(
+      page.locator('[data-copy-email], [data-copy-status]'),
+    ).toHaveCount(0);
+    const name = (await page.locator('h1').boundingBox())!;
+    const details = (await contact.boundingBox())!;
+    expect(details.y).toBeGreaterThanOrEqual(name.y + name.height);
+    expect(details.y - name.y - name.height).toBeLessThan(40);
+  }
+  const response = await request.get('/cv/Camilo_Puentes_CV.pdf');
+  expect(response.status()).toBe(200);
+  expect(response.headers()['content-type']).toContain('application/pdf');
+  expect((await response.body()).subarray(0, 5).toString()).toBe('%PDF-');
 });
 
 test('reading updates the index without changing the URL or adding history entries', async ({
@@ -419,12 +400,49 @@ test('native sidebar links still navigate without JavaScript', async ({
   await context.close();
 });
 
-test('sidebars, tooltips and copy feedback pass axe in both themes and languages', async ({
+test('short final case sections become active when reading to the bottom', async ({
   page,
-  context,
+  isMobile,
+}) => {
+  test.skip(isMobile, 'The reading index is displayed in wide-screen margins.');
+  for (const lang of ['es', 'en']) {
+    for (const project of [
+      'dianimilo',
+      'nube-camiska',
+      'convertix',
+      'portafolio',
+    ]) {
+      await wide(
+        page,
+        `/${lang}/${lang === 'es' ? 'proyectos' : 'projects'}/${project}/`,
+      );
+      const historyLength = await page.evaluate(() => history.length);
+      await index(page)
+        .locator('[data-index-target="decisions-heading"]')
+        .click();
+      await expect(active(page)).toHaveAttribute(
+        'data-index-target',
+        'decisions-heading',
+      );
+      await page.keyboard.press('End');
+      await expect(active(page)).toHaveAttribute(
+        'data-index-target',
+        'sources-heading',
+      );
+      await page.keyboard.press('Home');
+      await expect(active(page)).toHaveAttribute(
+        'data-index-target',
+        'overview',
+      );
+      expect(await page.evaluate(() => history.length)).toBe(historyLength + 1);
+    }
+  }
+});
+
+test('sidebars and professional tooltips pass axe in both themes and languages', async ({
+  page,
 }) => {
   test.setTimeout(90_000);
-  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   for (const lang of ['es', 'en']) {
     for (const theme of ['light', 'dark'] as const) {
       await page.emulateMedia({ colorScheme: theme });
@@ -439,8 +457,8 @@ test('sidebars, tooltips and copy feedback pass axe in both themes and languages
             .analyze()
         ).violations,
       ).toEqual([]);
-      await rail(page).locator('[data-copy-email]').click();
-      await expect(rail(page).getByRole('status')).not.toBeEmpty();
+      await rail(page).locator('a[href$=".pdf"]').focus();
+      await expect(page.locator('#rail-cv-tip')).toBeVisible();
       expect(
         (
           await new AxeBuilder({ page })

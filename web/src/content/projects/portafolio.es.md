@@ -37,7 +37,8 @@ architecture:
     El monorepositorio concentra el sitio en web/. Las fichas Markdown se validan mediante esquemas
     y alimentan tanto los resúmenes de portada como las páginas individuales. Los componentes Astro
     generan el HTML, el CSS define la presentación y pequeños módulos TypeScript gestionan la
-    interacción. La compilación produce archivos estáticos en web/dist/.
+    interacción. La compilación produce archivos estáticos en web/dist/, preparados para alojarse
+    en mi Raspberry Pi como parte del homelab.
   diagram: null
 media:
   cover: null
@@ -55,6 +56,8 @@ sources:
 ---
 
 Este es el sitio que estás recorriendo. Astro genera sus páginas a partir de componentes y fichas de proyecto en Markdown. TypeScript coordina las interacciones y el CSS propio define la composición, los temas y la adaptación a móvil.
+
+El portafolio está preparado para alojarse en mi Raspberry Pi como sitio estático, junto a los proyectos del homelab.
 
 La identidad Linux aparece en los encabezados y en la franja inferior: los comandos acompañan la navegación sin ejecutar una terminal. Los resúmenes de los proyectos están siempre visibles; el historial, los enlaces directos y el selector ES/EN conservan el contexto de lectura.
 

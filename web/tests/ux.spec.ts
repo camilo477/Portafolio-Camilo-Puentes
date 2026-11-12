@@ -185,7 +185,7 @@ test('public content contains approved experience without development notices or
   );
 });
 
-test('Homelab documents components and recovery limits with revision-pinned sources', async ({
+test('Homelab includes the portfolio and omits the removed operation and sources sections', async ({
   page,
 }) => {
   for (const lang of ['es', 'en']) {
@@ -203,20 +203,20 @@ test('Homelab documents components and recovery limits with revision-pinned sour
       'cloudflared',
     );
     await expect(page.locator('.diagram-nginx')).toContainText('Nginx');
-    await expect(page.locator('.homelab-operation li')).toHaveCount(3);
-    await expect(page.locator('.operation-scope')).toContainText(
-      lang === 'es'
-        ? 'no una prueba de recuperación'
-        : 'not a recovery exercise',
-    );
-    for (const link of await page.locator('.case-sources a').all()) {
-      expect(await link.getAttribute('href')).toMatch(
-        /^https:\/\/github.com\/camilo477\/[\w-]+\/blob\/[a-f0-9]{40}\//,
-      );
-    }
-    await page.locator('.homelab-service a').first().click();
-    await expect(page).toHaveURL(
-      `/${lang}/${lang === 'es' ? 'proyectos' : 'projects'}/nube-camiska/`,
+    await expect(page.locator('.diagram-portfolio')).toContainText('Astro');
+    await expect(
+      page.locator('.homelab-services .homelab-service'),
+    ).toHaveCount(4);
+    await expect(
+      page.locator('.homelab-services a[href$="/portafolio/"]'),
+    ).toHaveCount(1);
+    await expect(
+      page.locator(
+        '.homelab-operation, .operation-scope, #homelab .case-sources',
+      ),
+    ).toHaveCount(0);
+    await expect(page.locator('#homelab')).not.toContainText(
+      /Actualizar sin perder|Updating with a way back|Fuentes del caso|Case sources/,
     );
   }
 });

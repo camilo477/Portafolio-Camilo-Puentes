@@ -79,37 +79,5 @@ const items = [
         )}
       </li>
     ))}
-    <li class="professional-item" data-tooltip-item>
-      <button
-        class="professional-control copy-email"
-        type="button"
-        hidden
-        data-copy-email={professional.email}
-        aria-label={t.copyEmail}
-        aria-describedby={
-          variant === 'rail' ? `${variant}-copy-tip` : undefined
-        }
-      >
-        <ProfessionalIcon name="copy" />
-        {variant === 'footer' && <span>{t.copyEmail}</span>}
-      </button>
-      {variant === 'rail' && (
-        <span
-          class="professional-tooltip"
-          id={`${variant}-copy-tip`}
-          role="tooltip"
-        >
-          <strong>{t.copyEmail}</strong>
-          <span>{professional.email}</span>
-        </span>
-      )}
-    </li>
   </ul>
-  <p
-    class="copy-feedback"
-    role="status"
-    aria-live="polite"
-    aria-atomic="true"
-    data-copy-status
-  ></p>
 </nav>

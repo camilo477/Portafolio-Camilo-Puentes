@@ -13,8 +13,7 @@
   padding-block: 1rem 3rem;
 }
 .homelab-purpose h3,
-.homelab-services > h3,
-.homelab-operation > h3 {
+.homelab-services > h3 {
   font-size: 1.6rem;
   line-height: 1.4;
   letter-spacing: -0.03em;
@@ -122,52 +121,6 @@
   margin-top: 0.3rem;
   font-size: 0.85rem;
 }
-.homelab-operation {
-  padding: 2rem 2.5rem;
-  margin-bottom: 3rem;
-  background: var(--surface);
-  border-left: 3px solid var(--amber);
-}
-.homelab-operation > p {
-  margin-top: 1rem;
-}
-.homelab-operation ol {
-  padding: 0;
-  margin: 1.75rem 0;
-  list-style: none;
-  counter-reset: deployment;
-}
-.homelab-operation li {
-  position: relative;
-  padding-left: 2.75rem;
-  counter-increment: deployment;
-}
-.homelab-operation li + li {
-  margin-top: 1.5rem;
-}
-.homelab-operation li::before {
-  content: counter(deployment, decimal-leading-zero);
-  position: absolute;
-  left: 0;
-  top: 0.05rem;
-  font: 0.85rem var(--mono);
-  color: var(--amber);
-}
-.homelab-operation h4 {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.6;
-  letter-spacing: -0.01em;
-}
-.homelab-operation li p {
-  margin-top: 0.4rem;
-  max-width: 52rem;
-}
-.operation-scope {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  max-width: 54rem;
-}
 @media (max-width: 700px) {
   .homelab-purpose,
   .homelab-service {
@@ -185,12 +138,6 @@
   .diagram-storage {
     grid-template-columns: 1fr;
     gap: 0.6rem;
-  }
-  .homelab-operation {
-    padding: 1.5rem 1.1rem;
-  }
-  .homelab-operation li {
-    padding-left: 2.2rem;
   }
 }
 
@@ -253,9 +200,6 @@
   font-size: 1.3rem;
   line-height: 1.4;
 }
-.homelab-content .case-sources h3 {
-  font-size: 1rem;
-}
 .homelab-close {
   background: transparent;
   color: var(--accent);
@@ -276,17 +220,20 @@
   border-left: 2px solid var(--green);
 }
 .diagram-connector strong,
-.diagram-nginx strong {
+.diagram-nginx strong,
+.diagram-portfolio strong {
   font-size: 0.9rem;
   font-weight: 550;
 }
 .diagram-connector p,
-.diagram-nginx p {
+.diagram-nginx p,
+.diagram-portfolio p {
   color: var(--text-muted);
   font-size: 0.85rem;
   margin-top: 0.3rem;
 }
-.diagram-nginx {
+.diagram-nginx,
+.diagram-portfolio {
   margin-top: 1.5rem;
   padding-block: 1rem;
   border-block: 1px solid var(--border);

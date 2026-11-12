@@ -7,7 +7,7 @@ import ProjectImage from '../../../components/ProjectImage.astro';
 import ProjectMedia from '../../../components/ProjectMedia.astro';
 import { copy } from '../../../lib/i18n';
 import type { IndexEntry } from '../../../lib/context-index';
-import { commands, projectAnchor, projectsPath } from '../../../lib/routes';
+import { commands, projectAnchor, homePath } from '../../../lib/routes';
 import '../../../styles/case-study.css';
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -82,11 +82,12 @@ const indexEntries: IndexEntry[] = sections
   <article class:list={['case-study', `case-${projectId}`]}>
     <a
       class="back-link"
-      href={projectsPath(lang)}
-      data-preview-command={commands.projects}
+      href={homePath(lang)}
+      data-back-link
+      data-preview-command={commands.home}
     >
       <span aria-hidden="true">← </span>
-      {t.backProjects}
+      {t.back}
     </a>
     <header class="case-intro" id="overview">
       <div class="case-title">
@@ -186,11 +187,17 @@ const indexEntries: IndexEntry[] = sections
     )}
     <a
       class="back-link case-back"
-      href={projectsPath(lang)}
-      data-preview-command={commands.projects}
+      href={homePath(lang)}
+      data-back-link
+      data-preview-command={commands.home}
     >
       <span aria-hidden="true">← </span>
-      {t.backProjects}
+      {t.back}
     </a>
   </article>
 </BaseLayout>
+
+<script>
+  import { initializeBackLinks } from '../../../scripts/back-links';
+  initializeBackLinks();
+</script>

@@ -24,6 +24,23 @@
 .intro-copy h1 span:last-child {
   color: var(--accent);
 }
+.intro-contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 1.5rem;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+.intro-contact a {
+  padding-block: 0.5rem;
+  overflow-wrap: anywhere;
+}
+.cv-format {
+  margin-left: 0.3rem;
+  font: 0.7rem var(--mono);
+  color: var(--text-muted);
+}
 .role {
   max-width: 34rem;
   font-size: 1.4rem;

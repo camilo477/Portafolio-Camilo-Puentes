@@ -89,9 +89,6 @@
 .professional-item {
   position: relative;
 }
-.professional-item:has([data-copy-email][hidden]) {
-  display: none;
-}
 .professional-control {
   display: inline-flex;
   align-items: center;
@@ -114,10 +111,6 @@
 .professional-control:hover,
 .professional-control:focus-visible {
   color: var(--accent);
-}
-.copy-email svg {
-  width: 1rem;
-  height: 1rem;
 }
 .professional-tooltip {
   display: none;
@@ -164,17 +157,6 @@
 .professional-footer .professional-control svg {
   width: 1.1rem;
   height: 1.1rem;
-}
-.copy-feedback {
-  color: var(--green);
-  max-width: 22rem;
-  font-size: 0.8rem;
-}
-.professional-rail .copy-feedback {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 14rem;
 }
 .context-index {
   width: 11rem;

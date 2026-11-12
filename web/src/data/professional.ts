@@ -3,5 +3,5 @@ export const professional = {
   github: 'https://github.com/camilo477',
   linkedin: 'https://www.linkedin.com/in/camilo-puentes-6671a6262/',
   email: 'camilopuentes.av@gmail.com',
-  cv: null as string | null,
+  cv: '/cv/Camilo_Puentes_CV.pdf',
 };

@@ -37,7 +37,7 @@ architecture:
     The monorepo keeps the site in web/. Markdown entries are validated against schemas and supply both
     home page overviews and individual case studies. Astro components generate the HTML, CSS handles
     presentation and small TypeScript modules manage interaction. The build produces static files in
-    web/dist/.
+    web/dist/, ready to be hosted on my Raspberry Pi as part of the homelab.
   diagram: null
 media:
   cover: null
@@ -55,6 +55,8 @@ sources:
 ---
 
 This is the site you are browsing. Astro generates its pages from components and Markdown project entries. TypeScript coordinates interactions, while custom CSS defines the layout, themes and mobile presentation.
+
+The portfolio is ready to be hosted as a static site on my Raspberry Pi alongside the homelab projects.
 
 The Linux identity appears in the headings and bottom bar: commands accompany navigation without running a terminal. Project descriptions are always visible; history, direct links and the ES/EN switch preserve the reading context.
 

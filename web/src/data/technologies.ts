@@ -21,6 +21,7 @@ export const technologies = {
   bash: technology('Bash / Shell', 'echo $SHELL'),
   cpp: technology('C++'),
   lua: technology('Lua'),
+  csharp: technology('C#'),
   dart: technology('Dart'),
   django: technology('Django', 'python3 -m django --version'),
   drf: technology('Django REST Framework'),
@@ -122,7 +123,7 @@ export const mainStackAreas = [
 ] as const satisfies readonly { id: string; items: readonly TechnologyId[] }[];
 
 // Only the learning/initial-exploration entries explicitly described by Camilo.
-export const explorationIds: readonly TechnologyId[] = ['lua'];
+export const explorationIds: readonly TechnologyId[] = ['lua', 'csharp'];
 export type TechnologyCategoryId =
   | 'languages'
   | 'frameworks'
@@ -153,6 +154,7 @@ export const technologyCategories: readonly TechnologyCategory[] = [
       'bash',
       'cpp',
       'lua',
+      'csharp',
       'dart',
     ],
   },
