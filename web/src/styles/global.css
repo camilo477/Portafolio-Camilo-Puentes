@@ -238,8 +238,11 @@ h3 {
 .intro-copy > .command-heading {
   margin-bottom: 1.2rem;
 }
-.name-period {
-  color: var(--accent);
+.intro-copy h1 span {
+  display: block;
+}
+.intro-copy h1 {
+  text-wrap: balance;
 }
 .role {
   font-size: 1.3rem;
@@ -535,6 +538,9 @@ h3 {
 @media (max-width: 960px) {
   .site-header {
     gap: 1.5rem;
+  }
+  .main-nav {
+    gap: 1.1rem;
   }
   .introduction {
     gap: 2.5rem;

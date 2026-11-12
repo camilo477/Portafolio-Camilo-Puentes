@@ -51,8 +51,9 @@ sigue el sistema. Las fuentes se sirven localmente, con sus licencias en
 ```text
 web/
   src/
-    components/          Proyectos desplegables y marcadores de material pendiente
+    components/          Proyectos desplegables, tecnologías y material pendiente
     content/projects/    Tres proyectos, cada uno en español e inglés
+    data/                Inventario tipado de tecnologías y categorías
     layouts/             HTML, navegación y controles comunes
     lib/                 Traducciones y mapa tipado de rutas/comandos
     pages/               Portadas bilingües y redirección de URLs anteriores
@@ -69,6 +70,13 @@ docs/                    Documentación técnica y verificación de la implement
 ## Alcance de esta versión
 
 - Portada ES/EN con DianiMilo, Nube Camiska y Convertix, en ese orden.
+- Título «Portafolio Camilo Puentes» y nombre completo Camilo Alberto Puentes Valencia.
+- Tecnologías y lenguajes en ocho categorías: lenguajes, frameworks, bases de datos,
+  Linux/infraestructura, datos/BI, IA local, videojuegos/embebidos e ingeniería.
+  Solo nombres, sin niveles ni descripciones de experiencia. Lenguajes visibles
+  y otras categorías desplegables, también sin JavaScript.
+- Navegación a `/es/#tecnologias` y `/en/#technologies`; nombres con enlaces a
+  documentación y comandos visuales en la franja existente, mediante hover o foco.
 - Proyectos que se amplían en la misma página al pulsar su fila. Otro clic los
   cierra; al abrir uno se cierra el anterior. Funciona con teclado y sin JavaScript.
 - Enlaces directos como `/es/#convertix`, idioma y Atrás/Adelante conservan el
@@ -111,6 +119,7 @@ ni una evaluación manual con lector de pantalla.
 ## Documentación y archivos versionados
 
 [Entrega, decisiones técnicas y verificación](docs/PRIMERA_ENTREGA.md).
+[Sección de tecnologías y actualización del nombre](docs/TECNOLOGIAS.md).
 
 El repositorio contiene código, contenido del sitio, pruebas, configuración de
 compilación e integración continua y documentación técnica. Las instrucciones de

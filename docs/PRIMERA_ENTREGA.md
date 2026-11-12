@@ -4,6 +4,10 @@ Fecha: 11 de noviembre de 2026. Alcance: portada bilingüe, proyectos desplegabl
 y navegación visual Linux.
 Esta entrega termina en la revisión visual; no inicia la siguiente etapa.
 
+La ampliación posterior solicitada por Camilo —nombre completo y sección de
+tecnologías— se documenta con sus pruebas en [TECNOLOGIAS.md](TECNOLOGIAS.md).
+Los resultados siguientes corresponden al incremento de proyectos desplegables.
+
 ## Decisiones de implementación
 
 Se consultaron la [referencia de Josh W. Comeau](https://www.joshwcomeau.com/),

@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectDisclosure from '../../components/ProjectDisclosure.astro';
+import TechnologySection from '../../components/TechnologySection.astro';
 import { copy } from '../../lib/i18n';
 import {
   commands,
@@ -25,14 +26,14 @@ const orderedProjects = projectIds.map((id) =>
 );
 ---
 
-<BaseLayout lang={lang} title={t.role}>
+<BaseLayout lang={lang} title={t.siteTitle}>
   <section class="introduction" aria-labelledby="intro-heading">
     <div class="intro-copy">
       <p class="command-heading" aria-hidden="true">
         $ whoami
       </p>
       <h1 id="intro-heading">
-        Camilo Puentes<span class="name-period">.</span>
+        <span>Camilo Alberto</span> <span>Puentes Valencia</span>
       </h1>
       <p class="role">{t.role}</p>
       <p class="intro-text">{t.intro}</p>
@@ -75,4 +76,5 @@ const orderedProjects = projectIds.map((id) =>
       ))}
     </div>
   </section>
+  <TechnologySection lang={lang} />
 </BaseLayout>

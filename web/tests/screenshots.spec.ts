@@ -37,6 +37,33 @@ test('capture real desktop and mobile pages in both themes and languages', async
           path: resolve(output, `${device}-${theme}-${lang}-projects.png`),
           fullPage: false,
         });
+        await page.goto(
+          `/${lang}/#${lang === 'es' ? 'tecnologias' : 'technologies'}`,
+        );
+        await page.evaluate(() => document.fonts.ready);
+        await page
+          .locator('.technologies')
+          .evaluate((el) => el.scrollIntoView({ block: 'start' }));
+        await page.screenshot({
+          path: resolve(output, `technologies-${device}-${theme}-${lang}.png`),
+          fullPage: false,
+        });
+        for (const category of ['databases', 'linux']) {
+          await page
+            .locator(`[data-technology-group="${category}"] > summary`)
+            .click();
+        }
+        await page
+          .locator('[data-technology-group="databases"]')
+          .evaluate((el) => el.scrollIntoView({ block: 'start' }));
+        await page.mouse.move(0, 0);
+        await page.screenshot({
+          path: resolve(
+            output,
+            `technologies-expanded-${device}-${theme}-${lang}.png`,
+          ),
+          fullPage: false,
+        });
       }
       for (const project of ['dianimilo', 'nube-camiska', 'convertix']) {
         await page.goto(`/es/#${project}`);

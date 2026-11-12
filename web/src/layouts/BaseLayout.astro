@@ -6,6 +6,7 @@ import {
   homePath,
   localizedPath,
   projectsPath,
+  technologiesPath,
   type Language,
   type RouteId,
 } from '../lib/routes';
@@ -35,7 +36,7 @@ const t = copy[lang];
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" hreflang="es" href={localizedPath('es', route)} />
     <link rel="alternate" hreflang="en" href={localizedPath('en', route)} />
-    <title>{title} · Camilo Puentes</title>
+    <title>{title}</title>
     <script is:inline>
       try {
         const theme = localStorage.getItem('portfolio-theme');
@@ -75,6 +76,12 @@ const t = copy[lang];
         </a>
         <a href={projectsPath(lang)} data-preview-command={commands.projects}>
           {t.projects}
+        </a>
+        <a
+          href={technologiesPath(lang)}
+          data-preview-command={commands.technologies}
+        >
+          {t.technologies}
         </a>
       </nav>
       <div class="preferences">

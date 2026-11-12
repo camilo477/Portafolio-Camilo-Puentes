@@ -27,7 +27,7 @@ export function initializeProjects() {
       // Toggle events also follow history navigation. Do not add history for them.
       if (
         next === current ||
-        (!next && (current === 'home' || current === 'projects'))
+        (!next && !panels.some((item) => item.dataset.project === current))
       )
         return;
       history.pushState(null, '', localizedPath(lang, next ?? 'projects'));

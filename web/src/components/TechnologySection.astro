@@ -1,0 +1,72 @@
+---
+import { technologyCategories } from '../data/technologies';
+import { copy } from '../lib/i18n';
+import { commands, technologiesAnchor, type Language } from '../lib/routes';
+import TechnologyList from './TechnologyList.astro';
+import '../styles/technologies.css';
+
+interface Props {
+  lang: Language;
+}
+const { lang } = Astro.props;
+const t = copy[lang];
+const [languages, ...categories] = technologyCategories;
+---
+
+<section
+  class="technologies"
+  id={technologiesAnchor(lang)}
+  aria-labelledby="technologies-heading"
+>
+  <div class="section-heading">
+    <h2 id="technologies-heading">{t.technologyHeading}</h2>
+    <span class="command-heading" aria-hidden="true">
+      $ {commands.technologies}
+    </span>
+  </div>
+  <p class="section-intro">{t.technologyIntro}</p>
+  <p class="technology-documentation">{t.technologyDocumentation}</p>
+  <div class="stack-languages" data-technology-group="languages">
+    <div class="stack-label">
+      <span class="stack-key" aria-hidden="true">
+        languages:
+      </span>
+      <h3>{t.technologyCategories.languages}</h3>
+    </div>
+    <TechnologyList items={languages.items} lang={lang} />
+  </div>
+  <div class="stack-categories">
+    {categories.map(({ id, items }) => (
+      <details class="stack-category" data-technology-group={id}>
+        <summary
+          aria-labelledby={`stack-${id}-title`}
+          data-preview-command={commands.technologies}
+        >
+          <h3 class="stack-summary">
+            <span class="stack-category-label">
+              <span class="stack-key" aria-hidden="true">
+                {id}:
+              </span>
+              <span id={`stack-${id}-title`}>{t.technologyCategories[id]}</span>
+            </span>
+            <span class="stack-action" aria-hidden="true">
+              <span class="stack-closed">{t.exploreCategory}</span>
+              <span class="stack-open">{t.closeCategory}</span>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </span>
+          </h3>
+        </summary>
+        <TechnologyList items={items} lang={lang} />
+      </details>
+    ))}
+  </div>
+</section>

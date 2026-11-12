@@ -17,7 +17,7 @@ test('static content, visible controls, and three ordered projects are available
   page,
 }) => {
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Camilo Puentes.',
+    'Camilo Alberto Puentes Valencia',
   );
   await expect(
     page.getByRole('heading', { name: 'Proyectos', exact: true }),
@@ -120,7 +120,7 @@ test('click or tap, browser history and language preserve the expanded project',
   await expect(page).toHaveURL('/en/#dianimilo');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Camilo Puentes.',
+    'Camilo Alberto Puentes Valencia',
   );
   await expect(panel(page, 'dianimilo')).toHaveAttribute('open', '');
   await page.goBack();

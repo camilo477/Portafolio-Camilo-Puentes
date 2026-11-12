@@ -1,7 +1,26 @@
 export const copy = {
   es: {
+    siteTitle: 'Portafolio Camilo Puentes',
     home: 'Inicio',
     projects: 'Proyectos',
+    technologies: 'Tecnologías',
+    technologyHeading: 'Tecnologías y lenguajes',
+    technologyIntro:
+      'Lenguajes, herramientas y áreas técnicas de mi trabajo y mis proyectos.',
+    technologyDocumentation:
+      'Los nombres enlazan a documentación de referencia.',
+    exploreCategory: 'Explorar',
+    closeCategory: 'Cerrar',
+    technologyCategories: {
+      languages: 'Lenguajes y desarrollo',
+      frameworks: 'Frameworks y bibliotecas',
+      databases: 'Bases de datos',
+      linux: 'Linux, infraestructura y DevOps',
+      data: 'Datos, BI y analítica',
+      ai: 'Inteligencia artificial y modelos locales',
+      games: 'Videojuegos y sistemas embebidos',
+      engineering: 'Ingeniería de software',
+    },
     navigation: 'Navegación principal',
     language: 'Idioma',
     skip: 'Saltar al contenido',
@@ -36,8 +55,26 @@ export const copy = {
     noJS: 'El tema sigue la preferencia de tu sistema. Los controles de efectos requieren JavaScript.',
   },
   en: {
+    siteTitle: 'Camilo Puentes Portfolio',
     home: 'Home',
     projects: 'Projects',
+    technologies: 'Technologies',
+    technologyHeading: 'Technologies and languages',
+    technologyIntro:
+      'Languages, tools, and technical areas across my work and projects.',
+    technologyDocumentation: 'Names link to reference documentation.',
+    exploreCategory: 'Explore',
+    closeCategory: 'Close',
+    technologyCategories: {
+      languages: 'Languages and development',
+      frameworks: 'Frameworks and libraries',
+      databases: 'Databases',
+      linux: 'Linux, infrastructure and DevOps',
+      data: 'Data, BI and analytics',
+      ai: 'AI and local models',
+      games: 'Games and embedded systems',
+      engineering: 'Software engineering',
+    },
     navigation: 'Main navigation',
     language: 'Language',
     skip: 'Skip to content',

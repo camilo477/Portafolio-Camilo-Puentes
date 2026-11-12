@@ -1,0 +1,46 @@
+---
+import { technologies, type TechnologyId } from '../data/technologies';
+import { commands, projectPath, type Language } from '../lib/routes';
+import { copy } from '../lib/i18n';
+
+interface Props {
+  items: readonly TechnologyId[];
+  lang: Language;
+}
+const { items, lang } = Astro.props;
+---
+
+<ul class="technology-list" role="list">
+  {items.map((id) => {
+    const technology = technologies[id];
+    const name =
+      typeof technology.name === 'string'
+        ? technology.name
+        : technology.name[lang];
+    return (
+      <li>
+        <a
+          href={technology.documentation}
+          data-technology={id}
+          data-preview-command={technology.command ?? commands.technologies}
+        >
+          {name}
+        </a>
+        {technology.projects?.length && (
+          <ul class="technology-projects" aria-label={copy[lang].projects}>
+            {technology.projects.map((project) => (
+              <li>
+                <a
+                  href={projectPath(lang, project)}
+                  data-preview-command={commands[project]}
+                >
+                  {project}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </li>
+    );
+  })}
+</ul>

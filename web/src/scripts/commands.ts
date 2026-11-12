@@ -79,13 +79,15 @@ export function initializeCommands() {
     document
       .querySelectorAll<HTMLAnchorElement>('.main-nav a')
       .forEach((link) => {
-        const navigationRoute = activeRoute() === 'home' ? 'home' : 'projects';
+        const active = activeRoute();
+        const navigationRoute =
+          active === 'home' || active === 'technologies' ? active : 'projects';
         const isActive =
           link.dataset.previewCommand === commands[navigationRoute];
         if (isActive)
           link.setAttribute(
             'aria-current',
-            navigationRoute === 'projects' ? 'location' : 'page',
+            navigationRoute === 'home' ? 'page' : 'location',
           );
         else link.removeAttribute('aria-current');
       });
