@@ -205,10 +205,13 @@ respecto al JPG decodificado y la página del PDF. La entrada es una captura del
 portafolio; no aparecen documentos privados ni credenciales.
 
 El vídeo aparece junto a Convertix en la portada y al inicio de sus dos fichas.
-El índice lateral incluye la sección de demostración. La entrada Markdown de cada
-idioma define título, descripción y transcripción. El reproductor nativo permite
-pausa, búsqueda, pantalla completa y descarga; carga el vídeo al reproducirlo,
-sin autoplay. Los subtítulos VTT ES/EN seleccionan por defecto el idioma de la página.
+El índice lateral incluye la sección de demostración. Por petición de Camilo,
+solo se muestra el reproductor: se retiran el título visible, la descripción,
+el enlace de descarga y la transcripción debajo del vídeo, tanto en portada como
+en las fichas ES/EN. El título se conserva como nombre accesible del reproductor.
+Los controles nativos permiten pausa, búsqueda y pantalla completa; el vídeo se
+carga al reproducirlo, sin autoplay. Los subtítulos VTT ES/EN seleccionan por
+defecto el idioma de la página.
 
 Recursos publicados en `web/public/media/projects/convertix/`:
 
@@ -219,10 +222,16 @@ Recursos publicados en `web/public/media/projects/convertix/`:
 Los ensayos, scripts de grabación y archivos de trabajo permanecen en las capturas
 locales ignoradas por Git. El vídeo de Homelab no forma parte de este incremento.
 
-Validación de este incremento: formato correcto, Astro/TypeScript sin errores ni
+Validación de la incorporación inicial: formato correcto, Astro/TypeScript sin errores ni
 advertencias y 13 páginas compiladas. Pasaron 4 pruebas de contenido y las suites
 completas por separado: 68 pruebas de escritorio y 65 de móvil emulado, con 3 casos
 de hover omitidos en móvil. Se verificaron carga bajo demanda, reproducción con
 teclado, búsqueda en el vídeo, las dos pistas VTT, transcripción y funcionamiento
 sin JavaScript. Se generaron 24 capturas de portada/ficha en ES/EN, claro/oscuro y
 escritorio/móvil; se inspeccionaron las vistas del reproductor sin desbordamiento.
+
+Tras simplificar el reproductor, pasan formato, Astro/TypeScript, compilación y
+validación de contenido. Pasan 8 pruebas de navegador en escritorio y móvil que
+cubren reproducción, subtítulos, teclado, ausencia de JavaScript, enlaces,
+desbordamiento y accesibilidad en ambos idiomas y temas. Se generaron 4 capturas
+locales y se revisaron visualmente la portada en escritorio y la ficha en móvil.

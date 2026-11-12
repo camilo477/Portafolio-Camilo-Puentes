@@ -1,13 +1,11 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { copy } from '../lib/i18n';
 import ProjectImage from './ProjectImage.astro';
 interface Props {
   entry: CollectionEntry<'projects'>;
 }
 const { entry } = Astro.props;
-const { media, lang, projectId } = entry.data;
-const t = copy[lang];
+const { media, lang } = entry.data;
 ---
 
 {media.gallery.length > 0 && (
@@ -17,7 +15,7 @@ const t = copy[lang];
     ))}
   </div>
 )}
-{media.videos.map((video, index) => (
+{media.videos.map((video) => (
   <figure class="project-video">
     <video
       controls
@@ -26,8 +24,7 @@ const t = copy[lang];
       poster={video.poster}
       width={video.width}
       height={video.height}
-      aria-labelledby={`${projectId}-video-title-${index}`}
-      aria-describedby={`${projectId}-video-description-${index}`}
+      aria-label={video.title}
     >
       <source
         src={video.src}
@@ -42,20 +39,6 @@ const t = copy[lang];
           default={track.lang === lang}
         />
       ))}
-      <a href={video.src}>{t.downloadVideo}</a>
     </video>
-    <figcaption>
-      <strong id={`${projectId}-video-title-${index}`}>{video.title}</strong>
-      <p id={`${projectId}-video-description-${index}`}>{video.description}</p>
-    </figcaption>
-    <a class="video-download" href={video.src} download>
-      {t.downloadVideo}
-    </a>
-    {video.transcript && (
-      <details class="video-transcript">
-        <summary>{t.transcript}</summary>
-        <p>{video.transcript}</p>
-      </details>
-    )}
   </figure>
 ))}

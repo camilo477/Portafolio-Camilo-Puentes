@@ -50,18 +50,13 @@
   border: 1px solid var(--border);
   border-radius: 4px;
 }
-.project-image figcaption,
-.project-video figcaption {
+.project-image figcaption {
   margin-top: 0.65rem;
   font-size: 0.8rem;
   color: var(--text-muted);
 }
 .project-video video {
   background: var(--surface);
-}
-.project-video figcaption strong {
-  color: var(--text);
-  font-weight: 550;
 }
 .project-gallery {
   display: grid;
@@ -72,20 +67,4 @@
 }
 .project-video:first-child {
   margin-top: 0;
-}
-.video-transcript {
-  margin-top: 0.75rem;
-  font-size: 0.85rem;
-}
-.video-transcript summary {
-  cursor: pointer;
-}
-.video-transcript p {
-  margin-top: 0.75rem;
-  white-space: pre-line;
-}
-.video-download {
-  display: inline-block;
-  font-size: 0.8rem;
-  padding-block: 0.6rem;
 }

@@ -155,8 +155,9 @@ test('project navigation and equivalent language work without JavaScript', async
       await expect
         .poll(() => video.evaluate((el: HTMLVideoElement) => el.paused))
         .toBe(true);
-      await page.locator('.video-transcript > summary').click();
-      await expect(page.locator('.video-transcript')).toHaveAttribute('open');
+      await expect(video).toHaveAccessibleName(
+        'From JPG to PNG and PDF on KDE',
+      );
     }
     await page.locator('.back-link').first().click();
     await expect(page).toHaveURL('/en/#projects');
@@ -247,14 +248,13 @@ test('Convertix video loads on demand, plays with keyboard, seeks and offers bot
       expect(
         await video.evaluate((el: HTMLVideoElement) => el.error),
       ).toBeNull();
-      await expect(page.locator('.video-download')).toHaveAttribute(
-        'href',
-        src,
+      await expect(video).toHaveAccessibleName(
+        lang === 'en'
+          ? 'From JPG to PNG and PDF on KDE'
+          : 'De JPG a PNG y PDF en KDE',
       );
-      await page.locator('.video-transcript > summary').focus();
-      await page.keyboard.press('Enter');
-      await expect(page.locator('.video-transcript')).toHaveAttribute('open');
-      await expect(page.locator('.video-transcript')).toContainText('00:40');
+      await expect(page.locator('.project-video')).toHaveText('');
+      await expect(page.locator('.project-video a')).toHaveCount(0);
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,
