@@ -1,5 +1,9 @@
 # Tecnologías y nombre — incremento de la portada
 
+Registro de la primera implementación. La presentación y la distinción posterior
+de aprendizaje/exploración se actualizan en [REDISENO_VISUAL.md](REDISENO_VISUAL.md),
+según la petición más reciente de Camilo.
+
 ## Alcance y contenido
 
 El título del navegador es «Portafolio Camilo Puentes» en ES y «Camilo Puentes

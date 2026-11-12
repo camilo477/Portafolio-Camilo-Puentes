@@ -42,6 +42,9 @@ test('static content, visible controls, and three ordered projects are available
     'Convertix',
   ]);
   await expect(page.locator('details[open]')).toHaveCount(0);
+  for (const id of ['dianimilo', 'nube-camiska', 'convertix']) {
+    await expect(page.locator(`[data-media-for="${id}"]`)).toBeVisible();
+  }
   await expect(diani(page)).toHaveAccessibleName('DianiMilo');
   await expect(nube(page)).toHaveAccessibleName('Nube Camiska');
   await expect(convertix(page)).toHaveAccessibleName('Convertix');
@@ -105,6 +108,8 @@ test('keyboard focus previews and Enter or Space toggles inline details', async 
 
 test('blur restores the path without stealing focus', async ({ page }) => {
   await diani(page).focus();
+  // Layout/scroll hit-testing must not replace keyboard focus with a stale hover.
+  await nube(page).dispatchEvent('pointerenter', { pointerType: 'mouse' });
   await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
   await page.getByRole('button', { name: /tema/ }).focus();
   await expect(command(page)).toHaveText('cd ~');
@@ -157,7 +162,9 @@ test('projects expand in the same document, one at a time, and can be closed', a
   await convertix(page).click();
   await expect(page).toHaveURL('/es/#convertix');
   await expect(
-    panel(page, 'convertix').getByText('Vídeo pendiente', { exact: true }),
+    page
+      .locator('[data-media-for="convertix"]')
+      .getByText('Vídeo pendiente', { exact: true }),
   ).toBeVisible();
   await expect(panel(page, 'convertix').getByRole('link')).toHaveAttribute(
     'href',
@@ -227,7 +234,7 @@ test('theme follows the system and the explicit choice survives navigation and r
     await page
       .locator('body')
       .evaluate((el) => getComputedStyle(el).backgroundColor),
-  ).toBe('rgb(25, 29, 31)');
+  ).toBe('rgb(19, 27, 34)');
   await page.getByRole('button', { name: 'Activar tema claro' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   await page.reload();
@@ -306,7 +313,7 @@ test('all three projects expand and close without JavaScript in both languages',
     await page
       .locator('body')
       .evaluate((el) => getComputedStyle(el).backgroundColor),
-  ).toBe('rgb(25, 29, 31)');
+  ).toBe('rgb(19, 27, 34)');
   await context.close();
 });
 

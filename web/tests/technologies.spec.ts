@@ -26,17 +26,18 @@ test('full name, page title and technology navigation are translated', async ({
       .click();
     await expect(page).toHaveURL(`/${lang}/#${anchor}`);
     await expect(command(page)).toHaveText(stackCommand);
-    await expect(page.locator('.main-nav [aria-current]')).toHaveText(label);
+    await expect(page.locator('.main-nav [aria-current]')).toHaveAccessibleName(
+      label,
+    );
     await expect(page.locator('[data-command-bar]')).toHaveCount(1);
   }
 });
 
-test('inventory includes supplied additions with names only and no proficiency claims', async ({
+test('inventory includes supplied additions without invented proficiency ratings', async ({
   page,
 }) => {
   await page.goto('/es/#tecnologias');
-  for (const summary of await page.locator('.stack-category > summary').all())
-    await summary.click();
+  await page.locator('.stack-inventory > summary').click();
   for (const id of [
     'dart',
     'flask',
@@ -62,7 +63,7 @@ test('inventory includes supplied additions with names only and no proficiency c
   }
   await expect(page.locator('[data-technology-group]')).toHaveCount(8);
   await expect(page.locator('.technologies')).not.toContainText(
-    /experiencia que conozco|conocimientos básicos|experto|aprendizaje|formación|\d+%/i,
+    /experiencia que conozco|conocimientos básicos|experto|\d+%/i,
   );
   await expect(
     page.locator('.technologies [role="progressbar"], .technology-projects'),
@@ -78,7 +79,7 @@ test('hover cancels rapid technology previews and returns to the active section'
   await tech(page, 'python').hover();
   await expect(command(page)).toHaveText('python3 --version');
   await tech(page, 'java').hover();
-  await tech(page, 'bash').hover();
+  await tech(page, 'typescript').hover();
   await tech(page, 'python').hover();
   await expect(command(page)).toHaveText('python3 --version');
   await page.mouse.move(0, 0);
@@ -88,31 +89,33 @@ test('hover cancels rapid technology previews and returns to the active section'
   await expect(page).toHaveURL('/es/#tecnologias');
 });
 
-test('keyboard opens categories, previews technology focus and keeps normal links', async ({
+test('keyboard opens the inventory, previews technology focus and keeps normal links', async ({
   page,
 }) => {
   await page.goto('/es/#tecnologias');
-  const summary = group(page, 'databases').locator('summary');
+  const summary = page.locator('.stack-inventory > summary');
   await summary.focus();
   await page.keyboard.press('Enter');
-  await expect(group(page, 'databases')).toHaveAttribute('open', '');
+  await expect(page.locator('.stack-inventory')).toHaveAttribute('open', '');
   await page.keyboard.press('Tab');
-  await expect(tech(page, 'postgresql')).toBeFocused();
-  await expect(command(page)).toHaveText('psql --version');
+  await expect(
+    group(page, 'languages').getByRole('link', { name: 'Python', exact: true }),
+  ).toBeFocused();
+  await expect(command(page)).toHaveText('python3 --version');
   expect(
-    await tech(page, 'postgresql').evaluate(
-      (el) => getComputedStyle(el).outlineStyle,
-    ),
+    await group(page, 'languages')
+      .getByRole('link', { name: 'Python', exact: true })
+      .evaluate((el) => getComputedStyle(el).outlineStyle),
   ).not.toBe('none');
   // Fulfil locally: prove Enter follows the link without depending on an external site.
-  await page.route('https://www.postgresql.org/docs/', (route) =>
+  await page.route('https://docs.python.org/3/', (route) =>
     route.fulfill({
       contentType: 'text/html',
       body: '<h1>Documentation destination</h1>',
     }),
   );
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL('https://www.postgresql.org/docs/');
+  await expect(page).toHaveURL('https://docs.python.org/3/');
   await page.goBack();
   await expect(page).toHaveURL('/es/#tecnologias');
   await expect(command(page)).toHaveText(stackCommand);
@@ -144,7 +147,7 @@ test('section language and history survive leaving an expanded project', async (
   await expect(command(page)).toHaveText(stackCommand);
 });
 
-test('native categories work with touch and without JavaScript', async ({
+test('complete inventory works with touch and without JavaScript', async ({
   browser,
   isMobile,
 }) => {
@@ -159,7 +162,12 @@ test('native categories work with touch and without JavaScript', async ({
       `/${lang}/#${lang === 'es' ? 'tecnologias' : 'technologies'}`,
     );
     await expect(tech(page, 'python')).toBeVisible();
+    const summary = page.locator('.stack-inventory > summary');
+    if (isMobile) await summary.tap();
+    else await summary.click();
+    await expect(page.locator('.stack-inventory')).toHaveAttribute('open', '');
     for (const id of [
+      'languages',
       'frameworks',
       'databases',
       'linux',
@@ -168,14 +176,10 @@ test('native categories work with touch and without JavaScript', async ({
       'games',
       'engineering',
     ]) {
-      const summary = group(page, id).locator('summary');
-      if (isMobile) await summary.tap();
-      else await summary.click();
-      await expect(group(page, id)).toHaveAttribute('open', '');
       await expect(group(page, id).getByRole('link').first()).toBeVisible();
-      await summary.click();
-      await expect(group(page, id)).not.toHaveAttribute('open');
     }
+    await summary.click();
+    await expect(page.locator('.stack-inventory')).not.toHaveAttribute('open');
   }
   await context.close();
 });
@@ -215,10 +219,7 @@ test('full name and expanded technologies fit narrow screens without covering co
     for (const width of [320, 390, 768, 1440]) {
       await page.setViewportSize({ width, height: 844 });
       await page.goto(`/${lang}/`);
-      for (const summary of await page
-        .locator('.stack-category > summary')
-        .all())
-        await summary.click();
+      await page.locator('.stack-inventory > summary').click();
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,
@@ -246,10 +247,7 @@ test('all expanded categories pass accessibility checks in both themes and langu
       await page.goto(
         `/${lang}/#${lang === 'es' ? 'tecnologias' : 'technologies'}`,
       );
-      for (const summary of await page
-        .locator('.stack-category > summary')
-        .all())
-        await summary.click();
+      await page.locator('.stack-inventory > summary').click();
       const result = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
         .analyze();
@@ -257,4 +255,46 @@ test('all expanded categories pass accessibility checks in both themes and langu
     }
   }
   expect(errors).toEqual([]);
+});
+
+test('main areas are visible while declared exploration stays separate', async ({
+  page,
+}) => {
+  await page.goto('/es/#tecnologias');
+  await expect(page.locator('.stack-inventory')).not.toHaveAttribute('open');
+  for (const id of [
+    'python',
+    'django',
+    'drf',
+    'javascript',
+    'typescript',
+    'react',
+    'java',
+    'spring',
+    'sql',
+    'postgresql',
+    'oracle',
+    'fedora',
+    'docker',
+  ]) {
+    await expect(
+      page.locator(`.main-stack [data-technology="${id}"]`),
+    ).toBeVisible();
+  }
+  await expect(page.locator('.area-java .learning-label')).toHaveText(
+    'En aprendizaje',
+  );
+  await expect(page.locator('.stack-exploration [data-technology]')).toHaveText(
+    [
+      'Spring Boot',
+      'Lua',
+      'Microsoft Fabric',
+      'Azure Data Services',
+      'AWS Data Services',
+      'Databricks',
+    ],
+  );
+  await expect(
+    page.locator('.stack-exploration [data-technology="python"]'),
+  ).toHaveCount(0);
 });

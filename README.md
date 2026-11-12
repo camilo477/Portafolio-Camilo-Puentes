@@ -58,7 +58,7 @@ web/
     lib/                 Traducciones y mapa tipado de rutas/comandos
     pages/               Portadas bilingües y redirección de URLs anteriores
     scripts/             Proyectos, comandos, tema y movimiento
-    styles/              CSS y tokens neutrales provisionales
+    styles/              CSS y tokens de color provisionales
   tests/                 Playwright, axe y generación de capturas
   public/                Favicon y licencias
 api-status/              Reservado; Java 21 + Spring Boot en una etapa posterior
@@ -73,11 +73,12 @@ docs/                    Documentación técnica y verificación de la implement
 - Título «Portafolio Camilo Puentes» y nombre completo Camilo Alberto Puentes Valencia.
 - Tecnologías y lenguajes en ocho categorías: lenguajes, frameworks, bases de datos,
   Linux/infraestructura, datos/BI, IA local, videojuegos/embebidos e ingeniería.
-  Solo nombres, sin niveles ni descripciones de experiencia. Lenguajes visibles
-  y otras categorías desplegables, también sin JavaScript.
+  Cinco áreas principales visibles, aprendizaje/exploración según lo declarado por
+  Camilo y un único desplegable para el inventario completo, también sin JavaScript.
+  Sin porcentajes ni niveles de dominio inventados.
 - Navegación a `/es/#tecnologias` y `/en/#technologies`; nombres con enlaces a
   documentación y comandos visuales en la franja existente, mediante hover o foco.
-- Proyectos que se amplían en la misma página al pulsar su fila. Otro clic los
+- Proyectos que se amplían en la misma página al pulsar su título o «Abrir proyecto». Otro clic los
   cierra; al abrir uno se cierra el anterior. Funciona con teclado y sin JavaScript.
 - Enlaces directos como `/es/#convertix`, idioma y Atrás/Adelante conservan el
   proyecto abierto con JavaScript. Las URLs de fichas anteriores redirigen a la portada.
@@ -85,6 +86,8 @@ docs/                    Documentación técnica y verificación de la implement
 - Temas claro/oscuro, preferencia persistente y esquema inicial del sistema.
 - Movimiento reducido y control adicional para desactivar efectos.
 - Capturas y vídeo de Convertix pendientes, identificados como tales. No se simulan demos.
+- Rediseño Tarea 02: portada editorial con arte vectorial propio, proyectos con
+  distintas proporciones, medios visibles y paleta turquesa/ámbar provisional.
 
 La paleta **no es una identificación del tema Plasma**. Falta recibir su esquema
 real. Las demás secciones, el CV, el contacto y los casos completos no están
@@ -120,6 +123,7 @@ ni una evaluación manual con lector de pantalla.
 
 [Entrega, decisiones técnicas y verificación](docs/PRIMERA_ENTREGA.md).
 [Sección de tecnologías y actualización del nombre](docs/TECNOLOGIAS.md).
+[Rediseño visual, paleta y decisiones de Tarea 02](docs/REDISENO_VISUAL.md).
 
 El repositorio contiene código, contenido del sitio, pruebas, configuración de
 compilación e integración continua y documentación técnica. Las instrucciones de

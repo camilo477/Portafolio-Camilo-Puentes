@@ -236,6 +236,25 @@ export const technologies = {
 } satisfies Record<string, Technology>;
 
 export type TechnologyId = keyof typeof technologies;
+
+// Tarea 02 explicitly prioritizes these areas. This is editorial order, not a rating.
+export const mainStackAreas = [
+  { id: 'python', items: ['python', 'django', 'drf'] },
+  { id: 'web', items: ['javascript', 'typescript', 'react'] },
+  { id: 'java', items: ['java', 'spring'] },
+  { id: 'databases', items: ['sql', 'postgresql', 'oracle'] },
+  { id: 'linux', items: ['fedora', 'docker', 'compose'] },
+] as const satisfies readonly { id: string; items: readonly TechnologyId[] }[];
+
+// Only the learning/initial-exploration entries explicitly described by Camilo.
+export const explorationIds: readonly TechnologyId[] = [
+  'spring',
+  'lua',
+  'fabric',
+  'azure',
+  'aws',
+  'databricks',
+];
 export type TechnologyCategoryId =
   | 'languages'
   | 'frameworks'

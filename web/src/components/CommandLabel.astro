@@ -1,0 +1,18 @@
+---
+interface Props {
+  command: string;
+}
+const { command } = Astro.props;
+const [program, ...args] = command.split(' ');
+---
+
+<span class="command-heading" aria-hidden="true">
+  <span class="command-dollar">$</span>{' '}
+  <span class="command-program">{program}</span>
+  {args.length > 0 && (
+    <>
+      {' '}
+      <span class="command-argument">{args.join(' ')}</span>
+    </>
+  )}
+</span>

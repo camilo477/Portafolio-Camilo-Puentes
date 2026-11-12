@@ -18,6 +18,7 @@ export function initializeCommands() {
   let hovered: HTMLElement | null = null;
   let focused: HTMLElement | null = null;
   let source: 'pointer' | 'focus' = 'pointer';
+  let pointerPosition: { x: number; y: number } | null = null;
   let typingFrame = 0;
   let updateFrame = 0;
   let targetCommand = '';
@@ -98,6 +99,9 @@ export function initializeCommands() {
     .forEach((link) => {
       link.addEventListener('pointerenter', (event) => {
         if (event.pointerType !== 'mouse' || !supportsHover.matches) return;
+        // Scrolling a focused control into view can move another item under a
+        // stationary pointer. Only actual pointer movement may replace focus.
+        if (source === 'focus') return;
         hovered = link;
         source = 'pointer';
         scheduleUpdate();
@@ -107,6 +111,7 @@ export function initializeCommands() {
         scheduleUpdate();
       });
       link.addEventListener('focus', () => {
+        hovered = null;
         focused = link;
         source = 'focus';
         scheduleUpdate();
@@ -117,6 +122,21 @@ export function initializeCommands() {
       });
       // Anchors and summaries handle activation natively, independent of this controller.
     });
+  window.addEventListener('pointermove', (event) => {
+    if (event.pointerType !== 'mouse' || !supportsHover.matches) return;
+    const moved =
+      !pointerPosition ||
+      pointerPosition.x !== event.clientX ||
+      pointerPosition.y !== event.clientY;
+    pointerPosition = { x: event.clientX, y: event.clientY };
+    if (!moved) return;
+    source = 'pointer';
+    hovered =
+      event.target instanceof Element
+        ? event.target.closest<HTMLElement>('[data-preview-command]')
+        : null;
+    scheduleUpdate();
+  });
   supportsHover.addEventListener('change', () => {
     hovered = null;
     scheduleUpdate();

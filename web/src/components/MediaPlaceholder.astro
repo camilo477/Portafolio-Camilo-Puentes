@@ -10,12 +10,30 @@ const { lang, name, kind = 'screenshot' } = Astro.props;
 const t = copy[lang];
 ---
 
-<div class="media-placeholder">
-  <span class="media-path" aria-hidden="true">
-    {name} /
-  </span>
+<div class:list={['media-placeholder', `media-${kind}`]} data-media-for={name}>
+  <div class="media-crop" aria-hidden="true">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
   <div class="media-message">
-    <span class="media-frame" aria-hidden="true"></span>
+    {kind === 'video' && (
+      <svg
+        class="video-mark"
+        viewBox="0 0 40 40"
+        width="40"
+        height="40"
+        aria-hidden="true"
+      >
+        <path
+          d="M14 9 30 20 14 31Z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        />
+      </svg>
+    )}
     <strong>{kind === 'video' ? t.video : t.screenshot}</strong>
     <span>{kind === 'video' ? t.videoNote : t.screenshotNote}</span>
   </div>

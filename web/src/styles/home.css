@@ -1,0 +1,192 @@
+.introduction {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: 4rem;
+  align-items: center;
+  padding-block: 3rem 5rem;
+}
+.intro-overline {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-bottom: 1.6rem;
+}
+.intro-overline > span:last-child {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.intro-copy h1 span {
+  display: block;
+}
+.intro-copy h1 span:last-child {
+  color: var(--accent);
+}
+.role {
+  max-width: 25rem;
+  font-size: 1.4rem;
+  line-height: 1.45;
+  font-weight: 550;
+  margin-top: 1.3rem;
+  letter-spacing: -0.035em;
+}
+.intro-text {
+  color: var(--text-muted);
+  max-width: 34rem;
+  margin-top: 1rem;
+  font-size: 1.02rem;
+  line-height: 1.8;
+}
+.intro-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+  margin-top: 1.75rem;
+  font-size: 0.95rem;
+}
+.environment {
+  padding-top: 0.25rem;
+}
+.environment-caption {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding-inline: 1.2rem;
+}
+.environment-caption h2 {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.environment-index {
+  color: var(--amber);
+  font: 1rem var(--mono);
+}
+.environment-composition {
+  position: relative;
+  min-height: 17rem;
+  margin-top: 0.8rem;
+  background: var(--tint-teal);
+  border-radius: 5px 5px 5px 2.5rem;
+  overflow: hidden;
+}
+.plasma-folds {
+  width: 76%;
+  position: absolute;
+  top: -0.7rem;
+  right: -1.1rem;
+}
+.fold-outline {
+  stroke: var(--accent);
+  stroke-width: 1;
+  opacity: 0.45;
+}
+.fold-teal {
+  fill: var(--accent);
+  opacity: 0.65;
+  transition: transform 180ms ease;
+}
+.fold-amber {
+  fill: var(--amber);
+  opacity: 0.85;
+}
+.fold-green {
+  fill: var(--green);
+}
+.fold-line {
+  stroke: var(--accent);
+  opacity: 0.45;
+}
+.environment-composition:hover .fold-teal {
+  transform: translate(4px, -4px);
+}
+.environment-system {
+  position: absolute;
+  bottom: 2.6rem;
+  left: 1.7rem;
+  font-size: 2.5rem;
+  font-weight: 620;
+  line-height: 1.1;
+  letter-spacing: -0.06em;
+}
+.environment-system span {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  margin-top: 0.55rem;
+}
+.environment-path {
+  position: absolute;
+  right: 1rem;
+  bottom: 0.9rem;
+  font: 0.7rem var(--mono);
+  color: var(--accent);
+}
+.environment-note {
+  margin: -0.7rem 1.4rem 0 2.1rem;
+  position: relative;
+  padding: 1.1rem 1.25rem;
+  background: var(--surface-raised);
+  border-left: 3px solid var(--amber);
+}
+.environment-note p {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+@media (max-width: 960px) {
+  .introduction {
+    gap: 2.25rem;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  }
+  h1 {
+    font-size: 2.65rem;
+  }
+  .environment-note {
+    margin-inline: 1rem 0;
+  }
+}
+@media (max-width: 700px) {
+  .introduction {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding-block: 2.3rem 3.5rem;
+  }
+  h1 {
+    font-size: clamp(2.25rem, 9.5vw, 3rem);
+  }
+  .intro-overline {
+    gap: 0.8rem;
+    margin-bottom: 1.1rem;
+  }
+  .intro-overline > span:last-child {
+    font-size: 0.75rem;
+  }
+  .role {
+    font-size: 1.25rem;
+  }
+  .intro-text {
+    font-size: 1rem;
+  }
+  .environment {
+    max-width: 28rem;
+    width: 100%;
+    justify-self: center;
+  }
+  .environment-composition {
+    min-height: 13rem;
+  }
+  .plasma-folds {
+    width: 65%;
+    top: -1.8rem;
+  }
+  .environment-system {
+    font-size: 2.1rem;
+    bottom: 2.5rem;
+  }
+  .environment-note {
+    margin: -1rem 0.75rem 0 2rem;
+  }
+}

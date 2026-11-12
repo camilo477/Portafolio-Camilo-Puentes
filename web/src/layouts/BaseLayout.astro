@@ -58,15 +58,24 @@ const t = copy[lang];
           data-preview-command={commands.home}
           aria-current={route === 'home' ? 'page' : undefined}
         >
+          <span class="nav-path" aria-hidden="true">
+            ~/
+          </span>
           {t.home}
         </a>
         <a href={projectsPath(lang)} data-preview-command={commands.projects}>
+          <span class="nav-path" aria-hidden="true">
+            ./
+          </span>
           {t.projects}
         </a>
         <a
           href={technologiesPath(lang)}
           data-preview-command={commands.technologies}
         >
+          <span class="nav-path" aria-hidden="true">
+            ./
+          </span>
           {t.technologies}
         </a>
       </nav>

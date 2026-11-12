@@ -9,6 +9,7 @@ test('capture real desktop and mobile pages in both themes and languages', async
   await mkdir(output, { recursive: true });
   for (const [device, viewport] of Object.entries({
     desktop: { width: 1440, height: 1000 },
+    tablet: { width: 820, height: 1180 },
     mobile: { width: 390, height: 844 },
   })) {
     for (const theme of ['light', 'dark'] as const) {
@@ -48,13 +49,9 @@ test('capture real desktop and mobile pages in both themes and languages', async
           path: resolve(output, `technologies-${device}-${theme}-${lang}.png`),
           fullPage: false,
         });
-        for (const category of ['databases', 'linux']) {
-          await page
-            .locator(`[data-technology-group="${category}"] > summary`)
-            .click();
-        }
+        await page.locator('.stack-inventory > summary').click();
         await page
-          .locator('[data-technology-group="databases"]')
+          .locator('.inventory-grid')
           .evaluate((el) => el.scrollIntoView({ block: 'start' }));
         await page.mouse.move(0, 0);
         await page.screenshot({
@@ -72,7 +69,7 @@ test('capture real desktop and mobile pages in both themes and languages', async
         ).toHaveAttribute('open', '');
         await page.evaluate(() => document.fonts.ready);
         await page
-          .locator(`details[data-project="${project}"]`)
+          .locator(`.story-${project}`)
           .evaluate((el) => el.scrollIntoView({ block: 'start' }));
         await page.screenshot({
           path: resolve(output, `${project}-${device}-${theme}.png`),

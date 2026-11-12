@@ -3,6 +3,9 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectDisclosure from '../../components/ProjectDisclosure.astro';
 import TechnologySection from '../../components/TechnologySection.astro';
+import EnvironmentNote from '../../components/EnvironmentNote.astro';
+import CommandLabel from '../../components/CommandLabel.astro';
+import '../../styles/home.css';
 import { copy } from '../../lib/i18n';
 import {
   commands,
@@ -29,9 +32,10 @@ const orderedProjects = projectIds.map((id) =>
 <BaseLayout lang={lang} title={t.siteTitle}>
   <section class="introduction" aria-labelledby="intro-heading">
     <div class="intro-copy">
-      <p class="command-heading" aria-hidden="true">
-        $ whoami
-      </p>
+      <div class="intro-overline">
+        <CommandLabel command="whoami" />
+        <span>{t.professionalPortfolio}</span>
+      </div>
       <h1 id="intro-heading">
         <span>Camilo Alberto</span> <span>Puentes Valencia</span>
       </h1>
@@ -49,14 +53,7 @@ const orderedProjects = projectIds.map((id) =>
         <a href="https://github.com/camilo477">{t.github}</a>
       </div>
     </div>
-    <aside class="desktop-note" aria-labelledby="environment-heading">
-      <p class="command-heading" aria-hidden="true">
-        $ cd ~/homelab
-      </p>
-      <h2 id="environment-heading">{t.environment}</h2>
-      <p class="desktop-name">Linux / KDE Plasma</p>
-      <p>{t.environmentText}</p>
-    </aside>
+    <EnvironmentNote lang={lang} />
   </section>
   <section
     class="projects"
@@ -64,12 +61,12 @@ const orderedProjects = projectIds.map((id) =>
     aria-labelledby="projects-heading"
   >
     <div class="section-heading">
-      <h2 id="projects-heading">{t.projects}</h2>
-      <span class="command-heading" aria-hidden="true">
-        $ {commands.projects}
-      </span>
+      <div>
+        <CommandLabel command={commands.projects} />
+        <h2 id="projects-heading">{t.projects}</h2>
+      </div>
+      <p class="section-intro">{t.projectIntro}</p>
     </div>
-    <p class="section-intro">{t.projectIntro}</p>
     <div class="project-list">
       {orderedProjects.map((entry) => (
         <ProjectDisclosure entry={entry} />

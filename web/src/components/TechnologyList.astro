@@ -6,8 +6,9 @@ import { copy } from '../lib/i18n';
 interface Props {
   items: readonly TechnologyId[];
   lang: Language;
+  labelLearning?: boolean;
 }
-const { items, lang } = Astro.props;
+const { items, lang, labelLearning = false } = Astro.props;
 ---
 
 <ul class="technology-list" role="list">
@@ -26,9 +27,12 @@ const { items, lang } = Astro.props;
         >
           {name}
         </a>
-        {technology.projects?.length && (
+        {labelLearning && id === 'spring' && (
+          <span class="learning-label">{copy[lang].learning}</span>
+        )}
+        {Boolean(technology.projects?.length) && (
           <ul class="technology-projects" aria-label={copy[lang].projects}>
-            {technology.projects.map((project) => (
+            {technology.projects!.map((project) => (
               <li>
                 <a
                   href={projectPath(lang, project)}

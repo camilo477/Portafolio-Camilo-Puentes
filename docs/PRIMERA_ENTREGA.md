@@ -7,6 +7,7 @@ Esta entrega termina en la revisión visual; no inicia la siguiente etapa.
 La ampliación posterior solicitada por Camilo —nombre completo y sección de
 tecnologías— se documenta con sus pruebas en [TECNOLOGIAS.md](TECNOLOGIAS.md).
 Los resultados siguientes corresponden al incremento de proyectos desplegables.
+La composición y paleta actuales se describen en [REDISENO_VISUAL.md](REDISENO_VISUAL.md).
 
 ## Decisiones de implementación
 
