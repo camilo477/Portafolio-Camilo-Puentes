@@ -156,7 +156,7 @@ test('public content contains no development notices, empty experience or intern
         ),
       ).toHaveCount(0);
       await expect(page.locator('#media-heading')).toHaveCount(
-        Number(suffix.endsWith('/convertix/')),
+        Number(/\/(dianimilo|convertix)\/$/.test(suffix)),
       );
       const text = await page.locator('body').innerText();
       expect(text).not.toMatch(

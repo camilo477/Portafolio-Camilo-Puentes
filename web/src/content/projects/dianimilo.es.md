@@ -2,7 +2,7 @@
 projectId: dianimilo
 lang: es
 title: DianiMilo
-description: Una aplicación para organizar películas, planes y objetivos compartidos.
+description: Una aplicación web progresiva (PWA) para organizar películas, planes y metas compartidas.
 category: Organización compartida
 demoNote: Demo con perfiles ficticios. Los cambios se conservan solo en la pestaña actual.
 problem:
@@ -35,7 +35,23 @@ architecture:
 media:
   cover: null
   gallery: []
-  videos: []
+  videos:
+    - src: /media/projects/dianimilo/videos/navigation-tour.mp4
+      poster: /media/projects/dianimilo/images/navigation-tour.jpg
+      title: Recorrido por las pestañas de DianiMilo
+      description:
+        41 segundos de navegación por Nosotros, Películas, Planes, Metas, Ruleta y Zanahoria
+        en la demo pública. Sin audio; subtítulos ES/EN.
+      width: 1440
+      height: 900
+      silent: true
+      captions:
+        - src: /media/projects/dianimilo/captions/navigation-tour-es.vtt
+          lang: es
+          label: Español
+        - src: /media/projects/dianimilo/captions/navigation-tour-en.vtt
+          lang: en
+          label: English
 videoPlanned: false
 sources:
   - label: README.md

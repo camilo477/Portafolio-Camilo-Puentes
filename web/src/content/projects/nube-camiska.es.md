@@ -2,7 +2,7 @@
 projectId: nube-camiska
 lang: es
 title: Nube Camiska
-description: Un servicio de archivos personal, con operación en Linux y Docker.
+description: Una aplicación web progresiva (PWA) de archivos, alojada en Linux con Docker.
 category: Archivos y alojamiento propio
 demoNote: En la pantalla de acceso, elige «Explorar demo». Utiliza archivos ficticios de solo lectura.
 problem:

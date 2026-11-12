@@ -2,7 +2,7 @@
 projectId: nube-camiska
 lang: en
 title: Nube Camiska
-description: A personal file service operated on Linux with Docker.
+description: A progressive web app (PWA) for personal files, hosted on Linux with Docker.
 category: Files and self-hosting
 demoNote: On the sign-in screen, choose “Explorar demo”. It uses read-only fictional files.
 problem:

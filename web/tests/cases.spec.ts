@@ -23,6 +23,28 @@ const projects = [
     demo: null,
   },
 ];
+const projectVideos = [
+  {
+    id: 'convertix',
+    file: 'desktop-demo',
+    duration: 44,
+    captions: 12,
+    title: {
+      en: 'From JPG to PNG and PDF on KDE',
+      es: 'De JPG a PNG y PDF en KDE',
+    },
+  },
+  {
+    id: 'dianimilo',
+    file: 'navigation-tour',
+    duration: 40.833333,
+    captions: 7,
+    title: {
+      en: "A tour of DianiMilo's tabs",
+      es: 'Recorrido por las pestañas de DianiMilo',
+    },
+  },
+];
 const path = (lang: string, id: string) =>
   `/${lang}/${lang === 'es' ? 'proyectos' : 'projects'}/${id}/`;
 const command = (page: Page) => page.locator('[data-command]');
@@ -41,6 +63,8 @@ for (const project of projects) {
         lang === 'en' ? (project.titleEn ?? project.title) : project.title,
       );
       await expect(command(page)).toHaveText(`cd ~/proyectos/${project.id}`);
+      if (['dianimilo', 'nube-camiska'].includes(project.id))
+        await expect(page.locator('.case-description')).toContainText('(PWA)');
       await expect(page.locator('.main-nav [aria-current]')).toContainText(
         lang === 'es' ? 'Proyectos' : 'Projects',
       );
@@ -143,7 +167,8 @@ test('project navigation and equivalent language work without JavaScript', async
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
       project.titleEn ?? project.title,
     );
-    if (project.id === 'convertix') {
+    const demo = projectVideos.find(({ id }) => id === project.id);
+    if (demo) {
       const video = page.locator('.project-video video');
       await expect(video).toBeVisible();
       await video.focus();
@@ -155,9 +180,7 @@ test('project navigation and equivalent language work without JavaScript', async
       await expect
         .poll(() => video.evaluate((el: HTMLVideoElement) => el.paused))
         .toBe(true);
-      await expect(video).toHaveAccessibleName(
-        'From JPG to PNG and PDF on KDE',
-      );
+      await expect(video).toHaveAccessibleName(demo.title.en);
     }
     await page.locator('.back-link').first().click();
     await expect(page).toHaveURL('/en/#projects');
@@ -170,99 +193,105 @@ test('project navigation and equivalent language work without JavaScript', async
   await context.close();
 });
 
-test('Convertix video loads on demand, plays with keyboard, seeks and offers both caption languages', async ({
-  page,
-  request,
-}) => {
-  test.setTimeout(60_000);
-  const src = '/media/projects/convertix/videos/desktop-demo.mp4';
-  const mediaRequests: string[] = [];
-  page.on('request', (req) => {
-    if (new URL(req.url()).pathname === src) mediaRequests.push(req.url());
-  });
-  const response = await request.get(src, {
-    headers: { Range: 'bytes=0-31' },
-  });
-  expect(response.status()).toBe(206);
-  expect(response.headers()['content-type']).toContain('video/mp4');
-  expect((await response.body()).length).toBe(32);
-  for (const lang of ['en', 'es']) {
-    for (const url of [`/${lang}/#convertix`, path(lang, 'convertix')]) {
-      mediaRequests.length = 0;
-      await page.goto(url);
-      const video = page.locator('.project-video video');
-      await video.scrollIntoViewIfNeeded();
-      await expect(video).toHaveAttribute('preload', 'none');
-      await expect(video).toHaveAttribute('controls', '');
-      await expect(video).not.toHaveAttribute('autoplay');
-      await expect(video.locator('track[default]')).toHaveAttribute(
-        'srclang',
-        lang,
-      );
-      expect(mediaRequests).toEqual([]);
-      expect(await video.evaluate((el: HTMLVideoElement) => el.paused)).toBe(
-        true,
-      );
-      await video.focus();
-      await page.keyboard.press('Space');
-      await expect
-        .poll(() => video.evaluate((el: HTMLVideoElement) => el.currentTime))
-        .toBeGreaterThan(0.1);
-      await page.keyboard.press('Space');
-      await expect
-        .poll(() => video.evaluate((el: HTMLVideoElement) => el.paused))
-        .toBe(true);
-      expect(
-        await video.evaluate((el: HTMLVideoElement) => [
-          el.videoWidth,
-          el.videoHeight,
-          el.duration,
-        ]),
-      ).toEqual([1440, 900, 44]);
-      for (const captionLanguage of ['en', 'es']) {
-        await video.evaluate((el: HTMLVideoElement, language) => {
-          for (const track of el.textTracks)
-            track.mode = track.language === language ? 'showing' : 'disabled';
-        }, captionLanguage);
+for (const demo of projectVideos) {
+  test(`${demo.id} video loads on demand, plays with keyboard, seeks and offers both caption languages`, async ({
+    page,
+    request,
+  }) => {
+    test.setTimeout(60_000);
+    const src = `/media/projects/${demo.id}/videos/${demo.file}.mp4`;
+    const mediaRequests: string[] = [];
+    page.on('request', (req) => {
+      if (new URL(req.url()).pathname === src) mediaRequests.push(req.url());
+    });
+    const response = await request.get(src, {
+      headers: { Range: 'bytes=0-31' },
+    });
+    expect(response.status()).toBe(206);
+    expect(response.headers()['content-type']).toContain('video/mp4');
+    expect((await response.body()).length).toBe(32);
+    for (const lang of ['en', 'es'] as const) {
+      for (const url of [`/${lang}/#${demo.id}`, path(lang, demo.id)]) {
+        mediaRequests.length = 0;
+        await page.goto(url);
+        const figure = page
+          .locator(`.story-${demo.id}, .case-${demo.id}`)
+          .locator('.project-video');
+        const video = figure.locator('video');
+        await video.scrollIntoViewIfNeeded();
+        await expect(video).toHaveAttribute('preload', 'none');
+        await expect(video).toHaveAttribute('controls', '');
+        await expect(video).not.toHaveAttribute('autoplay');
+        await expect(video.locator('track[default]')).toHaveAttribute(
+          'srclang',
+          lang,
+        );
+        expect(mediaRequests).toEqual([]);
+        expect(await video.evaluate((el: HTMLVideoElement) => el.paused)).toBe(
+          true,
+        );
+        await video.focus();
+        await page.keyboard.press('Space');
+        await expect
+          .poll(() => video.evaluate((el: HTMLVideoElement) => el.currentTime))
+          .toBeGreaterThan(0.1);
+        await page.keyboard.press('Space');
+        await expect
+          .poll(() => video.evaluate((el: HTMLVideoElement) => el.paused))
+          .toBe(true);
+        expect(
+          await video.evaluate((el: HTMLVideoElement) => [
+            el.videoWidth,
+            el.videoHeight,
+          ]),
+        ).toEqual([1440, 900]);
+        expect(
+          await video.evaluate((el: HTMLVideoElement) => el.duration),
+        ).toBeCloseTo(demo.duration, 5);
+        for (const captionLanguage of ['en', 'es']) {
+          await video.evaluate((el: HTMLVideoElement, language) => {
+            for (const track of el.textTracks)
+              track.mode = track.language === language ? 'showing' : 'disabled';
+          }, captionLanguage);
+          await expect
+            .poll(() =>
+              video.evaluate(
+                (el: HTMLVideoElement, language) =>
+                  [...el.textTracks].find(
+                    (track) => track.language === language,
+                  )?.cues?.length,
+                captionLanguage,
+              ),
+            )
+            .toBe(demo.captions);
+        }
+        await video.evaluate((el: HTMLVideoElement, time) => {
+          el.currentTime = time;
+        }, demo.duration - 2);
         await expect
           .poll(() =>
             video.evaluate(
-              (el: HTMLVideoElement, language) =>
-                [...el.textTracks].find((track) => track.language === language)
-                  ?.cues?.length,
-              captionLanguage,
+              (el: HTMLVideoElement, time) =>
+                !el.seeking && el.currentTime >= time,
+              demo.duration - 2,
             ),
           )
-          .toBe(12);
-      }
-      await video.evaluate((el: HTMLVideoElement) => {
-        el.currentTime = 42;
-      });
-      await expect
-        .poll(() =>
-          video.evaluate(
-            (el: HTMLVideoElement) => !el.seeking && el.currentTime >= 42,
+          .toBe(true);
+        expect(
+          await video.evaluate((el: HTMLVideoElement) => el.error),
+        ).toBeNull();
+        await expect(video).toHaveAccessibleName(demo.title[lang]);
+        await expect(figure).toHaveText('');
+        await expect(figure.locator('a')).toHaveCount(0);
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth,
           ),
-        )
-        .toBe(true);
-      expect(
-        await video.evaluate((el: HTMLVideoElement) => el.error),
-      ).toBeNull();
-      await expect(video).toHaveAccessibleName(
-        lang === 'en'
-          ? 'From JPG to PNG and PDF on KDE'
-          : 'De JPG a PNG y PDF en KDE',
-      );
-      await expect(page.locator('.project-video')).toHaveText('');
-      await expect(page.locator('.project-video a')).toHaveCount(0);
-      expect(
-        await page.evaluate(
-          () => document.documentElement.scrollWidth <= innerWidth,
-        ),
-      ).toBe(true);
+        ).toBe(true);
+      }
     }
-  }
-});
+  });
+}
 
 test('case commands revert to the actual page and reduced motion leaves no typing queue', async ({
   page,
@@ -368,8 +397,8 @@ test('all internal links and anchors resolve, absent media stays compact, narrow
     await expect(page.locator('.project-gallery, .case-cover')).toHaveCount(0);
     await expect(page.locator('.project-video')).toHaveCount(
       url.includes('/proyectos/') || url.includes('/projects/')
-        ? Number(url.endsWith('/convertix/'))
-        : 1,
+        ? Number(projectVideos.some(({ id }) => url.endsWith(`/${id}/`)))
+        : projectVideos.length,
     );
     await expect(
       page.locator('.media-placeholder, .pending-note, .palette-note'),

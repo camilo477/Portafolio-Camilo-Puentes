@@ -235,3 +235,35 @@ validación de contenido. Pasan 8 pruebas de navegador en escritorio y móvil qu
 cubren reproducción, subtítulos, teclado, ausencia de JavaScript, enlaces,
 desbordamiento y accesibilidad en ambos idiomas y temas. Se generaron 4 capturas
 locales y se revisaron visualmente la portada en escritorio y la ficha en móvil.
+
+## Recorrido de DianiMilo y aplicaciones PWA
+
+La grabación aprobada de DianiMilo aparece junto al proyecto en la portada y en
+la sección de demostración de sus fichas ES/EN, enlazada desde el índice lateral.
+Son 40,83 segundos de navegación por Nosotros, Películas, Planes, Metas, Ruleta
+y Zanahoria, con regreso al inicio. La demo utiliza los perfiles ficticios Alex
+y Sam. El recorrido solo abre pestañas y desplaza la página.
+
+El reproductor conserva controles nativos, carga bajo demanda y subtítulos ES/EN,
+sin autoplay ni textos o enlaces adicionales debajo. Los recursos publicados en
+`web/public/media/projects/dianimilo/` son:
+
+- `videos/navigation-tour.mp4`: H.264, 1440 × 900, 30 fps, sin audio.
+- `images/navigation-tour.jpg`: fotograma de la grabación.
+- `captions/navigation-tour-es.vtt` y `navigation-tour-en.vtt`: siete bloques por idioma.
+
+Las descripciones de DianiMilo y Nube Camiska indican que son aplicaciones web
+progresivas (PWA), tanto en portada como en sus fichas y en ambos idiomas. La
+clasificación está respaldada por el README y la configuración `VitePWA` de
+DianiMilo, y por el README, manifiesto y service worker de Nube Camiska. No se
+añaden afirmaciones sobre disponibilidad de archivos privados sin conexión.
+
+Los archivos de trabajo de la grabación permanecen en las capturas locales
+ignoradas por Git. Solo se incorporan los cuatro recursos finales al sitio.
+
+Validación: formato correcto, Astro/TypeScript sin errores ni advertencias,
+13 páginas compiladas, 4 pruebas de contenido y 135 pruebas de navegador
+aprobadas. Se omiten los 3 casos de hover que no corresponden a móvil. La suite
+comprueba ambos reproductores, pistas de subtítulos, navegación sin JavaScript,
+teclado, idiomas, temas, índice y accesibilidad. Se generaron 24 capturas locales
+y se inspeccionaron la portada y la ficha en escritorio y móvil.

@@ -332,7 +332,9 @@ test('case indices contain only rendered headings and preserve translated sectio
         links.map((link) => link.getAttribute('data-index-target')!),
       );
     expect(targets).toContain('problem-heading');
-    expect(targets.includes('media-heading')).toBe(id === 'convertix');
+    expect(targets.includes('media-heading')).toBe(
+      ['dianimilo', 'convertix'].includes(id),
+    );
     expect(targets).not.toContain('contribution-heading');
     for (const target of targets)
       await expect(page.locator(`#${target}`)).toHaveCount(1);
