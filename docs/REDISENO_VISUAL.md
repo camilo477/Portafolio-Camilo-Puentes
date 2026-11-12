@@ -132,7 +132,7 @@ provocaba desbordamiento a 320 px, y un puntero inmóvil podía sustituir el com
 del elemento enfocado cuando el navegador hacía scroll. Las pruebas se ejecutaron
 de nuevo después de ambas correcciones.
 
-La auditoría contra `EVITAR_APARIENCIA_IA.md` comprueba una portada asimétrica,
+La auditoría visual comprueba una portada asimétrica,
 composiciones diferentes para los tres proyectos, jerarquía tipográfica de áreas
 técnicas y color con función. No se introducen un hero centrado, cuadrículas de
 tarjetas idénticas, gradientes, brillos, efectos de cristal, fondos cuadriculados,

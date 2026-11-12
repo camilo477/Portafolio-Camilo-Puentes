@@ -154,10 +154,10 @@ ni una evaluación manual con lector de pantalla.
 [Navegación lateral, enlaces profesionales e idioma predeterminado](docs/NAVEGACION_LATERAL.md).
 
 El repositorio contiene código, contenido del sitio, pruebas, configuración de
-compilación e integración continua y documentación técnica. Las instrucciones de
-agentes, prompts, el kit de diseño inicial y los prototipos de trabajo se conservan
-solo localmente. `.gitignore` también excluye credenciales, dependencias instaladas,
-compilaciones, cachés, registros, respaldos y capturas de revisión.
+compilación e integración continua y documentación técnica. `.gitignore` excluye
+credenciales, dependencias instaladas, compilaciones, cachés, registros, respaldos
+y capturas de revisión. Las exclusiones específicas de cada entorno se configuran
+localmente en `.git/info/exclude`.
 
 Antes de cada push, revisar `git status`, el diff preparado y la lista completa de
 archivos rastreados con `git ls-files`. `git ls-files -ci --exclude-standard` debe

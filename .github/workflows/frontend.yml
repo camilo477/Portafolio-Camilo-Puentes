@@ -1,7 +1,7 @@
 name: Frontend checks
 on:
   push:
-    branches: [main, codex/portfolio-base]
+    branches: ['**']
   pull_request:
 permissions:
   contents: read

@@ -65,8 +65,6 @@ export const technologies = {
   pytorch: technology('PyTorch'),
   cuda: technology('NVIDIA CUDA', 'nvcc --version'),
   piper: technology('Piper TTS'),
-  codex: technology('Codex'),
-  opencode: technology('OpenCode'),
   unity: technology('Unity'),
   unreal: technology('Unreal Engine'),
   arduino: technology('Arduino'),
@@ -216,8 +214,6 @@ export const technologyCategories: readonly TechnologyCategory[] = [
       'pytorch',
       'cuda',
       'piper',
-      'codex',
-      'opencode',
     ],
   },
   {

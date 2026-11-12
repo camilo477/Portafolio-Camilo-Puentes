@@ -95,8 +95,7 @@ No hay API, solicitudes a servicios administrativos, formularios, estadísticas 
 comandos ejecutables. `api-status/` e `infra/` contienen solo notas de alcance.
 Las capturas de esta web son evidencias locales ignoradas por Git; se regeneran
 con `npm run screenshots`. Los archivos de configuración privados y secretos están
-excluidos. Las instrucciones de agentes, prompts, el kit de diseño original y el
-prototipo de trabajo se conservan solo localmente y están fuera del seguimiento de Git.
+excluidos. Los materiales de trabajo locales están fuera del seguimiento de Git.
 
 ## Verificación ejecutada
 
