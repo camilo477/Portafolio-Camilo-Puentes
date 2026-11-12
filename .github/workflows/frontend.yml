@@ -18,7 +18,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run check
-      - run: bash -n scripts/deploy-raspberry.sh infra/raspberry/activate-release.sh
+      - run: bash -n scripts/deploy-raspberry.sh scripts/pullportafolio infra/raspberry/activate-release.sh infra/raspberry/build-release.sh
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm test

@@ -6,6 +6,15 @@ Incluye publicación por SSH en Nginx y una guía para Cloudflare Tunnel.
 
 ## Publicar en la Raspberry
 
+Desde una sesión SSH en la Raspberry, una vez instalado el comando:
+
+```bash
+pullportafolio
+pullportafolio --status
+```
+
+También puedes compilar y publicar desde el PC:
+
 ```bash
 make verify
 make deploy PORTFOLIO_SSH=usuario@servidor

@@ -53,7 +53,7 @@ lint: check-node
 
 check: check-node
 	npm run check
-	bash -n scripts/deploy-raspberry.sh infra/raspberry/activate-release.sh
+	bash -n scripts/deploy-raspberry.sh scripts/pullportafolio infra/raspberry/activate-release.sh infra/raspberry/build-release.sh
 
 build: check-node
 	npm run build

@@ -1,8 +1,50 @@
 # Publicación en Raspberry Pi
 
-El portafolio se compila en el equipo de desarrollo y se sirve como archivos
-estáticos con Nginx. La Raspberry no necesita Node.js, una API ni una base de datos
-para este sitio. DianiMilo, Nube y Hub conservan sus propios contenedores.
+El portafolio se sirve como archivos estáticos con Nginx. Se puede compilar en el
+equipo de desarrollo o en la Raspberry mediante Docker. Node.js se usa durante la
+compilación; no es un servicio del sitio. DianiMilo, Nube y Hub conservan sus propios
+contenedores.
+
+## Actualizar directamente en la Raspberry
+
+La copia de trabajo utiliza `~/portafolio` y la rama `codex/portfolio-base`.
+Preparación inicial, una sola vez:
+
+```bash
+git clone --branch codex/portfolio-base --single-branch \
+  https://github.com/camilo477/Portafolio-Camilo-Puentes.git ~/portafolio
+install -d ~/bin
+install -m 755 ~/portafolio/scripts/pullportafolio ~/bin/pullportafolio
+```
+
+Con `~/bin` en el PATH, las actualizaciones se realizan con:
+
+```bash
+pullportafolio
+pullportafolio --status
+```
+
+El comando utiliza `git pull --ff-only`, comprueba rama y remoto y se detiene si
+hay cambios locales. Después compila en una imagen oficial de Node, compatible con
+ARM64 y con la versión de `.nvmrc`. Docker comprueba formato y tipos antes de
+compilar. `.dockerignore` limita el contexto a los archivos de la aplicación.
+Se extrae únicamente `web/dist/` y se activa la versión con el mismo mecanismo de
+comprobación y recuperación que el despliegue desde el PC. Si esa revisión ya está
+publicada y responde, no se vuelve a compilar. No se cambian las rutas del túnel.
+
+La primera compilación descarga la imagen y las dependencias. Las siguientes
+aprovechan la caché de Docker. El contenedor usado para extraer el resultado se
+elimina al terminar; Nginx sigue sirviendo el sitio.
+
+Para consultar el resultado:
+
+```bash
+ls /var/www/portfolio/current/
+curl -I http://127.0.0.1:3003/en/
+```
+
+El código está en `~/portafolio`; los archivos publicados están en
+`/var/www/portfolio/current`. Desde un navegador, abre `https://camiska.lat/`.
 
 ## Preparación y actualización
 
@@ -18,7 +60,7 @@ make deploy PORTFOLIO_SSH=usuario@servidor
 ```
 
 `make deploy` valida formato y tipos, compila y transfiere **solo `web/dist/`** y
-los dos archivos de `infra/raspberry/`. No transfiere el repositorio completo,
+los archivos de `infra/raspberry/`. No transfiere el repositorio completo,
 archivos de entorno, credenciales ni documentación local.
 
 Cada publicación tiene su propio directorio en `/var/www/portfolio/releases/`.

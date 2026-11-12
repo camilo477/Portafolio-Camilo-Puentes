@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+case ${1:-} in
+  --status)
+    printf 'Versión publicada: %s\n' "$(basename "$(readlink -e /var/www/portfolio/current)")"
+    curl --fail --silent --show-error --max-time 5 -o /dev/null \
+      -w 'Origen local: HTTP %{http_code}\n' http://127.0.0.1:3003/en/
+    printf 'Portafolio: https://camiska.lat/\nHub: https://hub.camiska.lat/\n'
+    exit 0
+    ;;
+  --help|-h)
+    printf '%s\n' 'pullportafolio           Descargar, compilar y publicar desde la Raspberry' \
+      'pullportafolio --status  Ver la versión publicada y comprobar Nginx'
+    exit 0
+    ;;
+  '') ;;
+  *) echo 'Opción desconocida. Usa pullportafolio --help.' >&2; exit 1 ;;
+esac
+
+repo=${PORTFOLIO_REPO_DIR:-"$HOME/portafolio"}
+[[ -d "$repo/.git" ]] || { echo "No existe el repositorio en $repo." >&2; exit 1; }
+exec 8>"$repo/.git/portfolio-update.lock"
+flock -n 8 || { echo 'Ya hay una actualización en curso.' >&2; exit 1; }
+[[ $(git -C "$repo" branch --show-current) == codex/portfolio-base ]] || {
+  echo 'La copia debe estar en la rama codex/portfolio-base.' >&2; exit 1;
+}
+case $(git -C "$repo" remote get-url origin) in
+  https://github.com/camilo477/Portafolio-Camilo-Puentes.git|git@github.com:camilo477/Portafolio-Camilo-Puentes.git) ;;
+  *) echo 'El remoto no corresponde al portafolio esperado.' >&2; exit 1 ;;
+esac
+[[ -z $(git -C "$repo" status --porcelain) ]] || {
+  echo 'La copia tiene cambios locales. Revísalos antes de actualizar; no se sobrescribirán.' >&2; exit 1;
+}
+git -C "$repo" pull --ff-only origin codex/portfolio-base
+exec bash "$repo/infra/raspberry/build-release.sh"
