@@ -1,9 +1,8 @@
 .introduction {
-  display: grid;
-  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
-  gap: 4rem;
-  align-items: end;
   padding-block: 3rem 5rem;
+}
+.intro-copy {
+  max-width: 40rem;
 }
 .intro-overline {
   display: flex;
@@ -44,34 +43,13 @@
   margin-top: 1.75rem;
   font-size: 0.95rem;
 }
-.homelab-note {
-  max-width: 23rem;
-  padding-bottom: 0.25rem;
-}
-.homelab-note > summary h2 {
-  font-size: 1rem;
-  letter-spacing: -0.02em;
-  margin-block: 0.65rem;
-}
-.homelab-note > summary p {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.8;
-}
 @media (max-width: 960px) {
-  .introduction {
-    gap: 2.25rem;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  }
   h1 {
     font-size: 2.65rem;
   }
 }
 @media (max-width: 700px) {
   .introduction {
-    grid-template-columns: 1fr;
-    /* At the Homelab anchor, keep the preceding actions above the floating controls. */
-    gap: calc(var(--header-height) + 1rem);
     padding-block: 2.3rem 3.5rem;
   }
   h1 {
@@ -89,9 +67,6 @@
   }
   .intro-text {
     font-size: 1rem;
-  }
-  .homelab-note {
-    max-width: 34rem;
   }
 }
 

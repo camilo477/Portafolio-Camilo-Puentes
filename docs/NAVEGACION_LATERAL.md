@@ -16,9 +16,6 @@ El área transparente no intercepta clics sobre el contenido; únicamente los
 controles reciben eventos. La reserva superior de las anclas es cero cuando el
 grupo está en el lateral; en móvil y portátil se mide la altura de los controles.
 El comportamiento de colocación también funciona sin JavaScript.
-En móvil, la separación antes de Homelab considera esa altura para que los
-enlaces de la presentación no queden parcialmente bajo los controles al abrir
-su ancla directa.
 Los enlaces a Inicio, Proyectos, Tecnologías y Homelab pasan al footer, donde
 siguen funcionando con teclado y sin JavaScript; Experiencia continúa condicionada
 a contenido aprobado. El índice derecho permanece disponible en pantallas amplias.
@@ -28,6 +25,13 @@ anterior. Homelab ya es un bloque real de portada por la petición previa de Cam
 el índice utiliza `#homelab`, abre su contenido y conserva las redirecciones antiguas.
 Experiencia sigue condicionada a contenido aprobado. No hay enlace a una sección
 vacía; se reserva su número 04 y Homelab conserva el 05 solicitado.
+
+Homelab está ahora al final de la portada, después de Tecnologías y de Experiencia
+cuando exista contenido aprobado. El orden del documento coincide con el del
+índice; ya no forma parte de la presentación. Conserva la expansión nativa.
+Su resumen cerrado también cuenta como zona de lectura. Un observador del footer
+permite resaltarlo al llegar al final, sin exigir que alcance el borde superior,
+sin abrirlo automáticamente y sin alterar la URL ni el historial durante el scroll.
 
 ## Márgenes y presentación
 
@@ -143,3 +147,9 @@ Las pruebas comprueban la colocación sobre el índice, la existencia de una sol
 instancia de los controles y el comportamiento entre 320 y 2560 px y con texto ampliado.
 Capturas nuevas de portada y fichas, en ambos idiomas y temas; revisión visual
 de portada amplia clara, ficha oscura y móvil oscuro.
+
+Homelab al final: formato, tipos y compilación aprobados; 65 pruebas de escritorio
+y 62 de móvil aprobadas, con 3 casos de hover omitidos en táctil. Se comprueba el
+orden del documento, su expansión y el resaltado del resumen cerrado al llegar
+al footer sin cambios de URL. Capturas nuevas en ES/EN y ambos temas; revisión
+visual de Homelab cerrado al final en escritorio y abierto en móvil.

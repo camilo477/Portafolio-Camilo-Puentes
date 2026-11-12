@@ -194,26 +194,29 @@
   }
 }
 
-/* The native disclosure stays in the introduction and gains reading width when open. */
+/* The final home section keeps its native, inline disclosure. */
 .homelab-note {
   min-width: 0;
+  padding-block: 2.5rem;
+  border-top: 1px solid var(--border);
 }
 .homelab-note > summary {
   list-style: none;
   cursor: pointer;
+  max-width: 42rem;
+}
+.homelab-note > summary h2 {
+  margin-block: 0.75rem 1rem;
+}
+.homelab-note > summary p {
+  color: var(--text-muted);
+  line-height: 1.8;
 }
 .homelab-note > summary::-webkit-details-marker {
   display: none;
 }
 .homelab-note > summary:hover .homelab-toggle {
   color: var(--text);
-}
-.homelab-note[open] {
-  grid-column: 1 / -1;
-  max-width: none;
-}
-.homelab-note[open] > summary {
-  max-width: 42rem;
 }
 .homelab-toggle {
   display: inline-flex;

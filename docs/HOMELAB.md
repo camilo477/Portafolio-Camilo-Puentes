@@ -92,9 +92,10 @@ funcionamiento completo de las aplicaciones o la seguridad del servidor.
 ## Homelab dentro de la portada
 
 `HomelabDisclosure.astro` reemplaza el enlace del resumen por `details/summary`.
-El resumen mantiene su posición junto a la presentación cuando está cerrado. Al
-abrirse ocupa el ancho de lectura de la portada, con el caso, el diagrama y sus
-fuentes. No hay modal, petición a una API ni nueva vista.
+Por la petición posterior de Camilo, Homelab es la última sección de la portada,
+después de Tecnologías y de Experiencia cuando exista contenido aprobado. Su orden
+coincide con «En esta página». Al abrirse ocupa el ancho de lectura, con el caso,
+el diagrama y sus fuentes. No hay modal, petición a una API ni nueva vista.
 
 - Menú principal, footer y enlaces compartidos usan `/es/#homelab` o `/en/#homelab`.
 - Clic, toque, Enter y Espacio funcionan con el desplegable nativo.

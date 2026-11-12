@@ -65,9 +65,8 @@ export function initializeSidebars() {
   let observer: IntersectionObserver;
   let frame = 0;
   let navigationTarget: string | undefined;
+  let atPageEnd = false;
   const intersecting = new Set<Element>();
-  const eligible = (entry: (typeof entries)[number]) =>
-    !(entry.area instanceof HTMLDetailsElement) || entry.area.open;
   const setActive = (id: string) =>
     entries.forEach(({ link, target }) => {
       if (target.id === id) link.setAttribute('aria-current', 'location');
@@ -80,9 +79,17 @@ export function initializeSidebars() {
       setActive(navigationTarget);
       return;
     }
-    const visible = entries.filter(
-      (entry) => eligible(entry) && intersecting.has(entry.area),
-    );
+    const last = entries.at(-1)!;
+    // The final collapsed section can be read before it reaches the top band.
+    if (
+      atPageEnd &&
+      scrollY > 1 &&
+      last.area.getBoundingClientRect().top < innerHeight
+    ) {
+      setActive(last.target.id);
+      return;
+    }
+    const visible = entries.filter((entry) => intersecting.has(entry.area));
     visible.sort(
       (a, b) =>
         b.area.getBoundingClientRect().top - a.area.getBoundingClientRect().top,
@@ -145,6 +152,20 @@ export function initializeSidebars() {
       area.addEventListener('toggle', scheduleObserve);
   });
   new ResizeObserver(scheduleObserve).observe(header);
+  const endObserver = new IntersectionObserver(
+    ([entry]) => {
+      atPageEnd = entry.intersectionRatio === 1;
+      update();
+    },
+    { threshold: 1 },
+  );
+  const footer = document.querySelector('.site-footer');
+  const observeEnd = () => {
+    if (entries.at(-1)!.area instanceof HTMLDetailsElement && footer)
+      endObserver.observe(footer);
+  };
+  observeEnd();
+  window.addEventListener('pageshow', observeEnd);
   const resumeReading = () => {
     if (!navigationTarget) return;
     navigationTarget = undefined;
@@ -185,6 +206,7 @@ export function initializeSidebars() {
     window.addEventListener(event, syncLocation);
   window.addEventListener('pagehide', () => {
     observer?.disconnect();
+    endObserver.disconnect();
     cancelAnimationFrame(frame);
   });
   syncLocation();

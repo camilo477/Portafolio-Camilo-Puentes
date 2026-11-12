@@ -11,6 +11,11 @@ test('Homelab expands in the same document and closes with focus restored', asyn
     });
     const panel = page.locator('#homelab');
     const summary = panel.locator(':scope > summary');
+    await expect(page.locator('main > :last-child')).toHaveAttribute(
+      'id',
+      'homelab',
+    );
+    await expect(page.locator('.introduction #homelab')).toHaveCount(0);
     await expect(panel).not.toHaveAttribute('open');
     if (isMobile) await summary.tap();
     else {

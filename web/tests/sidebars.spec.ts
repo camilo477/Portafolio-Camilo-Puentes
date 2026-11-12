@@ -238,6 +238,15 @@ test('reading updates the index without changing the URL or adding history entri
     expect(await page.evaluate(() => history.length)).toBe(originalHistory);
   }
   await expect(index(page).locator('a[href*="experience"]')).toHaveCount(0);
+  await expect(index(page).locator('a').last()).toHaveAttribute(
+    'data-index-target',
+    'homelab',
+  );
+  await page.locator('.site-footer').scrollIntoViewIfNeeded();
+  await expect(active(page)).toHaveAttribute('data-index-target', 'homelab');
+  await expect(page.locator('#homelab')).not.toHaveAttribute('open');
+  await expect(page).toHaveURL('/en/');
+  expect(await page.evaluate(() => history.length)).toBe(originalHistory);
 });
 
 test('index activation respects motion preferences, history, Homelab expansion and sticky offsets', async ({
