@@ -5,14 +5,14 @@ const variants = {
   es: {
     anchor: 'experiencia',
     heading: 'Experiencia profesional',
-    role: 'Desarrollador de software',
+    role: 'Software Developer - Fullstack',
     period: 'Octubre 2025 – Actualidad',
     navigation: 'Experiencia',
   },
   en: {
     anchor: 'experience',
     heading: 'Professional Experience',
-    role: 'Software Developer',
+    role: 'Software Developer - Fullstack',
     period: 'October 2025 – Present',
     navigation: 'Experience',
   },
