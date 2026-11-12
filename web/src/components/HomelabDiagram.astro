@@ -1,0 +1,37 @@
+---
+import { homelabContent } from '../data/homelab';
+import type { Language } from '../lib/routes';
+interface Props {
+  lang: Language;
+}
+const { lang } = Astro.props;
+const h = homelabContent[lang];
+---
+
+<figure class="homelab-diagram" aria-label={h.diagramLabel}>
+  <div class="diagram-host">
+    <span class="diagram-host-label">{h.host}</span>
+    <div class="diagram-docker">
+      <p class="diagram-layer">{h.containers}</p>
+      <ul class="diagram-services" role="list">
+        <li>
+          <strong>Nube Camiska</strong>
+          <span>{h.diagramNube}</span>
+        </li>
+        <li>
+          <strong>DianiMilo</strong>
+          <span>{h.diagramDiani}</span>
+        </li>
+        <li>
+          <strong>Camiska Hub</strong>
+          <span>{h.diagramHub}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="diagram-storage">
+      <strong>{h.persistence}</strong>
+      <p>{h.persistenceText}</p>
+    </div>
+  </div>
+  <figcaption>{h.diagramCaption}</figcaption>
+</figure>

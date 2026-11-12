@@ -158,11 +158,14 @@ h3 {
   align-items: center;
   gap: 2rem;
   padding-block: 0.85rem;
+  flex-wrap: wrap;
 }
 .main-nav {
   display: flex;
   gap: 0.4rem;
   margin-right: auto;
+  min-width: 0;
+  max-width: 100%;
 }
 .main-nav a {
   padding: 0.6rem 0.85rem;
@@ -285,13 +288,6 @@ h3 {
   color: var(--text-muted);
   font-size: 0.8rem;
 }
-.palette-note {
-  margin-top: 0.4rem;
-}
-.palette-note strong {
-  font-weight: 550;
-  color: var(--amber);
-}
 .footer-nav {
   display: flex;
   flex-wrap: wrap;
@@ -411,8 +407,18 @@ h3 {
     gap: 0.2rem;
     font-size: 0.85rem;
   }
+  .main-nav {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
   .main-nav a {
-    padding: 0.6rem 0.5rem;
+    flex: 1 0 auto;
+    padding: 0.6rem 0.25rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .main-nav .nav-path {
+    display: none;
   }
   .nav-path {
     margin-right: 0.2rem;

@@ -253,3 +253,20 @@ export const technologyCategories: readonly TechnologyCategory[] = [
     ],
   },
 ];
+
+// Render each secondary tool once. Keep data libraries in their most useful category.
+const alreadyVisible = new Set<TechnologyId>([
+  ...mainStackAreas.flatMap((area) => [...area.items]),
+  ...explorationIds,
+]);
+export const secondaryTechnologyCategories: readonly TechnologyCategory[] =
+  technologyCategories.map((category) => ({
+    id: category.id,
+    items: category.items.filter((id) => {
+      if (alreadyVisible.has(id)) return false;
+      if (category.id === 'frameworks' && (id === 'pandas' || id === 'numpy'))
+        return false;
+      alreadyVisible.add(id);
+      return true;
+    }),
+  }));

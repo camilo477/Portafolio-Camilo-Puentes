@@ -240,3 +240,16 @@ html[data-motion='off'] .project-row::details-content {
     margin-top: 1rem;
   }
 }
+
+.project-story {
+  scroll-margin-block-start: 0.75rem;
+}
+/* Native hash fallback without JavaScript includes the section heading above the first project. */
+.project-story:first-child .project-row {
+  scroll-margin-block-start: 10rem;
+}
+@media (max-width: 700px) {
+  .project-story:first-child .project-row {
+    scroll-margin-block-start: 8.5rem;
+  }
+}

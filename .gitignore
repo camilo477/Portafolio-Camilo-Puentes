@@ -75,3 +75,6 @@ target/
 # Local evidence and caches
 .npm-cache/
 /docs/capturas/
+
+# Editorial drafts awaiting explicit publication approval
+/docs/borradores/

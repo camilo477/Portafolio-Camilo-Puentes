@@ -72,22 +72,22 @@ const t = copy[lang];
         <ProjectImage image={media.cover} eager />
       </div>
     )}
-    <section class="case-section" aria-labelledby="problem-heading">
-      <h2 id="problem-heading">{t.problem}</h2>
-      <p>{problem ?? t.contentPending}</p>
-    </section>
-    <section class="case-section" aria-labelledby="features-heading">
-      <h2 id="features-heading">{t.features}</h2>
-      {features.length ? (
+    {problem && (
+      <section class="case-section" aria-labelledby="problem-heading">
+        <h2 id="problem-heading">{t.problem}</h2>
+        <p>{problem}</p>
+      </section>
+    )}
+    {features.length > 0 && (
+      <section class="case-section" aria-labelledby="features-heading">
+        <h2 id="features-heading">{t.features}</h2>
         <ul class="case-list">
           {features.map((feature) => (
             <li>{feature}</li>
           ))}
         </ul>
-      ) : (
-        <p class="pending-note">{t.contentPending}</p>
-      )}
-    </section>
+      </section>
+    )}
     <section class="case-section" aria-labelledby="stack-heading">
       <h2 id="stack-heading">{t.projectStack}</h2>
       <ul class="case-stack">
@@ -96,41 +96,41 @@ const t = copy[lang];
         ))}
       </ul>
     </section>
-    <section class="case-section" aria-labelledby="contribution-heading">
-      <h2 id="contribution-heading">{t.contribution}</h2>
-      <p class:list={{ 'pending-note': !contribution }}>
-        {contribution ?? t.contributionPending}
-      </p>
-    </section>
-    <section class="case-section" aria-labelledby="decisions-heading">
-      <h2 id="decisions-heading">{t.decisions}</h2>
-      {decisions.length ? (
+    {contribution && (
+      <section class="case-section" aria-labelledby="contribution-heading">
+        <h2 id="contribution-heading">{t.contribution}</h2>
+        <p>{contribution}</p>
+      </section>
+    )}
+    {decisions.length > 0 && (
+      <section class="case-section" aria-labelledby="decisions-heading">
+        <h2 id="decisions-heading">{t.decisions}</h2>
         <ul class="case-list">
           {decisions.map((decision) => (
             <li>{decision}</li>
           ))}
         </ul>
-      ) : (
-        <p class="pending-note">{t.contentPending}</p>
-      )}
-    </section>
-    <section class="case-section" aria-labelledby="architecture-heading">
-      <h2 id="architecture-heading">{t.architecture}</h2>
-      <div class="case-architecture">
-        <p>{architecture.summary ?? t.contentPending}</p>
-        {architecture.diagram ? (
-          <ProjectImage image={architecture.diagram} />
-        ) : (
-          <p class="pending-note">{t.diagramPending}</p>
-        )}
-      </div>
-    </section>
-    <section class="case-section" aria-labelledby="media-heading">
-      <h2 id="media-heading">{t.mediaHeading}</h2>
-      <div>
-        <ProjectMedia entry={entry} />
-      </div>
-    </section>
+      </section>
+    )}
+    {(architecture.summary || architecture.diagram) && (
+      <section class="case-section" aria-labelledby="architecture-heading">
+        <h2 id="architecture-heading">{t.architecture}</h2>
+        <div class="case-architecture">
+          {architecture.summary && <p>{architecture.summary}</p>}
+          {architecture.diagram && (
+            <ProjectImage image={architecture.diagram} />
+          )}
+        </div>
+      </section>
+    )}
+    {(media.gallery.length > 0 || media.videos.length > 0) && (
+      <section class="case-section" aria-labelledby="media-heading">
+        <h2 id="media-heading">{t.mediaHeading}</h2>
+        <div>
+          <ProjectMedia entry={entry} />
+        </div>
+      </section>
+    )}
     {sources.length > 0 && (
       <section
         class="case-section case-sources"

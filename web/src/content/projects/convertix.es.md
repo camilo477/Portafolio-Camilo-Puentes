@@ -48,4 +48,4 @@ sources:
 
 Convertix lleva la conversión de documentos e imágenes al escritorio KDE. Su menú radial permite elegir operaciones y utiliza motores locales para procesar los archivos.
 
-Es una aplicación de escritorio: su presentación se completará con un vídeo de uso y capturas reales. El repositorio documenta sus funciones y limitaciones.
+Es una aplicación de escritorio. El repositorio documenta los motores disponibles y las limitaciones de cada conversión.

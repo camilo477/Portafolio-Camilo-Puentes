@@ -91,3 +91,26 @@ test('experience accepts no entries and rejects entries without explicit publica
     true,
   );
 });
+
+test('the complementary inventory preserves every technology and removes redundant appearances', async () => {
+  const {
+    technologies,
+    mainStackAreas,
+    explorationIds,
+    secondaryTechnologyCategories,
+  } = await import('../src/data/technologies.ts');
+  const primary = new Set([
+    ...mainStackAreas.flatMap((area) => area.items),
+    ...explorationIds,
+  ]);
+  const secondary = secondaryTechnologyCategories.flatMap(
+    (category) => category.items,
+  );
+  assert.equal(secondaryTechnologyCategories.length, 8);
+  assert.equal(new Set(secondary).size, secondary.length);
+  assert.ok(secondary.every((id) => !primary.has(id)));
+  assert.deepEqual(
+    [...new Set([...primary, ...secondary])].sort(),
+    Object.keys(technologies).sort(),
+  );
+});

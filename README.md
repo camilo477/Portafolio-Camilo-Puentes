@@ -53,8 +53,8 @@ web/
   src/
     components/          Resúmenes, acciones, galerías, tecnologías y experiencia
     content/projects/    Tres fichas, cada una en español e inglés
-    content/experience/  Datos profesionales pendientes de aprobación
-    data/                Inventario tipado de tecnologías y categorías
+    content/experience/  Solo entradas profesionales aprobadas
+    data/                Inventario de tecnologías y contenido verificado de Homelab
     layouts/             HTML, navegación y controles comunes
     lib/                 Traducciones y mapa tipado de rutas/comandos
     pages/               Portadas, seis fichas y Homelab bilingüe
@@ -75,7 +75,8 @@ docs/                    Documentación técnica y verificación de la implement
 - Tecnologías y lenguajes en ocho categorías: lenguajes, frameworks, bases de datos,
   Linux/infraestructura, datos/BI, IA local, videojuegos/embebidos e ingeniería.
   Cinco áreas principales visibles, aprendizaje/exploración según lo declarado por
-  Camilo y un único desplegable para el inventario completo, también sin JavaScript.
+  Camilo e inventario complementario por categorías desplegables, también sin JavaScript.
+  Se evita repetir las herramientas ya visibles y las compartidas entre categorías.
   Sin porcentajes ni niveles de dominio inventados.
 - Navegación a `/es/#tecnologias` y `/en/#technologies`; tecnologías como texto,
   sin enlaces externos ni paradas de teclado, con comandos decorativos en hover.
@@ -90,10 +91,14 @@ docs/                    Documentación técnica y verificación de la implement
 - Franja visual: hover/foco, tipeo de 180 ms, cancelación y restauración.
 - Temas claro/oscuro, preferencia persistente y esquema inicial del sistema.
 - Movimiento reducido y control adicional para desactivar efectos.
-- Galerías y vídeos preparados; sin archivos se muestran avisos compactos.
+- Galerías y vídeos preparados; sin archivos se omite la sección multimedia.
   Las capturas reales, diagramas y el detalle de las contribuciones quedan pendientes.
-- Experiencia profesional preparada con datos vacíos, y `/es/homelab/` y
-  `/en/homelab/` listas para documentar la infraestructura pública.
+- Experiencia profesional preparada con borrador local excluido de Git. La sección
+  y el acceso principal aparecen solo cuando exista contenido aprobado.
+- `/es/homelab/` y `/en/homelab/` documentan los componentes verificados y el proceso
+  de actualización de Nube, con diagrama adaptable y fuentes públicas.
+- Homelab accesible desde la navegación principal; encabezados protegidos bajo
+  la barra sticky al navegar con hashes, y barra compacta en móvil.
 - Se conserva el diseño de Tarea 02: proyectos con distintas proporciones,
   acciones visibles y paleta turquesa/ámbar provisional.
 - Refinamiento Tarea 03: presentación concreta, nota de homelab sin ilustración
@@ -136,6 +141,8 @@ ni una evaluación manual con lector de pantalla.
 [Rediseño visual, paleta y decisiones de Tarea 02](docs/REDISENO_VISUAL.md).
 [Refinamiento de textos, navegación y proyectos de Tarea 03](docs/REFINAMIENTO.md).
 [Fichas, demos, fuentes y guía para añadir medios de Tarea 04](docs/PROYECTOS_Y_MULTIMEDIA.md).
+[Contenido profesional y ajustes de navegación de Tarea 05](docs/CONTENIDO_Y_UX.md).
+[Homelab: evidencia, arquitectura y límites](docs/HOMELAB.md).
 
 El repositorio contiene código, contenido del sitio, pruebas, configuración de
 compilación e integración continua y documentación técnica. Las instrucciones de

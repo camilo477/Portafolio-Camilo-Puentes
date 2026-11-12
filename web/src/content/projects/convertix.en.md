@@ -48,4 +48,4 @@ sources:
 
 Convertix brings document and image conversion to the KDE desktop. Its radial menu offers operations that process files using local conversion engines.
 
-It is a desktop application: a demonstration video and real screenshots will complete its presentation. The repository documents its features and limitations.
+It is a desktop application. The repository documents the available engines and the limitations of each conversion.

@@ -24,8 +24,14 @@ export function initializeCommands() {
   let typingFrame = 0;
   let updateFrame = 0;
   let targetCommand = '';
-  const activeRoute = (): RouteId =>
-    route === 'home' ? routeFromHash(lang, location.hash) : route;
+  const activeRoute = (): RouteId => {
+    if (route !== 'home') return route;
+    const active = routeFromHash(lang, location.hash);
+    // A retired, unpublished experience anchor must not advertise an empty section.
+    return active === 'experience' && !document.querySelector('.experience')
+      ? 'home'
+      : active;
+  };
 
   function show(command: string, animate: boolean) {
     cancelAnimationFrame(typingFrame);

@@ -1,6 +1,5 @@
 ---
 import { render, type CollectionEntry } from 'astro:content';
-import MediaPlaceholder from './MediaPlaceholder.astro';
 import CommandLabel from './CommandLabel.astro';
 import ProjectActions from './ProjectActions.astro';
 import ProjectImage from './ProjectImage.astro';
@@ -11,8 +10,7 @@ interface Props {
   entry: CollectionEntry<'projects'>;
 }
 const { entry } = Astro.props;
-const { lang, projectId, title, category, description, media, videoPlanned } =
-  entry.data;
+const { lang, projectId, title, category, description, media } = entry.data;
 const t = copy[lang];
 const { Content } = await render(entry);
 ---
@@ -63,13 +61,6 @@ const { Content } = await render(entry);
       {projectId}/
     </span>
     <ProjectActions entry={entry} preview />
-    {!media.cover && (
-      <MediaPlaceholder
-        lang={lang}
-        name={projectId}
-        kind={videoPlanned ? 'video' : 'screenshot'}
-      />
-    )}
     {projectId === 'nube-camiska' && (
       <p class="project-platform">
         <span>Linux</span>

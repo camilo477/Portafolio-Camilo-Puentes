@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { publishedExperience } from '../lib/experience';
 import { copy } from '../lib/i18n';
 import {
   commands,
@@ -28,6 +29,7 @@ const {
   route = 'home',
 } = Astro.props;
 const t = copy[lang];
+const hasExperience = (await publishedExperience(lang)).length > 0;
 ---
 
 <!doctype html>
@@ -89,6 +91,27 @@ const t = copy[lang];
             </span>
             {t.technologies}
           </a>
+          {hasExperience && (
+            <a
+              href={experiencePath(lang)}
+              data-preview-command={commands.experience}
+            >
+              <span class="nav-path" aria-hidden="true">
+                ./
+              </span>
+              {t.experienceShort}
+            </a>
+          )}
+          <a
+            href={homelabPath(lang)}
+            data-preview-command={commands.homelab}
+            aria-current={route === 'homelab' ? 'page' : undefined}
+          >
+            <span class="nav-path" aria-hidden="true">
+              ./
+            </span>
+            {t.homelab}
+          </a>
         </nav>
         <div class="preferences">
           <nav class="languages" aria-label={t.language}>
@@ -144,12 +167,14 @@ const t = copy[lang];
           class="footer-nav"
           aria-label={lang === 'es' ? 'Más sobre mí' : 'More about me'}
         >
-          <a
-            href={experiencePath(lang)}
-            data-preview-command={commands.experience}
-          >
-            {t.experience}
-          </a>
+          {hasExperience && (
+            <a
+              href={experiencePath(lang)}
+              data-preview-command={commands.experience}
+            >
+              {t.experience}
+            </a>
+          )}
           <a
             href={homelabPath(lang)}
             data-preview-command={commands.homelab}
@@ -158,10 +183,6 @@ const t = copy[lang];
             {t.homelab}
           </a>
         </nav>
-        <p class="palette-note">
-          <strong>{t.palette}</strong>
-          <span> · {t.paletteNote}</span>
-        </p>
       </div>
       <label class="motion-control">
         <input type="checkbox" data-motion-toggle checked disabled />

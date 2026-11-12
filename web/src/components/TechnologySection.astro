@@ -1,6 +1,6 @@
 ---
 import {
-  technologyCategories,
+  secondaryTechnologyCategories,
   mainStackAreas,
   explorationIds,
 } from '../data/technologies';
@@ -72,15 +72,21 @@ const t = copy[lang];
     </summary>
     <p class="inventory-note">{t.inventoryNote}</p>
     <div class="inventory-grid">
-      {technologyCategories.map(({ id, items }) => (
-        <section
+      {secondaryTechnologyCategories.map(({ id, items }) => (
+        <details
           class="stack-category"
+          name="technology-category"
           data-technology-group={id}
           aria-labelledby={`stack-${id}-title`}
         >
-          <h3 id={`stack-${id}-title`}>{t.technologyCategories[id]}</h3>
+          <summary>
+            <span id={`stack-${id}-title`}>{t.technologyCategories[id]}</span>
+            <span class="category-mark" aria-hidden="true">
+              +
+            </span>
+          </summary>
           <TechnologyList items={items} lang={lang} />
-        </section>
+        </details>
       ))}
     </div>
   </details>

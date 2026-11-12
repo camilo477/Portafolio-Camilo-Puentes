@@ -69,9 +69,20 @@ test('capture real desktop and mobile pages in both themes and languages', async
           page.locator(`details[data-project="${project}"]`),
         ).toHaveAttribute('open', '');
         await page.evaluate(() => document.fonts.ready);
-        await page
-          .locator(`.story-${project}`)
-          .evaluate((el) => el.scrollIntoView({ block: 'start' }));
+        // Capture actual hash navigation, without manually repairing its scroll position.
+        await expect
+          .poll(
+            async () =>
+              (await page
+                .locator(
+                  project === 'dianimilo'
+                    ? '#projects-heading'
+                    : `#${project}-title`,
+                )
+                .boundingBox())!.y -
+              (await page.locator('.site-header').boundingBox())!.height,
+          )
+          .toBeGreaterThan(0);
         await page.screenshot({
           path: resolve(output, `${project}-${device}-${theme}.png`),
           fullPage: false,
@@ -103,6 +114,23 @@ test('capture real desktop and mobile pages in both themes and languages', async
         await page.screenshot({
           path: resolve(output, `homelab-${device}-${theme}-${lang}.png`),
           fullPage: true,
+        });
+        await page.screenshot({
+          path: resolve(
+            output,
+            `homelab-${device}-${theme}-${lang}-viewport.png`,
+          ),
+          fullPage: false,
+        });
+        await page
+          .locator('.homelab-architecture')
+          .evaluate((el) => el.scrollIntoView({ block: 'start' }));
+        await page.screenshot({
+          path: resolve(
+            output,
+            `homelab-diagram-${device}-${theme}-${lang}.png`,
+          ),
+          fullPage: false,
         });
       }
       await context.close();

@@ -138,6 +138,16 @@ test('opening and closing use intermediate heights without scrolling or clipping
   await details(page)
     .locator('summary')
     .evaluate((el) => el.scrollIntoView({ block: 'start' }));
+  // Preserve the production duration, but slow Chromium's animation clock while
+  // measuring intermediate geometry so busy CI workers cannot skip the transition.
+  expect(
+    await details(page).evaluate(
+      (el) => getComputedStyle(el, '::details-content').transitionDuration,
+    ),
+  ).toContain('0.24s');
+  const animationClock = await page.context().newCDPSession(page);
+  await animationClock.send('Animation.enable');
+  await animationClock.send('Animation.setPlaybackRate', { playbackRate: 0.2 });
   const samples = await details(page).evaluate(async (panel) => {
     const summary = panel.querySelector('summary')!;
     const reveal = panel.querySelector('.project-reveal')!;
@@ -150,7 +160,7 @@ test('opening and closing use intermediate heights without scrolling or clipping
           scroll: scrollY,
         });
         await new Promise(requestAnimationFrame);
-      } while (performance.now() - start < 330);
+      } while (performance.now() - start < 1500);
       return frames;
     };
     const before = scrollY;
@@ -160,6 +170,8 @@ test('opening and closing use intermediate heights without scrolling or clipping
     const closing = await capture();
     return { before, opening, closing };
   });
+  await animationClock.send('Animation.setPlaybackRate', { playbackRate: 1 });
+  await animationClock.detach();
   const fullHeight = samples.opening.at(-1)!.height;
   expect(fullHeight).toBeGreaterThan(100);
   for (const frames of [samples.opening, samples.closing]) {

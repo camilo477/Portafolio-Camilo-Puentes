@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { publishedExperience } from '../lib/experience';
 import CommandLabel from './CommandLabel.astro';
 import { copy } from '../lib/i18n';
 import { commands, experienceAnchor, type Language } from '../lib/routes';
@@ -8,28 +8,22 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = copy[lang];
-const content = await getCollection(
-  'experience',
-  ({ data }) => data.lang === lang,
-);
-const entries = content.flatMap(({ data }) => data.entries);
+const entries = await publishedExperience(lang);
 ---
 
-<section
-  class="experience"
-  id={experienceAnchor(lang)}
-  aria-labelledby="experience-heading"
->
-  <div class="section-heading">
-    <div>
-      <CommandLabel command={commands.experience} />
-      <h2 id="experience-heading">{t.experience}</h2>
+{entries.length > 0 && (
+  <section
+    class="experience"
+    id={experienceAnchor(lang)}
+    aria-labelledby="experience-heading"
+  >
+    <div class="section-heading">
+      <div>
+        <CommandLabel command={commands.experience} />
+        <h2 id="experience-heading">{t.experience}</h2>
+      </div>
     </div>
-  </div>
-  {entries.length === 0 ? (
-    <p class="pending-note">{t.contentPending}</p>
-  ) : (
-    entries.map((entry) => (
+    {entries.map((entry) => (
       <article class="experience-entry">
         <header>
           <p class="experience-period">{entry.period}</p>
@@ -57,6 +51,6 @@ const entries = content.flatMap(({ data }) => data.entries);
           )}
         </div>
       </article>
-    ))
-  )}
-</section>
+    ))}
+  </section>
+)}

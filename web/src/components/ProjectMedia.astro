@@ -6,7 +6,7 @@ interface Props {
   entry: CollectionEntry<'projects'>;
 }
 const { entry } = Astro.props;
-const { media, lang, videoPlanned } = entry.data;
+const { media, lang } = entry.data;
 const t = copy[lang];
 ---
 
@@ -59,8 +59,3 @@ const t = copy[lang];
     )}
   </figure>
 ))}
-{media.gallery.length === 0 && media.videos.length === 0 && (
-  <p class="pending-note">
-    {videoPlanned ? t.mediaVideoPending : t.mediaPending}
-  </p>
-)}

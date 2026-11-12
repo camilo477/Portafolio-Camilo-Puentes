@@ -186,28 +186,30 @@ test('case commands revert to the actual page and reduced motion leaves no typin
   ).toBeGreaterThan((await page.locator('.site-header').boundingBox())!.height);
 });
 
-test('experience has no fictional entries and Homelab is available in both languages', async ({
+test('unapproved experience stays hidden and Homelab has primary navigation in both languages', async ({
   page,
 }) => {
   for (const lang of ['es', 'en']) {
     await page.goto(`/${lang}/`);
-    await expect(page.locator('.experience-entry')).toHaveCount(0);
-    await expect(page.locator('.experience')).toContainText(
-      'cat ~/experiencia.md',
-    );
-    await page.locator('.footer-nav a').first().click();
-    await expect(command(page)).toHaveText('cat ~/experiencia.md');
-    const other = lang === 'es' ? 'en' : 'es';
-    await expect(page.locator(`[data-language="${other}"]`)).toHaveAttribute(
-      'href',
-      `/${other}/#${other === 'es' ? 'experiencia' : 'experience'}`,
-    );
-    await page.locator('.footer-nav a').last().click();
+    await expect(page.locator('.experience, .experience-entry')).toHaveCount(0);
+    await expect(
+      page.locator(
+        `a[href*="#${lang === 'es' ? 'experiencia' : 'experience'}"]`,
+      ),
+    ).toHaveCount(0);
+    await page
+      .locator('.main-nav')
+      .getByRole('link', { name: 'Homelab', exact: true })
+      .click();
     await expect(page).toHaveURL(`/${lang}/homelab/`);
     await expect(page.locator('h1')).toHaveText('Homelab');
     await expect(page.locator('.homelab-intro')).toContainText('Raspberry Pi');
     await expect(page.locator('.homelab-intro')).toContainText('Docker');
     await expect(command(page)).toHaveText('cd ~/homelab');
+    await expect(page.locator('.main-nav [aria-current]')).toHaveAccessibleName(
+      'Homelab',
+    );
+    const other = lang === 'es' ? 'en' : 'es';
     await page.locator(`[data-language="${other}"]`).click();
     await expect(page).toHaveURL(`/${other}/homelab/`);
   }
@@ -246,8 +248,9 @@ test('all internal links and anchors resolve, absent media stays compact, narrow
     await expect(
       page.locator('.project-gallery, .project-video, .case-cover'),
     ).toHaveCount(0);
-    for (const notice of await page.locator('.media-placeholder').all())
-      expect((await notice.boundingBox())!.height).toBeLessThan(80);
+    await expect(
+      page.locator('.media-placeholder, .pending-note, .palette-note'),
+    ).toHaveCount(0);
     for (const width of [320, 390, 820]) {
       await page.setViewportSize({ width, height: 844 });
       expect(

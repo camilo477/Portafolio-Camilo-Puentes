@@ -42,9 +42,7 @@ test('static content, visible controls, and three ordered projects are available
     'Convertix',
   ]);
   await expect(page.locator('details[open]')).toHaveCount(0);
-  for (const id of ['dianimilo', 'nube-camiska', 'convertix']) {
-    await expect(page.locator(`[data-media-for="${id}"]`)).toBeVisible();
-  }
+  await expect(page.locator('.media-placeholder')).toHaveCount(0);
   await expect(diani(page)).toHaveAccessibleName('DianiMilo');
   await expect(nube(page)).toHaveAccessibleName('Nube Camiska');
   await expect(convertix(page)).toHaveAccessibleName('Convertix');
@@ -161,11 +159,6 @@ test('projects expand in the same document, one at a time, and can be closed', a
   await expect(panel(page, 'dianimilo')).not.toHaveAttribute('open');
   await convertix(page).click();
   await expect(page).toHaveURL('/es/#convertix');
-  await expect(
-    page
-      .locator('[data-media-for="convertix"]')
-      .getByText('Capturas y vídeo de uso pendientes.', { exact: true }),
-  ).toBeVisible();
   await expect(
     page.locator('.story-convertix .repository-link'),
   ).toHaveAttribute('href', 'https://github.com/camilo477/Converter-files');

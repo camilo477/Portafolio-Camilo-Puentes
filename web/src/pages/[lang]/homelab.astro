@@ -1,19 +1,25 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CommandLabel from '../../components/CommandLabel.astro';
+import HomelabDiagram from '../../components/HomelabDiagram.astro';
 import { copy } from '../../lib/i18n';
+import { homelabContent, homelabSources } from '../../data/homelab';
 import {
   commands,
   languages,
   projectsPath,
+  projectPath,
+  type ProjectId,
   type Language,
 } from '../../lib/routes';
 import '../../styles/case-study.css';
+import '../../styles/homelab.css';
 export function getStaticPaths() {
   return languages.map((lang) => ({ params: { lang } }));
 }
 const lang = Astro.params.lang as Language;
 const t = copy[lang];
+const h = homelabContent[lang];
 ---
 
 <BaseLayout
@@ -35,10 +41,81 @@ const t = copy[lang];
       <CommandLabel command={commands.homelab} />
       <h1>{t.homelab}</h1>
       <p>{t.homelabText}</p>
+      <p class="homelab-eyebrow">{h.eyebrow}</p>
     </header>
-    <section class="case-section" aria-labelledby="homelab-architecture">
-      <h2 id="homelab-architecture">{t.architecture}</h2>
-      <p class="pending-note">{t.homelabPending}</p>
+    <section class="homelab-purpose" aria-labelledby="purpose-heading">
+      <h2 id="purpose-heading">{h.purposeTitle}</h2>
+      <p>{h.purpose}</p>
+    </section>
+    <section
+      class="homelab-architecture"
+      aria-labelledby="architecture-heading"
+    >
+      <div class="section-heading">
+        <div>
+          <h2 id="architecture-heading">{h.diagramTitle}</h2>
+        </div>
+      </div>
+      <HomelabDiagram lang={lang} />
+    </section>
+    <section class="homelab-services" aria-labelledby="services-heading">
+      <h2 id="services-heading">{h.servicesTitle}</h2>
+      {h.services.map((service) => (
+        <article class="homelab-service">
+          <h3>{service.title}</h3>
+          <div>
+            <p>{service.text}</p>
+            {service.id && (
+              <a
+                href={projectPath(lang, service.id as ProjectId)}
+                data-preview-command={commands[service.id as ProjectId]}
+              >
+                {t.viewProject}
+                <span class="sr-only">: {service.title}</span>
+              </a>
+            )}
+          </div>
+        </article>
+      ))}
+    </section>
+    <section class="homelab-operation" aria-labelledby="operation-heading">
+      <h2 id="operation-heading">{h.operationTitle}</h2>
+      <p>{h.operationIntro}</p>
+      <ol>
+        {h.operation.map((step) => (
+          <li>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="operation-scope">{h.recovery}</p>
+    </section>
+    <section class="case-section" aria-labelledby="publishing-heading">
+      <h2 id="publishing-heading">{h.publishingTitle}</h2>
+      <div class="prose">
+        <p>{h.publishing}</p>
+        <p>{h.scope}</p>
+      </div>
+    </section>
+    <section
+      class="case-section case-sources"
+      aria-labelledby="sources-heading"
+    >
+      <h2 id="sources-heading">{h.sourceTitle}</h2>
+      <div>
+        <p>{h.sourceNote}</p>
+        <ul>
+          {homelabSources.map((source) => (
+            <li>
+              <a href={source.url} target="_blank" rel="noopener noreferrer">
+                {source.label}
+                <span class="sr-only">, {t.newTab}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   </article>
 </BaseLayout>

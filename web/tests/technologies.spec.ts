@@ -7,6 +7,16 @@ const group = (page: Page, id: string) =>
 const tech = (page: Page, id: string) =>
   page.locator(`[data-technology="${id}"]`).first();
 const stackCommand = 'cat ~/skills/stack.yaml';
+async function revealTechnology(page: Page, id: string) {
+  const category = page
+    .locator('.stack-category')
+    .filter({ has: page.locator(`[data-technology="${id}"]`) });
+  if (
+    (await category.count()) &&
+    (await category.getAttribute('open')) === null
+  )
+    await category.locator('summary').click();
+}
 
 test('full name, page title and technology navigation are translated', async ({
   page,
@@ -54,6 +64,7 @@ test('inventory includes supplied additions without invented proficiency ratings
     'grpc',
     'authentication',
   ]) {
+    await revealTechnology(page, id);
     await expect(tech(page, id)).toBeVisible();
     await expect(tech(page, id)).not.toHaveAttribute('href');
   }
@@ -103,7 +114,17 @@ test('keyboard opens the inventory and skips non-interactive technology names', 
     ),
   ).toHaveCount(0);
   await page.keyboard.press('Tab');
-  await expect(page.locator('.footer-nav a').first()).toBeFocused();
+  const firstCategory = page.locator('.stack-category').first();
+  await expect(firstCategory.locator('summary')).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(firstCategory).toHaveAttribute('open', '');
+  await page.keyboard.press('Tab');
+  await expect(
+    page.locator('.stack-category').nth(1).locator('summary'),
+  ).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await page.keyboard.press('Space');
+  await expect(firstCategory).not.toHaveAttribute('open');
   await page.keyboard.press('Shift+Tab');
   await expect(summary).toBeFocused();
   await page.keyboard.press('Space');
@@ -166,6 +187,7 @@ test('complete inventory works with touch and without JavaScript', async ({
       'games',
       'engineering',
     ]) {
+      await group(page, id).locator('summary').click();
       await expect(
         group(page, id).locator('[data-technology]').first(),
       ).toBeVisible();
@@ -219,6 +241,7 @@ test('full name and expanded technologies fit narrow screens without covering co
           () => document.documentElement.scrollWidth <= innerWidth,
         ),
       ).toBe(true);
+      await group(page, 'engineering').locator('summary').click();
       const item = group(page, 'engineering')
         .locator('[data-technology]')
         .last();
@@ -243,11 +266,26 @@ test('all expanded categories pass accessibility checks in both themes and langu
       await page.goto(
         `/${lang}/#${lang === 'es' ? 'tecnologias' : 'technologies'}`,
       );
-      await page.locator('.stack-inventory > summary').click();
-      const result = await new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
-        .analyze();
-      expect(result.violations, `${lang} ${theme}`).toEqual([]);
+      if (
+        (await page.locator('.stack-inventory').getAttribute('open')) === null
+      )
+        await page.locator('.stack-inventory > summary').click();
+      await expect(page.locator('.stack-inventory')).toHaveAttribute(
+        'open',
+        '',
+      );
+      for (const category of await page.locator('.stack-category').all()) {
+        if ((await category.getAttribute('open')) === null)
+          await category.locator('summary').click();
+        await expect(
+          category.locator('[data-technology]').first(),
+        ).toBeVisible();
+        const result = await new AxeBuilder({ page })
+          .include('.technologies')
+          .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+          .analyze();
+        expect(result.violations, `${lang} ${theme}`).toEqual([]);
+      }
     }
   }
   expect(errors).toEqual([]);

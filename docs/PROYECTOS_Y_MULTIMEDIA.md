@@ -1,5 +1,9 @@
 # Tarea 04: proyectos reales y páginas individuales
 
+Registro de la entrega. [Tarea 05](CONTENIDO_Y_UX.md) retira los avisos públicos
+de pendientes, oculta Experiencia sin contenido aprobado y completa Homelab.
+El modelo y las instrucciones de integración multimedia siguen vigentes.
+
 Se conserva el diseño de Tarea 03: tipografía, paleta provisional, composiciones
 propias de los tres proyectos, navegación sticky y comandos visuales de Linux.
 La instrucción de esta tarea añade páginas individuales y conserva el resumen
