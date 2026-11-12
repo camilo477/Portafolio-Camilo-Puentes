@@ -8,6 +8,7 @@ import HomelabDisclosure from '../../components/HomelabDisclosure.astro';
 import CommandLabel from '../../components/CommandLabel.astro';
 import '../../styles/home.css';
 import { copy } from '../../lib/i18n';
+import { professional } from '../../data/professional';
 import {
   commands,
   languages,
@@ -52,7 +53,10 @@ const orderedProjects = projectIds.map((id) =>
           {t.explore}
           <span aria-hidden="true">↓</span>
         </a>
-        <a href="https://github.com/camilo477">{t.github}</a>
+        <a href={professional.github} target="_blank" rel="noopener noreferrer">
+          {t.github}
+          <span class="sr-only">, {t.newTab}</span>
+        </a>
       </div>
     </div>
     <HomelabDisclosure lang={lang} />

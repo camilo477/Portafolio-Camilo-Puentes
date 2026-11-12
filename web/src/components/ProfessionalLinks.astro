@@ -51,8 +51,12 @@ const items = [
       <li class="professional-item" data-tooltip-item>
         <a
           href={item.href!}
+          target={item.id === 'email' ? undefined : '_blank'}
+          rel={item.id === 'email' ? undefined : 'noopener noreferrer'}
           class="professional-control"
-          aria-label={item.label}
+          aria-label={
+            item.id === 'email' ? item.label : `${item.label}, ${t.newTab}`
+          }
           aria-describedby={
             variant === 'rail' ? `${variant}-${item.id}-tip` : undefined
           }

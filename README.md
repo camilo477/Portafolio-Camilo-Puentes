@@ -108,7 +108,7 @@ docs/                    Documentación técnica y verificación de la implement
   Movimiento reducido y navegación por historial omiten esa transición.
 
 La paleta **no es una identificación del tema Plasma**. Falta recibir su esquema
-real. El correo está disponible; el CV y LinkedIn esperan los recursos definitivos. React no se añadió: la interacción actual no necesita una isla.
+real. GitHub, LinkedIn y correo están disponibles; el CV espera el PDF definitivo. React no se añadió: la interacción actual no necesita una isla.
 
 ## Verificar
 

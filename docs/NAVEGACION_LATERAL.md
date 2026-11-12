@@ -31,12 +31,17 @@ texto y un indicador lateral; `aria-current="location"` identifica la sección a
 La configuración pública está en `web/src/data/professional.ts`:
 
 - GitHub: perfil público proporcionado por Camilo.
-- LinkedIn: `null`, sin enlace ni control visible hasta recibir el perfil real.
+- LinkedIn: `https://www.linkedin.com/in/camilo-puentes-6671a6262/`, confirmado por Camilo.
 - Correo: `mailto:camilopuentes.av@gmail.com` y dirección seleccionable en el footer.
 - CV: `null`, sin enlace ni comando de consola hasta recibir el PDF público.
 
-Para activar LinkedIn, proporcionar la URL real del perfil. Para el CV, añadir el
-PDF aprobado bajo `web/public/media/cv/`, configurar su ruta pública y comprobar
+GitHub y LinkedIn abren en una pestaña nueva, tanto en el lateral como en el footer.
+El acceso a GitHub de la introducción tiene el mismo comportamiento. Se utiliza
+`target="_blank"` con `rel="noopener noreferrer"` y aviso accesible traducido.
+El correo conserva su enlace `mailto:`. Los repositorios, demos y fuentes de los
+proyectos ya abrían en otra pestaña; la navegación interna conserva la actual.
+
+Para el CV, añadir el PDF aprobado bajo `web/public/media/cv/`, configurar su ruta pública y comprobar
 que se descarga correctamente. No hay documento de ejemplo ni destino inventado.
 
 El botón de copiar se habilita solo cuando existe la API de portapapeles. Al copiar,
@@ -99,3 +104,10 @@ Resultados de esta iteración:
 La verificación de navegador utiliza Chromium, con tamaños móviles emulados.
 Incluye Axe, teclado, texto ampliado y movimiento reducido; no equivale a una
 evaluación manual con lector de pantalla o en un teléfono físico.
+
+Actualización de enlaces profesionales: `make lint check build` y las 20 pruebas
+de `sidebars.spec.ts` aprobadas. Se comprueba la apertura de GitHub y LinkedIn en
+otra pestaña, conservando la URL del portafolio, en ambos idiomas y tamaños.
+Las respuestas externas se interceptan en la prueba para no depender de terceros.
+Capturas nuevas en ambos temas; revisión visual del lateral oscuro y footer móvil
+claro con LinkedIn disponible.

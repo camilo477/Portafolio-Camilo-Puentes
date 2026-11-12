@@ -2,6 +2,7 @@ import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 const email = 'camilopuentes.av@gmail.com';
+const linkedin = 'https://www.linkedin.com/in/camilo-puentes-6671a6262/';
 const index = (page: Page) => page.locator('.context-index');
 const rail = (page: Page) => page.locator('.professional-rail');
 const active = (page: Page) => index(page).locator('[aria-current="location"]');
@@ -80,15 +81,15 @@ test('professional links have real destinations, accessible tooltips and Linux p
   isMobile,
 }) => {
   await wide(page, '/es/#dianimilo');
-  const github = rail(page).getByRole('link', { name: 'GitHub', exact: true });
+  const github = rail(page).getByRole('link', { name: /^GitHub,/ });
+  const linkedInLink = rail(page).getByRole('link', { name: /^LinkedIn,/ });
   const mail = rail(page).getByRole('link', { name: 'Correo', exact: true });
   await expect(github).toHaveAttribute('href', 'https://github.com/camilo477');
+  await expect(linkedInLink).toHaveAttribute('href', linkedin);
   await expect(mail).toHaveAttribute('href', `mailto:${email}`);
-  await expect(
-    page.locator(
-      '.professional-links a[href*="linkedin"], .professional-links a[href$=".pdf"]',
-    ),
-  ).toHaveCount(0);
+  await expect(page.locator('.professional-links a[href$=".pdf"]')).toHaveCount(
+    0,
+  );
   await expect(
     page.locator('[data-preview-command="xdg-open ~/cv.pdf"]'),
   ).toHaveCount(0);
@@ -103,6 +104,10 @@ test('professional links have real destinations, accessible tooltips and Linux p
   await page.keyboard.press('Escape');
   await expect(page.locator('#rail-github-tip')).toBeHidden();
   await page.keyboard.press('Tab');
+  await expect(linkedInLink).toBeFocused();
+  await expect(page.locator('#rail-linkedin-tip')).toBeVisible();
+  await expect(command(page)).toHaveText(`xdg-open ${linkedin}`);
+  await page.keyboard.press('Tab');
   await expect(mail).toBeFocused();
   await expect(page.locator('#rail-email-tip')).toBeVisible();
   await expect(command(page)).toHaveText(`xdg-email ${email}`);
@@ -114,6 +119,41 @@ test('professional links have real destinations, accessible tooltips and Linux p
     await github.hover();
     await page.mouse.move(0, 0);
     await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
+  }
+});
+
+test('professional profiles open in a new tab and keep the portfolio in place', async ({
+  page,
+  context,
+  isMobile,
+}) => {
+  // Check browser behavior without depending on live third-party websites.
+  await context.route(
+    /^https:\/\/(github\.com|www\.linkedin\.com)\//,
+    (route) =>
+      route.fulfill({
+        contentType: 'text/html',
+        body: '<title>Profile</title>',
+      }),
+  );
+  if (!isMobile) await page.setViewportSize({ width: 1920, height: 1080 });
+  for (const lang of ['es', 'en']) {
+    await page.goto(`/${lang}/`);
+    const links = page.locator(
+      `${isMobile ? '.professional-footer' : '.professional-rail'} a[href^="https:"], .intro-links a[href^="https:"]`,
+    );
+    await expect(links).toHaveCount(3);
+    for (const link of await links.all()) {
+      const destination = (await link.getAttribute('href'))!;
+      const popupPromise = page.waitForEvent('popup');
+      await link.click();
+      const popup = await popupPromise;
+      await expect(popup).toHaveURL(destination);
+      expect(await popup.evaluate(() => window.opener === null)).toBe(true);
+      await expect(page).toHaveURL(`/${lang}/`);
+      await popup.close();
+    }
+    await expect(page.locator('a[href^="mailto:"][target]')).toHaveCount(0);
   }
 });
 
@@ -313,7 +353,7 @@ test('sidebars, tooltips and copy feedback pass axe in both themes and languages
       await page.emulateMedia({ colorScheme: theme });
       await wide(page, `/${lang}/#homelab`);
       await rail(page)
-        .getByRole('link', { name: 'GitHub', exact: true })
+        .getByRole('link', { name: /^GitHub,/ })
         .focus();
       expect(
         (
