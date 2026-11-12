@@ -65,57 +65,57 @@ const indexEntries =
     <a class="skip-link" href="#main">
       {t.skip}
     </a>
-    <header class="site-header">
-      <div class="header-inner wrap">
-        <div class="preferences">
-          <nav class="languages" aria-label={t.language}>
-            {(['es', 'en'] as const).map((language) => (
-              <a
-                href={localizedPath(language, route)}
-                lang={language}
-                hreflang={language}
-                data-language={language}
-                aria-current={language === lang ? 'true' : undefined}
-                aria-label={language === 'es' ? 'Español' : 'English'}
-              >
-                {language.toUpperCase()}
-              </a>
-            ))}
-          </nav>
-          <button
-            class="theme-toggle"
-            type="button"
-            data-theme-toggle
-            disabled
-            aria-label={t.switchDark}
-          >
-            <svg
-              class="theme-icon"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.6"
-              aria-hidden="true"
+    <div class="reading-tools-region">
+      <header class="site-header">
+        <div class="header-inner wrap">
+          <div class="preferences">
+            <nav class="languages" aria-label={t.language}>
+              {(['es', 'en'] as const).map((language) => (
+                <a
+                  href={localizedPath(language, route)}
+                  lang={language}
+                  hreflang={language}
+                  data-language={language}
+                  aria-current={language === lang ? 'true' : undefined}
+                  aria-label={language === 'es' ? 'Español' : 'English'}
+                >
+                  {language.toUpperCase()}
+                </a>
+              ))}
+            </nav>
+            <button
+              class="theme-toggle"
+              type="button"
+              data-theme-toggle
+              disabled
+              aria-label={t.switchDark}
             >
-              <circle cx="12" cy="12" r="8" />
-              <path
-                d="M12 4a8 8 0 0 0 0 16Z"
-                fill="currentColor"
-                stroke="none"
-              />
-            </svg>
-            <span data-theme-label>{t.dark}</span>
-          </button>
+              <svg
+                class="theme-icon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="8" />
+                <path
+                  d="M12 4a8 8 0 0 0 0 16Z"
+                  fill="currentColor"
+                  stroke="none"
+                />
+              </svg>
+              <span data-theme-label>{t.dark}</span>
+            </button>
+          </div>
+          <ContextIndex lang={lang} entries={indexEntries} />
         </div>
-      </div>
-    </header>
+      </header>
+    </div>
     <div class="side-margin side-margin-left">
       <ProfessionalLinks lang={lang} variant="rail" />
-    </div>
-    <div class="side-margin side-margin-right">
-      <ContextIndex lang={lang} entries={indexEntries} />
     </div>
     <main id="main" class="wrap" tabindex="-1">
       <slot />

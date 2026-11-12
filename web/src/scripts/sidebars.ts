@@ -93,7 +93,13 @@ export function initializeSidebars() {
   const observe = () => {
     observer?.disconnect();
     intersecting.clear();
-    const top = Math.ceil(header.getBoundingClientRect().height + 24);
+    const top = Math.ceil(
+      parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue(
+          '--header-height',
+        ),
+      ) + 24,
+    );
     const bottom = Math.max(0, innerHeight - top - 80);
     observer = new IntersectionObserver(
       (changes) => {

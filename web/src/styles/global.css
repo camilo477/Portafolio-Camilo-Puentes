@@ -53,6 +53,7 @@ html {
 }
 body {
   margin: 0;
+  padding-top: var(--header-height);
   padding-bottom: calc(var(--bar-height) + env(safe-area-inset-bottom));
   background: var(--bg);
   color: var(--text);
@@ -146,10 +147,17 @@ h3 {
 .skip-link:focus {
   transform: none;
 }
-.site-header {
-  position: sticky;
-  top: 0;
+.reading-tools-region {
+  position: fixed;
+  inset: 0;
+  container: reading-tools / inline-size;
   z-index: 10;
+  pointer-events: none;
+}
+.site-header {
+  position: absolute;
+  top: 0;
+  width: 100%;
   pointer-events: none;
 }
 .header-inner {

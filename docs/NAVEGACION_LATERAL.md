@@ -7,11 +7,15 @@ paleta, las fuentes y la consola inferior. No se añaden
 bibliotecas, backend ni despliegue. La raíz `/` y `make` abren inglés por petición
 explícita; `/es/` sigue disponible y el selector mantiene las rutas equivalentes.
 
-La petición posterior elimina el menú superior y su franja de fondo. Solo quedan
-ES/EN y el selector de tema, alineados a la derecha y disponibles durante el scroll.
+La petición posterior elimina el menú superior y su franja de fondo. Camilo precisó
+que ES/EN y el selector de tema deben estar justo encima de «En esta página» / «On
+this page»: ambos forman un único grupo en el margen derecho. Cuando no hay espacio
+para el índice, los controles permanecen arriba a la derecha. Son los mismos nodos
+HTML, sin duplicación ni traslado con JavaScript, para conservar foco y estado.
 El área transparente no intercepta clics sobre el contenido; únicamente los
-controles reciben eventos. Se reduce la reserva superior en móvil y se conserva
-la medición de su altura para anclas, fuentes ampliadas e índice lateral.
+controles reciben eventos. La reserva superior de las anclas es cero cuando el
+grupo está en el lateral; en móvil y portátil se mide la altura de los controles.
+El comportamiento de colocación también funciona sin JavaScript.
 En móvil, la separación antes de Homelab considera esa altura para que los
 enlaces de la presentación no queden parcialmente bajo los controles al abrir
 su ancla directa.
@@ -130,3 +134,12 @@ hover en táctil. La suite completa de navegador se ejecutó por perfil después
 de corregir la superposición del enlace de presentación al abrir Homelab en móvil.
 Se capturaron ambos temas e idiomas en escritorio, portátil y móvil; se revisaron
 la portada grande clara, el móvil oscuro, el footer y el ancla de Homelab corregida.
+
+Controles sobre el índice: formato, tipos y compilación aprobados. Se validaron
+65 casos de escritorio y 62 de móvil; 3 casos táctiles de hover no aplican. La prueba
+de desplazamiento se ajustó para aceptar el límite real del final del documento
+cuando una sección corta no puede alcanzar el borde superior, y pasó al repetirla.
+Las pruebas comprueban la colocación sobre el índice, la existencia de una sola
+instancia de los controles y el comportamiento entre 320 y 2560 px y con texto ampliado.
+Capturas nuevas de portada y fichas, en ambos idiomas y temas; revisión visual
+de portada amplia clara, ficha oscura y móvil oscuro.

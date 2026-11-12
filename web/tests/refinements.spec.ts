@@ -48,7 +48,7 @@ test('only preferences remain at the top right and anchors stay clear in both th
       await page.emulateMedia({ colorScheme: theme });
       await page.goto(`/${lang}/`);
       await expect(page.locator('.site-header .main-nav')).toHaveCount(0);
-      await expect(page.locator('.site-header a')).toHaveCount(2);
+      await expect(page.locator('.preferences a')).toHaveCount(2);
       const controls = (await page.locator('.preferences').boundingBox())!;
       const wrap = (await page.locator('.header-inner').boundingBox())!;
       expect(controls.x + controls.width).toBeCloseTo(wrap.x + wrap.width, 0);
@@ -86,7 +86,7 @@ test('only preferences remain at the top right and anchors stay clear in both th
             .evaluate((el) => getComputedStyle(el).backgroundColor),
         ).toBe(theme === 'dark' ? 'rgb(19, 27, 34)' : 'rgb(242, 240, 233)');
         for (const control of await page
-          .locator('.site-header a, .site-header button')
+          .locator('.preferences a, .preferences button')
           .all()) {
           expect(
             await control.evaluate((el) => {

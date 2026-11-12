@@ -7,6 +7,14 @@ const index = (page: Page) => page.locator('.context-index');
 const rail = (page: Page) => page.locator('.professional-rail');
 const active = (page: Page) => index(page).locator('[aria-current="location"]');
 const command = (page: Page) => page.locator('[data-command]');
+const topOffset = (page: Page) =>
+  page.evaluate(() =>
+    parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue(
+        '--header-height',
+      ),
+    ),
+  );
 
 async function wide(page: Page, path = '/en/') {
   await page.setViewportSize({ width: 1920, height: 1080 });
@@ -45,13 +53,22 @@ test('sidebars use spare margins, disappear on smaller screens and keep the read
       const main = (await page.locator('main').boundingBox())!;
       const left = (await rail(page).boundingBox())!;
       const right = (await index(page).boundingBox())!;
+      const preferences = (await page.locator('.preferences').boundingBox())!;
       expect(left.x + left.width).toBeLessThan(main.x);
       expect(right.x).toBeGreaterThan(main.x + main.width);
+      expect(preferences.x).toBeGreaterThan(main.x + main.width);
+      expect(preferences.y + preferences.height).toBeLessThan(right.y);
+      expect(right.y - preferences.y - preferences.height).toBeLessThanOrEqual(
+        24,
+      );
       expect(main.width).toBe(1120);
     } else {
       await expect(rail(page)).toBeHidden();
       await expect(index(page)).toBeHidden();
+      await expect(page.locator('.preferences')).toBeVisible();
     }
+    await expect(page.locator('[data-theme-toggle]')).toHaveCount(1);
+    await expect(page.locator('[data-language]')).toHaveCount(2);
     await expect(
       page.locator('.professional-footer a[href^="mailto:"]'),
     ).toHaveAttribute('href', `mailto:${email}`);
@@ -245,14 +262,24 @@ test('index activation respects motion preferences, history, Homelab expansion a
     'smooth',
   );
   await expect
-    .poll(async () =>
-      Math.abs(
-        (await page.locator('#technologies').boundingBox())!.y -
-          (await page.locator('.site-header').boundingBox())!.height -
-          16,
-      ),
+    .poll(() =>
+      page.locator('#technologies').evaluate((section) => {
+        const top =
+          parseFloat(
+            getComputedStyle(document.documentElement).getPropertyValue(
+              '--header-height',
+            ),
+          ) + 16;
+        // A final section can only align as far as the remaining document permits.
+        const alignment = Math.abs(section.getBoundingClientRect().top - top);
+        const endOfPage = Math.abs(
+          document.documentElement.scrollHeight - innerHeight - scrollY,
+        );
+        return Math.min(alignment, endOfPage);
+      }),
     )
     .toBeLessThan(2);
+  await expect(page.locator('#technologies-heading')).toBeInViewport();
   await expect(active(page)).toHaveAttribute(
     'data-index-target',
     'technologies',
@@ -334,7 +361,7 @@ test('native sidebar links still navigate without JavaScript', async ({
   await expect(page).toHaveURL('/en/#projects');
   expect(
     (await page.locator('#projects-heading').boundingBox())!.y,
-  ).toBeGreaterThan((await page.locator('.site-header').boundingBox())!.height);
+  ).toBeGreaterThan(await topOffset(page));
   await expect(page.locator('[data-copy-email]:visible')).toHaveCount(0);
   await page.goto('/en/projects/dianimilo/');
   await index(page).locator('[data-index-target="problem-heading"]').click();

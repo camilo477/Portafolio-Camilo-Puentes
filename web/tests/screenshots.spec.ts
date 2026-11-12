@@ -96,7 +96,13 @@ test('capture real desktop and mobile pages in both themes and languages', async
                     : `#${project}-title`,
                 )
                 .boundingBox())!.y -
-              (await page.locator('.site-header').boundingBox())!.height,
+              (await page.evaluate(() =>
+                parseFloat(
+                  getComputedStyle(document.documentElement).getPropertyValue(
+                    '--header-height',
+                  ),
+                ),
+              )),
           )
           .toBeGreaterThan(0);
         await page.screenshot({
@@ -135,8 +141,14 @@ test('capture real desktop and mobile pages in both themes and languages', async
             const summary = (await page
               .locator('#homelab > summary')
               .boundingBox())!;
-            const header = (await page.locator('.site-header').boundingBox())!;
-            return summary.y - header.height;
+            const top = await page.evaluate(() =>
+              parseFloat(
+                getComputedStyle(document.documentElement).getPropertyValue(
+                  '--header-height',
+                ),
+              ),
+            );
+            return summary.y - top;
           })
           .toBeGreaterThanOrEqual(8);
         await expect(page.locator('#homelab-heading')).toBeInViewport();

@@ -1,5 +1,7 @@
 export function initializeHeader() {
   const header = document.querySelector<HTMLElement>('.site-header')!;
+  const inner = header.querySelector<HTMLElement>('.header-inner')!;
+  const index = header.querySelector<HTMLElement>('.context-index')!;
   let frame = 0;
   let followAnchor = Boolean(location.hash);
   let anchorBehavior: ScrollBehavior = 'instant';
@@ -34,7 +36,9 @@ export function initializeHeader() {
   const measure = () => {
     document.documentElement.style.setProperty(
       '--header-height',
-      `${header.getBoundingClientRect().height}px`,
+      getComputedStyle(index).display === 'none'
+        ? `${inner.getBoundingClientRect().height}px`
+        : '0px',
     );
     if (followAnchor) alignAnchor();
   };
@@ -49,7 +53,8 @@ export function initializeHeader() {
   };
 
   measure();
-  new ResizeObserver(measure).observe(header);
+  new ResizeObserver(measure).observe(inner);
+  window.addEventListener('resize', measure);
   // Fonts can move the target as well as change the header height.
   void document.fonts.ready.then(() => {
     if (followAnchor) alignAnchor();
