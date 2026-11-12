@@ -26,7 +26,6 @@ const t = copy[lang];
       <CommandLabel command={commands.technologies} />
       <h2 id="technologies-heading">{t.technologyHeading}</h2>
     </div>
-    <p class="section-intro">{t.mainStackIntro}</p>
   </div>
   <div class="stack-workspace">
     <div class="stack-file">
@@ -46,7 +45,7 @@ const t = copy[lang];
             </span>
             {t.stackAreas[id]}
           </h3>
-          <TechnologyList items={items} lang={lang} labelLearning />
+          <TechnologyList items={items} lang={lang} />
         </section>
       ))}
     </div>
@@ -71,9 +70,7 @@ const t = copy[lang];
         +
       </span>
     </summary>
-    <p class="inventory-note">
-      {t.inventoryNote} {t.technologyDocumentation}
-    </p>
+    <p class="inventory-note">{t.inventoryNote}</p>
     <div class="inventory-grid">
       {technologyCategories.map(({ id, items }) => (
         <section

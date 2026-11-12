@@ -6,8 +6,6 @@ export const copy = {
     projects: 'Proyectos',
     technologies: 'Tecnologías',
     technologyHeading: 'Tecnologías y lenguajes',
-    technologyDocumentation:
-      'Los nombres enlazan a documentación de referencia.',
     technologyCategories: {
       languages: 'Lenguajes y desarrollo',
       frameworks: 'Frameworks y bibliotecas',
@@ -21,22 +19,19 @@ export const copy = {
     navigation: 'Navegación principal',
     language: 'Idioma',
     skip: 'Saltar al contenido',
-    role: 'Desarrollo backend y full stack',
+    role: 'Desarrollador backend y full stack',
     intro:
-      'Construyo aplicaciones y APIs. Me interesa lo que pasa detrás de una interfaz: los datos, las integraciones y los servicios que la hacen funcionar.',
+      'Desarrollo aplicaciones web y APIs con Python, Django, React y PostgreSQL. Trabajo tanto en la lógica y los datos como en las integraciones y el despliegue de servicios en Linux.',
     explore: 'Ver proyectos',
     github: 'Mi GitHub',
-    environment: 'En mi escritorio',
-    environmentText:
-      'Linux es parte de cómo trabajo. También estoy reuniendo lo que aprendo con Raspberry y alojamiento propio.',
-    projectIntro:
-      'Planes compartidos, archivos personales y conversión de archivos.',
+    homelab: 'Homelab',
+    homelabText:
+      'Mis proyectos web están alojados en una Raspberry Pi que utilizo como homelab. Allí administro servicios Linux, contenedores Docker y el despliegue de mis aplicaciones.',
     expandProject: 'Abrir proyecto',
     collapseProject: 'Cerrar proyecto',
     projectMedia: 'Material del proyecto',
     videoFormat: 'Demostración en vídeo',
     mainStack: 'Mi stack principal',
-    mainStackIntro: 'Backend, interfaces, datos e infraestructura.',
     stackAreas: {
       python: 'Backend con Python',
       web: 'Interfaces web',
@@ -47,7 +42,7 @@ export const copy = {
     learning: 'En aprendizaje',
     exploration: 'Aprendizaje y exploración',
     explorationIntro:
-      'Spring, Lua y las plataformas de datos con las que estoy empezando.',
+      'Actualmente estoy aprendiendo Spring Boot y explorando Lua.',
     allTechnologies: 'Explorar el inventario completo',
     closeTechnologies: 'Cerrar inventario',
     inventoryNote: 'Lenguajes, bibliotecas y herramientas, agrupados por área.',
@@ -76,7 +71,6 @@ export const copy = {
     projects: 'Projects',
     technologies: 'Technologies',
     technologyHeading: 'Technologies and languages',
-    technologyDocumentation: 'Names link to reference documentation.',
     technologyCategories: {
       languages: 'Languages and development',
       frameworks: 'Frameworks and libraries',
@@ -90,21 +84,19 @@ export const copy = {
     navigation: 'Main navigation',
     language: 'Language',
     skip: 'Skip to content',
-    role: 'Backend & full stack development',
+    role: 'Backend and full stack developer',
     intro:
-      'I build applications and APIs. I’m interested in what happens behind an interface: the data, integrations, and services that make it work.',
+      'I develop web applications and APIs with Python, Django, React and PostgreSQL. My work spans application logic and data, integrations, and deploying services on Linux.',
     explore: 'View projects',
     github: 'My GitHub',
-    environment: 'On my desktop',
-    environmentText:
-      'Linux is part of how I work. I’m also collecting what I learn from Raspberry and self-hosting.',
-    projectIntro: 'Shared plans, personal files, and file conversion.',
+    homelab: 'Homelab',
+    homelabText:
+      'My web projects are hosted on a Raspberry Pi that I use as a homelab. I manage Linux services, Docker containers and application deployments there.',
     expandProject: 'Open project',
     collapseProject: 'Close project',
     projectMedia: 'Project material',
     videoFormat: 'Video demonstration',
     mainStack: 'My main stack',
-    mainStackIntro: 'Backend, interfaces, data and infrastructure.',
     stackAreas: {
       python: 'Python backend',
       web: 'Web interfaces',
@@ -114,8 +106,7 @@ export const copy = {
     },
     learning: 'Learning',
     exploration: 'Learning and exploration',
-    explorationIntro:
-      'Spring, Lua and the data platforms I’m getting started with.',
+    explorationIntro: 'I’m currently learning Spring Boot and exploring Lua.',
     allTechnologies: 'Explore the complete inventory',
     closeTechnologies: 'Close inventory',
     inventoryNote: 'Languages, libraries and tools, grouped by area.',

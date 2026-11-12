@@ -15,7 +15,11 @@ export function initializeProjects() {
     const active = routeFromHash(lang, location.hash);
     // Native disclosure remains responsible for focus and keyboard activation.
     panels.forEach((panel) => {
+      // History and direct anchors must settle before native anchor positioning.
+      panel.dataset.instant = '';
       panel.open = panel.dataset.project === active;
+      panel.getBoundingClientRect();
+      delete panel.dataset.instant;
     });
   }
 
@@ -40,7 +44,10 @@ export function initializeProjects() {
           .querySelector('[data-command-bar]')!
           .getBoundingClientRect().top;
         // Closing an earlier row can move the activated summary above the viewport.
-        if (rect.top < 16 || rect.bottom > barTop)
+        const headerBottom = document
+          .querySelector('.site-header')!
+          .getBoundingClientRect().bottom;
+        if (rect.top < headerBottom + 16 || rect.bottom > barTop)
           summary.scrollIntoView({ block: 'nearest' });
       }
     });

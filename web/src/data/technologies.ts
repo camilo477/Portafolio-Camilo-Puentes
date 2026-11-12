@@ -1,238 +1,115 @@
-import type { Language, ProjectId } from '../lib/routes';
+import type { Language } from '../lib/routes';
 
 export interface Technology {
   name: string | Record<Language, string>;
-  documentation: string;
   command?: string;
-  // Add only confirmed associations; an absent value renders no project links.
-  projects?: readonly ProjectId[];
 }
 
-function technology(
-  name: Technology['name'],
-  documentation: string,
-  command?: string,
-): Technology {
-  return { name, documentation, command };
+function technology(name: Technology['name'], command?: string): Technology {
+  return { name, command };
 }
 
 // Camilo's supplied inventory. No proficiency, employment or ranking is inferred.
 export const technologies = {
-  python: technology(
-    'Python',
-    'https://docs.python.org/3/',
-    'python3 --version',
-  ),
-  javascript: technology(
-    'JavaScript',
-    'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
-  ),
-  typescript: technology(
-    'TypeScript',
-    'https://www.typescriptlang.org/docs/',
-    'tsc --version',
-  ),
-  java: technology('Java', 'https://dev.java/learn/', 'java -version'),
-  sql: technology(
-    'SQL',
-    'https://www.postgresql.org/docs/current/tutorial-sql.html',
-  ),
-  html: technology(
-    'HTML5',
-    'https://developer.mozilla.org/en-US/docs/Web/HTML',
-  ),
-  css: technology('CSS3', 'https://developer.mozilla.org/en-US/docs/Web/CSS'),
-  bash: technology(
-    'Bash / Shell',
-    'https://www.gnu.org/software/bash/manual/',
-    'echo $SHELL',
-  ),
-  cpp: technology('C++', 'https://isocpp.org/get-started'),
-  lua: technology('Lua', 'https://www.lua.org/manual/'),
-  dart: technology('Dart', 'https://dart.dev/guides'),
-  django: technology(
-    'Django',
-    'https://docs.djangoproject.com/',
-    'python3 -m django --version',
-  ),
-  drf: technology(
-    'Django REST Framework',
-    'https://www.django-rest-framework.org/',
-  ),
-  flask: technology('Flask', 'https://flask.palletsprojects.com/'),
-  spring: technology('Spring Boot', 'https://docs.spring.io/spring-boot/'),
-  maven: technology(
-    'Maven',
-    'https://maven.apache.org/guides/',
-    'mvn --version',
-  ),
-  node: technology('Node.js', 'https://nodejs.org/en/learn', 'node --version'),
-  nest: technology('NestJS', 'https://docs.nestjs.com/'),
-  react: technology('React', 'https://react.dev/learn'),
-  mui: technology(
-    'Material UI (MUI)',
-    'https://mui.com/material-ui/getting-started/',
-  ),
-  vite: technology('Vite', 'https://vite.dev/guide/'),
-  flutter: technology('Flutter', 'https://docs.flutter.dev/'),
-  pandas: technology('pandas', 'https://pandas.pydata.org/docs/'),
-  numpy: technology('NumPy', 'https://numpy.org/doc/'),
-  openpyxl: technology(
-    'openpyxl',
-    'https://openpyxl.readthedocs.io/en/stable/',
-  ),
-  streamlit: technology('Streamlit', 'https://docs.streamlit.io/'),
-  playwright: technology('Playwright', 'https://playwright.dev/docs/intro'),
-  axios: technology('Axios', 'https://axios-http.com/docs/intro'),
-  postgresql: technology(
-    'PostgreSQL',
-    'https://www.postgresql.org/docs/',
-    'psql --version',
-  ),
-  oracle: technology(
-    'Oracle Database 12c',
-    'https://docs.oracle.com/en/database/oracle/oracle-database/12.2/',
-  ),
-  mysql: technology('MySQL', 'https://dev.mysql.com/doc/'),
-  sqlite: technology('SQLite', 'https://sqlite.org/docs.html'),
-  firebase: technology(
-    'Firebase / Cloud Firestore',
-    'https://firebase.google.com/docs/firestore',
-  ),
-  fedora: technology(
-    'Fedora Linux',
-    'https://docs.fedoraproject.org/',
-    'uname -a',
-  ),
-  ubuntu: technology('Ubuntu', 'https://documentation.ubuntu.com/', 'uname -a'),
-  debian: technology('Debian', 'https://www.debian.org/doc/', 'uname -a'),
-  docker: technology('Docker', 'https://docs.docker.com/', 'docker ps'),
-  compose: technology(
-    'Docker Compose',
-    'https://docs.docker.com/compose/',
-    'docker compose ps',
-  ),
-  kubernetes: technology(
-    'Kubernetes',
-    'https://kubernetes.io/docs/',
-    'kubectl get pods',
-  ),
-  nginx: technology('Nginx', 'https://nginx.org/en/docs/', 'nginx -v'),
-  raspberry: technology(
-    'Raspberry Pi',
-    'https://www.raspberrypi.com/documentation/',
-  ),
-  digitalocean: technology('DigitalOcean', 'https://docs.digitalocean.com/'),
-  contabo: technology('Contabo VPS', 'https://contabo.com/en/vps/'),
-  cloudflare: technology(
-    'Cloudflare Tunnel',
-    'https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/',
-  ),
-  ssh: technology('SSH', 'https://www.openssh.com/manual.html', 'ssh -V'),
-  git: technology('Git', 'https://git-scm.com/docs', 'git log --oneline'),
-  github: technology('GitHub', 'https://docs.github.com/'),
-  powerbi: technology(
-    'Power BI',
-    'https://learn.microsoft.com/en-us/power-bi/',
-  ),
-  excel: technology('Excel', 'https://support.microsoft.com/excel'),
-  fabric: technology(
-    'Microsoft Fabric',
-    'https://learn.microsoft.com/en-us/fabric/',
-  ),
-  azure: technology(
-    'Azure Data Services',
-    'https://learn.microsoft.com/en-us/azure/?product=databases',
-  ),
-  aws: technology('AWS Data Services', 'https://docs.aws.amazon.com/'),
-  databricks: technology('Databricks', 'https://docs.databricks.com/'),
-  ollama: technology('Ollama', 'https://docs.ollama.com/', 'ollama list'),
-  qwen: technology('Qwen / Qwen3', 'https://qwen.readthedocs.io/en/latest/'),
-  comfyui: technology('ComfyUI', 'https://docs.comfy.org/'),
-  diffusion: technology(
-    'Stable Diffusion',
-    'https://github.com/Stability-AI/generative-models',
-  ),
-  pytorch: technology('PyTorch', 'https://docs.pytorch.org/docs/stable/'),
-  cuda: technology(
-    'NVIDIA CUDA',
-    'https://docs.nvidia.com/cuda/',
-    'nvcc --version',
-  ),
-  piper: technology('Piper TTS', 'https://github.com/OHF-Voice/piper1-gpl'),
-  codex: technology('Codex', 'https://github.com/openai/codex'),
-  opencode: technology('OpenCode', 'https://opencode.ai/docs/'),
-  unity: technology('Unity', 'https://docs.unity3d.com/Manual/'),
-  unreal: technology(
-    'Unreal Engine',
-    'https://dev.epicgames.com/documentation/en-us/unreal-engine',
-  ),
-  arduino: technology('Arduino', 'https://docs.arduino.cc/'),
-  esp32: technology(
-    'ESP32',
-    'https://docs.espressif.com/projects/esp-idf/en/stable/esp32/',
-  ),
-  paper: technology('Paper / Bukkit API', 'https://docs.papermc.io/paper/dev/'),
-  gradle: technology('Gradle', 'https://docs.gradle.org/', 'gradle --version'),
-  rest: technology(
-    'REST',
-    'https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm',
-  ),
-  soap: technology('SOAP', 'https://www.w3.org/TR/soap/'),
-  grpc: technology('gRPC', 'https://grpc.io/docs/'),
-  layers: technology(
-    { es: 'Arquitectura por capas', en: 'Layered architecture' },
-    'https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/n-tier',
-  ),
-  oop: technology(
-    {
-      es: 'Programación orientada a objetos',
-      en: 'Object-oriented programming',
-    },
-    'https://dev.java/learn/oop/',
-  ),
-  solid: technology(
-    { es: 'Principios SOLID', en: 'SOLID principles' },
-    'https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/architectural-principles',
-  ),
-  relational: technology(
-    {
-      es: 'Diseño de bases de datos relacionales',
-      en: 'Relational database design',
-    },
-    'https://www.postgresql.org/docs/current/ddl.html',
-  ),
-  testing: technology(
-    { es: 'Pruebas automatizadas', en: 'Automated testing' },
-    'https://playwright.dev/docs/best-practices',
-  ),
-  integrationTests: technology(
-    {
-      es: 'Pruebas de integración y regresión',
-      en: 'Integration and regression testing',
-    },
-    'https://docs.spring.io/spring-framework/reference/testing/integration.html',
-  ),
-  integrations: technology(
-    { es: 'Integraciones de sistemas', en: 'System integrations' },
-    'https://docs.spring.io/spring-integration/reference/',
-  ),
+  python: technology('Python', 'python3 --version'),
+  javascript: technology('JavaScript'),
+  typescript: technology('TypeScript', 'tsc --version'),
+  java: technology('Java', 'java -version'),
+  sql: technology('SQL'),
+  html: technology('HTML5'),
+  css: technology('CSS3'),
+  bash: technology('Bash / Shell', 'echo $SHELL'),
+  cpp: technology('C++'),
+  lua: technology('Lua'),
+  dart: technology('Dart'),
+  django: technology('Django', 'python3 -m django --version'),
+  drf: technology('Django REST Framework'),
+  flask: technology('Flask'),
+  spring: technology('Spring Boot'),
+  maven: technology('Maven', 'mvn --version'),
+  node: technology('Node.js', 'node --version'),
+  nest: technology('NestJS'),
+  react: technology('React'),
+  mui: technology('Material UI (MUI)'),
+  vite: technology('Vite'),
+  flutter: technology('Flutter'),
+  pandas: technology('pandas'),
+  numpy: technology('NumPy'),
+  playwright: technology('Playwright'),
+  axios: technology('Axios'),
+  postgresql: technology('PostgreSQL', 'psql --version'),
+  oracle: technology('Oracle Database 12c'),
+  mysql: technology('MySQL'),
+  sqlite: technology('SQLite'),
+  firebase: technology('Firebase / Cloud Firestore'),
+  fedora: technology('Fedora Linux', 'uname -a'),
+  ubuntu: technology('Ubuntu', 'uname -a'),
+  debian: technology('Debian', 'uname -a'),
+  docker: technology('Docker', 'docker ps'),
+  compose: technology('Docker Compose', 'docker compose ps'),
+  kubernetes: technology('Kubernetes', 'kubectl get pods'),
+  nginx: technology('Nginx', 'nginx -v'),
+  raspberry: technology('Raspberry Pi'),
+  digitalocean: technology('DigitalOcean'),
+  contabo: technology('Contabo VPS'),
+  cloudflare: technology('Cloudflare Tunnel'),
+  ssh: technology('SSH', 'ssh -V'),
+  git: technology('Git', 'git log --oneline'),
+  github: technology('GitHub'),
+  powerbi: technology('Power BI'),
+  excel: technology('Excel'),
+  ollama: technology('Ollama', 'ollama list'),
+  qwen: technology('Qwen / Qwen3'),
+  comfyui: technology('ComfyUI'),
+  diffusion: technology('Stable Diffusion'),
+  pytorch: technology('PyTorch'),
+  cuda: technology('NVIDIA CUDA', 'nvcc --version'),
+  piper: technology('Piper TTS'),
+  codex: technology('Codex'),
+  opencode: technology('OpenCode'),
+  unity: technology('Unity'),
+  unreal: technology('Unreal Engine'),
+  arduino: technology('Arduino'),
+  esp32: technology('ESP32'),
+  paper: technology('Paper / Bukkit API'),
+  gradle: technology('Gradle', 'gradle --version'),
+  rest: technology('REST'),
+  soap: technology('SOAP'),
+  grpc: technology('gRPC'),
+  layers: technology({
+    es: 'Arquitectura por capas',
+    en: 'Layered architecture',
+  }),
+  oop: technology({
+    es: 'Programación orientada a objetos',
+    en: 'Object-oriented programming',
+  }),
+  solid: technology({ es: 'Principios SOLID', en: 'SOLID principles' }),
+  relational: technology({
+    es: 'Diseño de bases de datos relacionales',
+    en: 'Relational database design',
+  }),
+  testing: technology({ es: 'Pruebas automatizadas', en: 'Automated testing' }),
+  integrationTests: technology({
+    es: 'Pruebas de integración y regresión',
+    en: 'Integration and regression testing',
+  }),
+  integrations: technology({
+    es: 'Integraciones de sistemas',
+    en: 'System integrations',
+  }),
   versioning: technology(
     { es: 'Control de versiones', en: 'Version control' },
-    'https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control',
     'git log --oneline',
   ),
-  documentation: technology(
-    { es: 'Documentación técnica', en: 'Technical documentation' },
-    'https://developers.google.com/tech-writing',
-  ),
-  authentication: technology(
-    {
-      es: 'Autenticación y gestión de sesiones',
-      en: 'Authentication and session management',
-    },
-    'https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html',
-  ),
+  documentation: technology({
+    es: 'Documentación técnica',
+    en: 'Technical documentation',
+  }),
+  authentication: technology({
+    es: 'Autenticación y gestión de sesiones',
+    en: 'Authentication and session management',
+  }),
 } satisfies Record<string, Technology>;
 
 export type TechnologyId = keyof typeof technologies;
@@ -247,14 +124,7 @@ export const mainStackAreas = [
 ] as const satisfies readonly { id: string; items: readonly TechnologyId[] }[];
 
 // Only the learning/initial-exploration entries explicitly described by Camilo.
-export const explorationIds: readonly TechnologyId[] = [
-  'spring',
-  'lua',
-  'fabric',
-  'azure',
-  'aws',
-  'databricks',
-];
+export const explorationIds: readonly TechnologyId[] = ['spring', 'lua'];
 export type TechnologyCategoryId =
   | 'languages'
   | 'frameworks'
@@ -304,8 +174,6 @@ export const technologyCategories: readonly TechnologyCategory[] = [
       'flutter',
       'pandas',
       'numpy',
-      'openpyxl',
-      'streamlit',
       'playwright',
       'axios',
     ],
@@ -336,20 +204,7 @@ export const technologyCategories: readonly TechnologyCategory[] = [
   },
   {
     id: 'data',
-    items: [
-      'sql',
-      'postgresql',
-      'pandas',
-      'numpy',
-      'powerbi',
-      'excel',
-      'openpyxl',
-      'streamlit',
-      'fabric',
-      'azure',
-      'aws',
-      'databricks',
-    ],
+    items: ['sql', 'postgresql', 'pandas', 'numpy', 'powerbi', 'excel'],
   },
   {
     id: 'ai',

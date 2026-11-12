@@ -1,5 +1,8 @@
 # Tarea 02 — rediseño visual
 
+Registro de la segunda iteración. Los cambios posteriores de textos, tecnologías,
+cabecera y transiciones se describen en [REFINAMIENTO.md](REFINAMIENTO.md).
+
 ## Alcance y decisiones
 
 Segunda iteración solicitada por Camilo sobre la portada existente. Se conservan

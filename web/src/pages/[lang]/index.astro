@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectDisclosure from '../../components/ProjectDisclosure.astro';
 import TechnologySection from '../../components/TechnologySection.astro';
-import EnvironmentNote from '../../components/EnvironmentNote.astro';
 import CommandLabel from '../../components/CommandLabel.astro';
 import '../../styles/home.css';
 import { copy } from '../../lib/i18n';
@@ -53,7 +52,15 @@ const orderedProjects = projectIds.map((id) =>
         <a href="https://github.com/camilo477">{t.github}</a>
       </div>
     </div>
-    <EnvironmentNote lang={lang} />
+    <aside
+      class="homelab-note"
+      aria-labelledby="homelab-heading"
+      data-preview-command="cd ~/homelab"
+    >
+      <CommandLabel command="cd ~/homelab" />
+      <h2 id="homelab-heading">{t.homelab}</h2>
+      <p>{t.homelabText}</p>
+    </aside>
   </section>
   <section
     class="projects"
@@ -65,7 +72,6 @@ const orderedProjects = projectIds.map((id) =>
         <CommandLabel command={commands.projects} />
         <h2 id="projects-heading">{t.projects}</h2>
       </div>
-      <p class="section-intro">{t.projectIntro}</p>
     </div>
     <div class="project-list">
       {orderedProjects.map((entry) => (

@@ -51,71 +51,77 @@ const t = copy[lang];
     <a class="skip-link" href="#main">
       {t.skip}
     </a>
-    <header class="site-header wrap">
-      <nav class="main-nav" aria-label={t.navigation}>
-        <a
-          href={homePath(lang)}
-          data-preview-command={commands.home}
-          aria-current={route === 'home' ? 'page' : undefined}
-        >
-          <span class="nav-path" aria-hidden="true">
-            ~/
-          </span>
-          {t.home}
-        </a>
-        <a href={projectsPath(lang)} data-preview-command={commands.projects}>
-          <span class="nav-path" aria-hidden="true">
-            ./
-          </span>
-          {t.projects}
-        </a>
-        <a
-          href={technologiesPath(lang)}
-          data-preview-command={commands.technologies}
-        >
-          <span class="nav-path" aria-hidden="true">
-            ./
-          </span>
-          {t.technologies}
-        </a>
-      </nav>
-      <div class="preferences">
-        <nav class="languages" aria-label={t.language}>
-          {(['es', 'en'] as const).map((language) => (
-            <a
-              href={localizedPath(language, route)}
-              lang={language}
-              hreflang={language}
-              data-language={language}
-              aria-current={language === lang ? 'true' : undefined}
-              aria-label={language === 'es' ? 'Español' : 'English'}
-            >
-              {language.toUpperCase()}
-            </a>
-          ))}
-        </nav>
-        <button
-          class="theme-toggle"
-          type="button"
-          data-theme-toggle
-          disabled
-          aria-label={t.switchDark}
-        >
-          <svg
-            class="theme-icon"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-            aria-hidden="true"
+    <header class="site-header">
+      <div class="header-inner wrap">
+        <nav class="main-nav" aria-label={t.navigation}>
+          <a
+            href={homePath(lang)}
+            data-preview-command={commands.home}
+            aria-current={route === 'home' ? 'page' : undefined}
           >
-            <circle cx="12" cy="12" r="8" />
-            <path d="M12 4a8 8 0 0 0 0 16Z" fill="currentColor" stroke="none" />
-          </svg>
-          <span data-theme-label>{t.dark}</span>
-        </button>
+            <span class="nav-path" aria-hidden="true">
+              ~/
+            </span>
+            {t.home}
+          </a>
+          <a href={projectsPath(lang)} data-preview-command={commands.projects}>
+            <span class="nav-path" aria-hidden="true">
+              ./
+            </span>
+            {t.projects}
+          </a>
+          <a
+            href={technologiesPath(lang)}
+            data-preview-command={commands.technologies}
+          >
+            <span class="nav-path" aria-hidden="true">
+              ./
+            </span>
+            {t.technologies}
+          </a>
+        </nav>
+        <div class="preferences">
+          <nav class="languages" aria-label={t.language}>
+            {(['es', 'en'] as const).map((language) => (
+              <a
+                href={localizedPath(language, route)}
+                lang={language}
+                hreflang={language}
+                data-language={language}
+                aria-current={language === lang ? 'true' : undefined}
+                aria-label={language === 'es' ? 'Español' : 'English'}
+              >
+                {language.toUpperCase()}
+              </a>
+            ))}
+          </nav>
+          <button
+            class="theme-toggle"
+            type="button"
+            data-theme-toggle
+            disabled
+            aria-label={t.switchDark}
+          >
+            <svg
+              class="theme-icon"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="8" />
+              <path
+                d="M12 4a8 8 0 0 0 0 16Z"
+                fill="currentColor"
+                stroke="none"
+              />
+            </svg>
+            <span data-theme-label>{t.dark}</span>
+          </button>
+        </div>
       </div>
     </header>
     <main id="main" class="wrap" tabindex="-1">
@@ -159,6 +165,8 @@ const t = copy[lang];
       import { initializePreferences } from '../scripts/preferences';
       import { initializeCommands } from '../scripts/commands';
       import { initializeProjects } from '../scripts/projects';
+      import { initializeHeader } from '../scripts/header';
+      initializeHeader();
       initializePreferences();
       initializeProjects();
       initializeCommands();

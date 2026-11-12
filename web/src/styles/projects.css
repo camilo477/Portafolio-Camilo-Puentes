@@ -9,7 +9,7 @@
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   gap: 3rem;
-  align-items: center;
+  align-items: start;
 }
 .project-row {
   min-width: 0;
@@ -82,6 +82,40 @@
   margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--border);
+}
+/* Animate the native disclosure without measuring or limiting its content height.
+   Older browsers retain the fully usable native open/close behavior. */
+@supports selector(details::details-content) and
+  (transition-behavior: allow-discrete) {
+  .project-row::details-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition:
+      grid-template-rows 240ms ease,
+      content-visibility 240ms allow-discrete;
+  }
+  .project-row[open]::details-content {
+    grid-template-rows: 1fr;
+  }
+  .project-reveal {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .project-row[data-instant]::details-content {
+    transition: none;
+  }
+}
+.project-row[data-instant] .project-arrow {
+  transition: none;
+}
+/* Generic * rules do not select this pseudo-element. */
+@media (prefers-reduced-motion: reduce) {
+  .project-row::details-content {
+    transition: none;
+  }
+}
+html[data-motion='off'] .project-row::details-content {
+  transition: none;
 }
 .project-expanded .command-heading {
   font-size: 0.75rem;

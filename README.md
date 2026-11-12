@@ -76,8 +76,8 @@ docs/                    Documentación técnica y verificación de la implement
   Cinco áreas principales visibles, aprendizaje/exploración según lo declarado por
   Camilo y un único desplegable para el inventario completo, también sin JavaScript.
   Sin porcentajes ni niveles de dominio inventados.
-- Navegación a `/es/#tecnologias` y `/en/#technologies`; nombres con enlaces a
-  documentación y comandos visuales en la franja existente, mediante hover o foco.
+- Navegación a `/es/#tecnologias` y `/en/#technologies`; tecnologías como texto,
+  sin enlaces externos ni paradas de teclado, con comandos decorativos en hover.
 - Proyectos que se amplían en la misma página al pulsar su título o «Abrir proyecto». Otro clic los
   cierra; al abrir uno se cierra el anterior. Funciona con teclado y sin JavaScript.
 - Enlaces directos como `/es/#convertix`, idioma y Atrás/Adelante conservan el
@@ -86,8 +86,11 @@ docs/                    Documentación técnica y verificación de la implement
 - Temas claro/oscuro, preferencia persistente y esquema inicial del sistema.
 - Movimiento reducido y control adicional para desactivar efectos.
 - Capturas y vídeo de Convertix pendientes, identificados como tales. No se simulan demos.
-- Rediseño Tarea 02: portada editorial con arte vectorial propio, proyectos con
-  distintas proporciones, medios visibles y paleta turquesa/ámbar provisional.
+- Se conserva el diseño de Tarea 02: proyectos con distintas proporciones,
+  medios visibles y paleta turquesa/ámbar provisional.
+- Refinamiento Tarea 03: presentación concreta, nota de homelab sin ilustración
+  del escritorio, navegación sticky y apertura/cierre de proyectos en 240 ms.
+  Movimiento reducido y navegación por historial omiten esa transición.
 
 La paleta **no es una identificación del tema Plasma**. Falta recibir su esquema
 real. Las demás secciones, el CV, el contacto y los casos completos no están
@@ -124,6 +127,7 @@ ni una evaluación manual con lector de pantalla.
 [Entrega, decisiones técnicas y verificación](docs/PRIMERA_ENTREGA.md).
 [Sección de tecnologías y actualización del nombre](docs/TECNOLOGIAS.md).
 [Rediseño visual, paleta y decisiones de Tarea 02](docs/REDISENO_VISUAL.md).
+[Refinamiento de textos, navegación y proyectos de Tarea 03](docs/REFINAMIENTO.md).
 
 El repositorio contiene código, contenido del sitio, pruebas, configuración de
 compilación e integración continua y documentación técnica. Las instrucciones de

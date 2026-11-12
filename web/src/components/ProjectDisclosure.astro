@@ -46,16 +46,18 @@ const { Content } = await render(entry);
         </span>
       </h3>
     </summary>
-    <div class="project-expanded" id={`${projectId}-content`}>
-      <CommandLabel command={commands[projectId]} />
-      <div class="prose">
-        <Content />
+    <div class="project-reveal">
+      <div class="project-expanded" id={`${projectId}-content`}>
+        <CommandLabel command={commands[projectId]} />
+        <div class="prose">
+          <Content />
+        </div>
+        <a class="repository-link" href={repository}>
+          {t.repository}
+          <span class="sr-only">: {title}</span>
+        </a>
+        <p class="project-status">{t.draft}</p>
       </div>
-      <a class="repository-link" href={repository}>
-        {t.repository}
-        <span class="sr-only">: {title}</span>
-      </a>
-      <p class="project-status">{t.draft}</p>
     </div>
   </details>
   <div class="project-visual">

@@ -47,10 +47,6 @@ test('inventory includes supplied additions without invented proficiency ratings
     'axios',
     'mysql',
     'firebase',
-    'fabric',
-    'azure',
-    'aws',
-    'databricks',
     'qwen',
     'piper',
     'paper',
@@ -59,7 +55,7 @@ test('inventory includes supplied additions without invented proficiency ratings
     'authentication',
   ]) {
     await expect(tech(page, id)).toBeVisible();
-    await expect(tech(page, id)).toHaveAttribute('href', /^https:\/\//);
+    await expect(tech(page, id)).not.toHaveAttribute('href');
   }
   await expect(page.locator('[data-technology-group]')).toHaveCount(8);
   await expect(page.locator('.technologies')).not.toContainText(
@@ -89,7 +85,7 @@ test('hover cancels rapid technology previews and returns to the active section'
   await expect(page).toHaveURL('/es/#tecnologias');
 });
 
-test('keyboard opens the inventory, previews technology focus and keeps normal links', async ({
+test('keyboard opens the inventory and skips non-interactive technology names', async ({
   page,
 }) => {
   await page.goto('/es/#tecnologias');
@@ -97,28 +93,22 @@ test('keyboard opens the inventory, previews technology focus and keeps normal l
   await summary.focus();
   await page.keyboard.press('Enter');
   await expect(page.locator('.stack-inventory')).toHaveAttribute('open', '');
-  await page.keyboard.press('Tab');
-  await expect(
-    group(page, 'languages').getByRole('link', { name: 'Python', exact: true }),
-  ).toBeFocused();
-  await expect(command(page)).toHaveText('python3 --version');
+  await expect(summary).toBeFocused();
   expect(
-    await group(page, 'languages')
-      .getByRole('link', { name: 'Python', exact: true })
-      .evaluate((el) => getComputedStyle(el).outlineStyle),
+    await summary.evaluate((el) => getComputedStyle(el).outlineStyle),
   ).not.toBe('none');
-  // Fulfil locally: prove Enter follows the link without depending on an external site.
-  await page.route('https://docs.python.org/3/', (route) =>
-    route.fulfill({
-      contentType: 'text/html',
-      body: '<h1>Documentation destination</h1>',
-    }),
-  );
-  await page.keyboard.press('Enter');
-  await expect(page).toHaveURL('https://docs.python.org/3/');
-  await page.goBack();
+  await expect(
+    page.locator(
+      '.technologies a, .technologies [tabindex], .technologies button',
+    ),
+  ).toHaveCount(0);
+  await page.keyboard.press('Tab');
+  await expect(page.locator('[data-motion-toggle]')).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(summary).toBeFocused();
+  await page.keyboard.press('Space');
+  await expect(page.locator('.stack-inventory')).not.toHaveAttribute('open');
   await expect(page).toHaveURL('/es/#tecnologias');
-  await expect(command(page)).toHaveText(stackCommand);
 });
 
 test('section language and history survive leaving an expanded project', async ({
@@ -176,7 +166,9 @@ test('complete inventory works with touch and without JavaScript', async ({
       'games',
       'engineering',
     ]) {
-      await expect(group(page, id).getByRole('link').first()).toBeVisible();
+      await expect(
+        group(page, id).locator('[data-technology]').first(),
+      ).toBeVisible();
     }
     await summary.click();
     await expect(page.locator('.stack-inventory')).not.toHaveAttribute('open');
@@ -194,6 +186,8 @@ test('reduced motion, touch pointers and blur never leave partial commands', asy
   });
   await page.waitForTimeout(220);
   await expect(command(page)).toHaveText(stackCommand);
+  await page.locator('#dianimilo > summary').focus();
+  await expect(command(page)).toHaveText('cd ~/proyectos/dianimilo');
   const values = await page.evaluate(async () => {
     const output = document.querySelector('[data-command]')!;
     const recorded: string[] = [];
@@ -201,13 +195,13 @@ test('reduced motion, touch pointers and blur never leave partial commands', asy
       recorded.push(output.textContent ?? ''),
     );
     observer.observe(output, { childList: true });
-    document.querySelector<HTMLElement>('[data-technology="python"]')!.focus();
+    document.querySelector<HTMLElement>('.stack-inventory > summary')!.focus();
     await new Promise((resolve) => setTimeout(resolve, 240));
     observer.disconnect();
     return recorded;
   });
   expect(values.length).toBeGreaterThan(0);
-  expect(values.every((value) => value === 'python3 --version')).toBe(true);
+  expect(values.every((value) => value === stackCommand)).toBe(true);
   await page.getByRole('button', { name: /tema/ }).focus();
   await expect(command(page)).toHaveText(stackCommand);
 });
@@ -225,9 +219,11 @@ test('full name and expanded technologies fit narrow screens without covering co
           () => document.documentElement.scrollWidth <= innerWidth,
         ),
       ).toBe(true);
-      const link = group(page, 'engineering').getByRole('link').last();
-      await link.focus();
-      const rect = await link.boundingBox();
+      const item = group(page, 'engineering')
+        .locator('[data-technology]')
+        .last();
+      await item.evaluate((el) => el.scrollIntoView({ block: 'center' }));
+      const rect = await item.boundingBox();
       const bar = await page.locator('[data-command-bar]').boundingBox();
       expect(rect!.y).toBeGreaterThanOrEqual(0);
       expect(rect!.y + rect!.height).toBeLessThanOrEqual(bar!.y);
@@ -285,16 +281,47 @@ test('main areas are visible while declared exploration stays separate', async (
     'En aprendizaje',
   );
   await expect(page.locator('.stack-exploration [data-technology]')).toHaveText(
-    [
-      'Spring Boot',
-      'Lua',
-      'Microsoft Fabric',
-      'Azure Data Services',
-      'AWS Data Services',
-      'Databricks',
-    ],
+    ['Spring Boot', 'Lua'],
   );
   await expect(
     page.locator('.stack-exploration [data-technology="python"]'),
   ).toHaveCount(0);
+});
+
+test('technology names never navigate and removed tools are absent in both languages', async ({
+  page,
+}) => {
+  for (const lang of ['es', 'en']) {
+    await page.goto(
+      `/${lang}/#${lang === 'es' ? 'tecnologias' : 'technologies'}`,
+    );
+    const url = page.url();
+    await tech(page, 'python').click();
+    await tech(page, 'django').click();
+    await expect(page).toHaveURL(url);
+    await page.locator('.stack-inventory > summary').click();
+    await expect(page.locator('.technologies a')).toHaveCount(0);
+    await expect(page.locator('.technologies')).not.toContainText(
+      /openpyxl|Streamlit|Microsoft Fabric|Azure Data Services|AWS Data Services|Databricks/i,
+    );
+    for (const id of [
+      'openpyxl',
+      'streamlit',
+      'fabric',
+      'azure',
+      'aws',
+      'databricks',
+    ])
+      await expect(page.locator(`[data-technology="${id}"]`)).toHaveCount(0);
+    expect(
+      await tech(page, 'python').evaluate((el) => {
+        const style = getComputedStyle(el);
+        return {
+          tag: el.tagName,
+          cursor: style.cursor,
+          underline: style.textDecorationLine,
+        };
+      }),
+    ).toEqual({ tag: 'SPAN', cursor: 'text', underline: 'none' });
+  }
 });
