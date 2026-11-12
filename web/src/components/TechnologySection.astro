@@ -14,6 +14,11 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = copy[lang];
+const columnBreak = Math.ceil(secondaryTechnologyCategories.length / 2);
+const inventoryColumns = [
+  secondaryTechnologyCategories.slice(0, columnBreak),
+  secondaryTechnologyCategories.slice(columnBreak),
+];
 ---
 
 <section
@@ -72,21 +77,27 @@ const t = copy[lang];
     </summary>
     <p class="inventory-note">{t.inventoryNote}</p>
     <div class="inventory-grid">
-      {secondaryTechnologyCategories.map(({ id, items }) => (
-        <details
-          class="stack-category"
-          name="technology-category"
-          data-technology-group={id}
-          aria-labelledby={`stack-${id}-title`}
-        >
-          <summary>
-            <span id={`stack-${id}-title`}>{t.technologyCategories[id]}</span>
-            <span class="category-mark" aria-hidden="true">
-              +
-            </span>
-          </summary>
-          <TechnologyList items={items} lang={lang} />
-        </details>
+      {inventoryColumns.map((categories) => (
+        <div class="inventory-column">
+          {categories.map(({ id, items }) => (
+            <details
+              class="stack-category"
+              name="technology-category"
+              data-technology-group={id}
+              aria-labelledby={`stack-${id}-title`}
+            >
+              <summary>
+                <span id={`stack-${id}-title`}>
+                  {t.technologyCategories[id]}
+                </span>
+                <span class="category-mark" aria-hidden="true">
+                  +
+                </span>
+              </summary>
+              <TechnologyList items={items} lang={lang} />
+            </details>
+          ))}
+        </div>
       ))}
     </div>
   </details>

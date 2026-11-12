@@ -168,6 +168,9 @@
   align-items: start;
   padding-bottom: 1rem;
 }
+.inventory-column {
+  min-width: 0;
+}
 .stack-category {
   min-width: 0;
   border-top: 1px solid var(--border);

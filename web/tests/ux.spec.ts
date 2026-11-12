@@ -219,6 +219,34 @@ test('secondary categories are compact, exclusive and preserve non-link technolo
   expect(
     (await page.locator('.inventory-grid').boundingBox())!.height,
   ).toBeLessThan(560);
+  const positions = () =>
+    categories.evaluateAll((nodes) =>
+      Object.fromEntries(
+        nodes.map((node) => {
+          const rect = node.getBoundingClientRect();
+          const grid = node.closest('.inventory-grid')!.getBoundingClientRect();
+          return [
+            node.getAttribute('data-technology-group')!,
+            { height: rect.height, top: rect.top - grid.top },
+          ];
+        }),
+      ),
+    );
+  const before = await positions();
+  const linux = page.locator('[data-technology-group="linux"]');
+  await linux.locator('summary').click();
+  const expanded = await positions();
+  expect(expanded.linux.height).toBeGreaterThan(before.linux.height + 20);
+  expect(expanded.databases.height).toBeCloseTo(before.databases.height, 1);
+  await expect(
+    page.locator('[data-technology-group="databases"]'),
+  ).not.toHaveAttribute('open');
+  if (page.viewportSize()!.width > 700) {
+    // Expanding Linux must not create a gap or move the other column's categories.
+    for (const id of ['data', 'ai', 'games', 'engineering'])
+      expect(expanded[id].top).toBeCloseTo(before[id].top, 1);
+  }
+  await linux.locator('summary').click();
   for (const category of await categories.all()) {
     await category.locator('summary').click();
     await expect(category).toHaveAttribute('open', '');

@@ -61,6 +61,12 @@ El inventario complementario mantiene ocho categorías, abiertas mediante
 `details/summary` nativos; puede explorarse una a la vez con ratón, teclado, toque
 y sin JS. Los nombres siguen siendo texto, sin enlaces ni paradas de tabulación.
 
+En escritorio, las categorías se reparten en dos columnas independientes: expandir
+una no aumenta el espacio de las categorías de la otra columna. En móvil se apilan
+en una sola columna, conservando el orden de lectura y de teclado. Una comprobación
+de geometría verifica que abrir Linux no cambie la altura de Bases de datos ni
+desplace las categorías de la otra columna.
+
 Una selección derivada evita repetir tecnologías del stack visible o de otras
 categorías. pandas y NumPy se agrupan en datos. Ninguna herramienta confirmada se
 pierde: una prueba compara la unión visible y complementaria con el inventario
